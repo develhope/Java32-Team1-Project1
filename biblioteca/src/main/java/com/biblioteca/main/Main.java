@@ -14,6 +14,7 @@ public class Main {
 
         Biblioteca.elencoLibri();
         Utente utente1 = new Utente("Mario", "Rossi", 580);
+        Utente utente1 = new Utente("Maria", "Verdi", 247);
 
             }
 }
