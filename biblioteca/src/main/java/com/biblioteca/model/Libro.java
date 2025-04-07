@@ -1,5 +1,7 @@
 package com.biblioteca.model;
 
+
+// Classe che rappresenta un libro nella biblioteca
 public class Libro {
 
     private String titolo;
@@ -57,15 +59,16 @@ public class Libro {
     }
 
     // Metodo toString per stampare i dettagli del libro in modo leggibile
+
+
     @Override
     public String toString() {
         return "Libro{" +
-                "Titolo='" + titolo + '\'' +
-                ", Autore='" + autore + '\'' +
-                ", Anno di Pubblicazione=" + annoPubblicazione +
-                ", ISBN='" + ISBN + '\'' +
+                "titolo='" + titolo + '\'' +
+                ", autore='" + autore + '\'' +
+                ", annoPubblicazione=" + annoPubblicazione +
+                ", ISBN=" + ISBN +
                 '}';
     }
-
 }
 
