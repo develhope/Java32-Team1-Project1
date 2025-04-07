@@ -4,6 +4,7 @@ public class Biblioteca {
     public static Libro[] dati = new Libro[100];
     public static int size = 0;
 
+
     public static void aggiungi(Libro l) {
         if (size < dati.length) {
             dati[size++] = l;
@@ -38,6 +39,7 @@ public class Biblioteca {
 
         if (size == 0){
             System.err.println("Non ci sono libri disponibili");
-        }
-    }
+   
+
 }
+
