@@ -1,9 +1,27 @@
 package com.biblioteca.main;
 
+
+import com.biblioteca.model.Biblioteca;
+import com.biblioteca.model.Utente;
+
 import com.biblioteca.model.Libro;
+
 
 public class Main {
     public static void main(String[] args){
+
+        Biblioteca.aggiungi(libro1);
+        Biblioteca.aggiungi(libro2);
+        Biblioteca.aggiungi(libro3);
+        Biblioteca.aggiungi(libro4);
+        Biblioteca.aggiungi(libro5);
+
+        Biblioteca.elencoLibri();
+        Utente utente1 = new Utente("Mario", "Rossi", 580);
+        Utente utente1 = new Utente("Maria", "Verdi", 247);
+
+            
+
 
         Libro libro1 =new Libro("Quello che so di te", "Nadia Terranova", 2025,  9788823521234L);
         Libro libro2 = new Libro("Fratellino" ,"di Ibrahima Balde e Amets",2025,  9788807895678L);
@@ -14,3 +32,4 @@ public class Main {
 
     }
 }
+

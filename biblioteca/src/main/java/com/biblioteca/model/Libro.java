@@ -3,6 +3,9 @@ package com.biblioteca.model;
 
 // Classe che rappresenta un libro nella biblioteca
 public class Libro {
+
+
+
     private String titolo;
     private String autore;
     private int annoPubblicazione;
@@ -67,4 +70,5 @@ public class Libro {
                 ", ISBN='" + ISBN + '\'' +
                 '}';
     }
+
 }
