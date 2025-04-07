@@ -1,10 +1,6 @@
 package com.biblioteca.model;
 
-
-// Classe che rappresenta un libro nella biblioteca
 public class Libro {
-
-
 
     private String titolo;
     private String autore;
@@ -72,3 +68,4 @@ public class Libro {
     }
 
 }
+
