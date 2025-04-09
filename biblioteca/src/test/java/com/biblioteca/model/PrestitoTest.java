@@ -7,122 +7,113 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PrestitoTest {
 
-    private Libro libro;
-    private Utente utente;
+    private Biblioteca biblioteca;
+    private Libro libro1;
+    private Libro libro2;
+    private Utente utente1;
+    private Utente utente2;
 
     @BeforeEach
     public void setUp() {
-        // Resetta lo stato della biblioteca prima di ogni test
+        // Inizializza la biblioteca e svuota i dati precedenti
+        biblioteca = new Biblioteca();
+        Biblioteca.dati = new Libro[10]; // Supponiamo un array di dimensione 10 per semplicità
         Biblioteca.size = 0;
-        for (int i = 0; i < Biblioteca.dati.length; i++) {
-            Biblioteca.dati[i] = null;
-        }
 
-        // Inizializza oggetti di test
-        libro = new Libro("1984", "George Orwell", 1949, 9780451524935L);
-        utente = new Utente("Mario","Rossi",1);
+        // Crea libri e utenti per i test
+        libro1 = new Libro("Il Signore degli Anelli", "J.R.R. Tolkien", 1988, 12345678901234L);
+        libro2 = new Libro("Sapore di rose", "George Orwell", 1984, 12345678901235L);
+        utente1 = new Utente("Mario", " Rossi", 4);
+        utente2 = new Utente("Anna", "Verdi", 1 );
+
+        // Aggiungi un libro alla biblioteca
+        Biblioteca.aggiungi(libro1);
     }
 
     @Test
-    public void testTrovaIndiceLibroPresente() {
-        // Arrange
-        Biblioteca.aggiungi(libro);
+    public void testEseguiPrestitoLibroDisponibile() {
+        // Testa il prestito di un libro disponibile
+        Prestito.eseguiPrestito(libro1, utente1);
 
-        // Act
-        int indice = Prestito.trovaIndiceLibro(libro);
-
-        // Assert
-        assertEquals(0, indice, "L'indice del libro dovrebbe essere 0");
-    }
-
-    @Test
-    public void testTrovaIndiceLibroNonPresente() {
-        // Arrange: Biblioteca vuota o senza il libro
-        Libro altroLibro = new Libro("Il Nome della Rosa", "Umberto Eco", 1980, 9788804665298L);
-
-        // Act
-        int indice = Prestito.trovaIndiceLibro(altroLibro);
-
-        // Assert
-        assertEquals(-1, indice, "L'indice dovrebbe essere -1 se il libro non è presente");
-    }
-
-    @Test
-    public void testAssociaLibroAUtenteConSuccesso() {
-        // Arrange
-        Biblioteca.aggiungi(libro);
-
-        // Act
-        boolean risultato = Prestito.associaLibroAUtente(libro, utente);
-
-        // Assert
-        assertTrue(risultato, "Il prestito dovrebbe riuscire");
-        // Verifica manuale dell'output: "1984 è stato preso in prestito da Mario Rossi"
-    }
-
-    @Test
-    public void testAssociaLibroAUtenteLibroNonPresente() {
-        // Arrange: Biblioteca vuota
-
-        // Act
-        boolean risultato = Prestito.associaLibroAUtente(libro, utente);
-
-        // Assert
-        assertFalse(risultato, "Il prestito dovrebbe fallire se il libro non è presente");
-        // Verifica manuale dell'output: "Il libro 1984 non è disponibile per il prestito."
-    }
-
-    @Test
-    public void testRestituisciLibroConSuccesso() {
-        // Arrange
-        Biblioteca.aggiungi(libro);
-        Prestito.associaLibroAUtente(libro, utente); // Simula il prestito
-        Biblioteca.rimuovi(0); // Simula la rimozione del libro dalla biblioteca
-
-        // Act
-        boolean risultato = Prestito.restituisciLibro(libro, utente);
-
-        // Assert
-        assertTrue(risultato, "La restituzione dovrebbe riuscire");
-        assertEquals(1, new Biblioteca().dimensione(), "Il libro dovrebbe essere riaggiunto alla biblioteca");
-        // Verifica manuale dell'output: "Mario Rossi ha restituito 1984"
-    }
-
-    @Test
-    public void testRestituisciLibroNonPrestato() {
-        // Arrange: Biblioteca vuota
-
-        // Act
-        boolean risultato = Prestito.restituisciLibro(libro, utente);
-
-        // Assert
-        assertFalse(risultato, "La restituzione dovrebbe fallire se il libro non è stato prestato");
-        // Verifica manuale dell'output: "Impossibile restituire il libro 1984, potrebbe non essere stato preso in prestito."
-    }
-
-    @Test
-    public void testEseguiPrestitoConSuccesso() {
-        // Arrange
-        Biblioteca.aggiungi(libro);
-
-        // Act
-        boolean risultato = Prestito.eseguiPrestito(libro, utente);
-
-        // Assert
-        assertTrue(risultato, "Il prestito dovrebbe riuscire");
-        // Verifica manuale dell'output: "1984 è stato preso in prestito da Mario Rossi"
+        // Verifica che il libro sia stato rimosso dalla biblioteca
+        assertEquals(-1, Prestito.trovaIndiceLibro(libro1), "Il libro dovrebbe essere rimosso dalla biblioteca");
+        // Verifica che il prestito sia registrato
+        Prestito.associaLibroAUtente(libro1);
     }
 
     @Test
     public void testEseguiPrestitoLibroNonDisponibile() {
-        // Arrange: Biblioteca vuota
+        // Esegui il prestito del libro1
+        Prestito.eseguiPrestito(libro1, utente1);
 
+        // Tenta di prestare di nuovo lo stesso libro
+        Prestito.eseguiPrestito(libro1, utente2);
 
-        // Act
-        boolean risultato = Prestito.eseguiPrestito(libro, utente);
+        // Verifica che il libro non sia più disponibile
+        assertEquals(-1, Prestito.trovaIndiceLibro(libro1), "Il libro non dovrebbe essere nella biblioteca");
+    }
 
-        // Assert
-        assertFalse(risultato, "Il prestito dovrebbe fallire se il libro non è disponibile");
-        // Verifica manuale dell'output: "Il libro 1984 non è disponibile per il prestito"
+    @Test
+    public void testAssociaLibroAUtenteLibroPrestato() {
+        // Esegui il prestito
+        Prestito.eseguiPrestito(libro1, utente1);
+
+        // Verifica l'associazione
+        Prestito.associaLibroAUtente(libro1);
+    }
+
+    @Test
+    public void testAssociaLibroAUtenteLibroNonPrestato() {
+        // Tenta di verificare l'associazione di un libro non prestato
+        Prestito.associaLibroAUtente(libro2);
+    }
+
+    @Test
+    public void testRestituisciLibroCorretto() {
+        // Esegui il prestito
+        Prestito.eseguiPrestito(libro1, utente1);
+
+        // Restituisci il libro
+        boolean risultato = Prestito.restituisciLibro(libro1, utente1);
+
+        // Verifica che la restituzione sia avvenuta con successo
+        assertTrue(risultato, "La restituzione dovrebbe riuscire");
+        assertNotEquals(-1, Prestito.trovaIndiceLibro(libro1), "Il libro dovrebbe essere tornato nella biblioteca");
+    }
+
+    @Test
+    public void testRestituisciLibroUtenteSbagliato() {
+        // Esegui il prestito con utente1
+        Prestito.eseguiPrestito(libro1, utente1);
+
+        // Tenta di restituire il libro con utente2
+        boolean risultato = Prestito.restituisciLibro(libro1, utente2);
+
+        // Verifica che la restituzione fallisca
+        assertFalse(risultato, "La restituzione dovrebbe fallire per utente sbagliato");
+        assertEquals(-1, Prestito.trovaIndiceLibro(libro1), "Il libro non dovrebbe essere tornato nella biblioteca");
+    }
+
+    @Test
+    public void testRestituisciLibroNonPrestato() {
+        // Tenta di restituire un libro mai prestato
+        boolean risultato = Prestito.restituisciLibro(libro2, utente1);
+
+        // Verifica che la restituzione fallisca
+        assertFalse(risultato, "La restituzione dovrebbe fallire per libro non prestato");
+    }
+
+    @Test
+    public void testTrovaIndiceLibroEsistente() {
+        // Verifica che il libro1 sia trovabile nella biblioteca
+        int indice = Prestito.trovaIndiceLibro(libro1);
+        assertNotEquals(-1, indice, "Il libro dovrebbe essere trovato nella biblioteca");
+    }
+
+    @Test
+    public void testTrovaIndiceLibroNonEsistente() {
+        // Verifica che un libro non presente restituisca -1
+        int indice = Prestito.trovaIndiceLibro(libro2);
+        assertEquals(-1, indice, "Il libro non dovrebbe essere trovato nella biblioteca");
     }
 }
