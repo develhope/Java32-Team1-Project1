@@ -2,73 +2,74 @@ package com.biblioteca.model;
 
 import com.biblioteca.model.Biblioteca;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Prestito {
 
+    // Mappa per associare i libri agli utenti (chi ha preso il libro)
+    private static Map<Libro, Utente> prestitiInCorso = new HashMap<>();
+
     // Metodo per trovare l'indice di un libro nell'array della biblioteca
-
     public static int trovaIndiceLibro(Libro l) {
-
         for (int i = 0; i < Biblioteca.size; i++) {
             if (Biblioteca.dati[i].equals(l)) {
                 return i;  // Restituisce l'indice se il libro è trovato
             }
         }
         return -1;  // Se il libro non viene trovato
+
+        // Metodo per eseguire il prestito (associato con l'utente e libro)
+    }
+    public static void eseguiPrestito(Libro l, Utente u) {
+        int index = trovaIndiceLibro(l);
+        // Verifica se il libro esiste nell'array di Biblioteca
+        if (index != -1) {
+
+            if (Biblioteca.dati[index] != null) { // Supponiamo che il libro sia disponibile per il prestito
+               Biblioteca.rimuovi(index);
+                prestitiInCorso.put(l, u);
+                System.out.println("Prestito riuscito con sucesso");
+            }
+        }else{
+
+            // Se il libro non è disponibile, stampa un messaggio
+            System.out.println("Imposibbile, il libro " + l.getTitolo() + " è stato già preso in prestito");
+
+        }
+
     }
 
     // Metodo per associare un libro a un utente (quando il libro viene preso in prestito)
-    public static boolean associaLibroAUtente(Libro l, Utente u) {
-        int index = trovaIndiceLibro(l);
+    public static void associaLibroAUtente(Libro l) {
+       if(prestitiInCorso.containsKey(l)){ //se  la chiave libro l esiste
+           System.out.println( l.getTitolo()+  " è stato preso in prestito da "  + prestitiInCorso.get(l).getNome());
+       }else {
+           System.out.println("Questo libro è stato già preso in prestito");
+       }
 
-        // Verifica se il libro esiste nell'array
-        if (index != -1) {
-            // Se il libro è disponibile per il prestito
-            if (Biblioteca.dati[index] != null) {
-                // Qui supponiamo che tu possa associare l'utente al libro
 
-                System.out.println(l.getTitolo() + " è stato preso in prestito da " + u.getNome());
-                return true;
-            }
-        }
-
-        System.out.println("Il libro " + l.getTitolo() + " non è disponibile per il prestito.");
-        return false;
     }
 
     // Metodo per restituire un libro
     public static boolean restituisciLibro(Libro l, Utente u) {
-        int index = trovaIndiceLibro(l);
+        // Verifica se il libro è stato preso in prestito
+        if (prestitiInCorso.containsKey(l) && prestitiInCorso.get(l).equals(u)) {
+            // Restituisci il libro in biblioteca
 
-        // Verifica se il libro esiste nell'array e se l'utente che restituisce è quello che ha preso il libro
-        if (index != -1 && Biblioteca.dati[index] != null) {
-
-            System.out.println(u.getNome() + " ha restituito " + l.getTitolo());
-
-
-            Biblioteca.aggiungi(l);
-
-            return true;
+                Biblioteca.aggiungi(l);  // Rimetti il libro nell'array della biblioteca
+                prestitiInCorso.remove(l);   // Rimuovi il prestito dalla mappa
+                System.out.println(u.getNome() + " ha restituito " + l.getTitolo());
+                return true;
+        }if(prestitiInCorso.containsKey(l)&& !prestitiInCorso.get(l).equals(u)) { //se  la chiave libro l esiste
+            System.out.println(l.getTitolo() + " è stato  preso in prestito da un altro utente " + prestitiInCorso.get(l).getNome());
+        return  false;
+        } else {
+            System.out.println("Il libro " + l.getTitolo() + " non è stato preso in prestito da nesuuno" );
+            return false;
         }
-
-        System.out.println("Impossibile restituire il libro " + l.getTitolo() + ", potrebbe non essere stato preso in prestito.");
-        return false;
     }
 
-    // Metodo per eseguire il prestito (associato con l'utente e libro)
-    public static boolean eseguiPrestito(Libro l, Utente u) {
-        int index = trovaIndiceLibro(l);
-        associaLibroAUtente(l,u);
-        // Verifica se il libro esiste nell'array di Biblioteca
-        if (index != -1) {
 
-            if (Biblioteca.dati[index] != null) {
-                // Supponiamo che il libro sia disponibile per il prestito
-                return associaLibroAUtente(l, u);
-            }
-        }
 
-        // Se il libro non è disponibile, stampa un messaggio
-        System.out.println("Il libro " + l.getTitolo() + " non è disponibile per il prestito");
-        return false;
     }
-}
