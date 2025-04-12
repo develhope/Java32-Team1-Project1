@@ -5,8 +5,18 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
+/**
+ * Classe di test per la classe {@link Biblioteca}.
+ * Questa classe contiene test unitari per verificare le funzionalità della classe Biblioteca,
+ * inclusi l'aggiunta, la rimozione, il recupero e l'elenco dei libri.
+ */
 public class BibliotecaTest {
 
+    /**
+     * Configura l'ambiente di test prima di ogni test.
+     * Reimposta la dimensione della biblioteca a 0 e svuota l'array dei dati.
+     */
     @BeforeEach
     public void setUp() {
         // Resetta lo stato della biblioteca prima di ogni test
@@ -16,6 +26,11 @@ public class BibliotecaTest {
         }
     }
 
+    
+     /**
+     * Verifica l'aggiunta di un singolo libro alla biblioteca.
+     * Controlla che la dimensione aumenti di 1 e che il libro aggiunto possa essere recuperato correttamente.
+     */
     @Test
     public void testAggiungiLibro() {
         // Arrange
@@ -29,6 +44,11 @@ public class BibliotecaTest {
         assertEquals(libro, new Biblioteca().get(0), "Il libro recuperato dovrebbe essere lo stesso aggiunto");
     }
 
+    
+     /**
+     * Verifica il comportamento quando si tenta di aggiungere un libro oltre la capacità della biblioteca (100).
+     * Controlla che la dimensione non aumenti oltre la capacità massima.
+     */
     @Test
     public void testAggiungiLibroOltreCapacita() {
         // Arrange: Riempi l'array oltre la capacità (100)
@@ -45,6 +65,11 @@ public class BibliotecaTest {
         assertEquals(dimensioneIniziale, new Biblioteca().dimensione(), "La dimensione non dovrebbe aumentare oltre 100");
     }
 
+
+    /**
+     * Verifica la rimozione di un libro dalla biblioteca.
+     * Controlla che la dimensione diminuisca di 1 e che il libro rimanente sia corretto.
+     */
     @Test
     public void testRimuoviLibro() {
         // Arrange
@@ -61,6 +86,11 @@ public class BibliotecaTest {
         assertEquals(libro2, new Biblioteca().get(0), "Il libro rimanente dovrebbe essere il secondo aggiunto");
     }
 
+
+     /**
+     * Verifica l'elenco dei libri quando la biblioteca è vuota.
+     * Controlla che la dimensione sia 0 (verifica manuale necessaria per l'output su console).
+     */
     @Test
     public void testRimuoviDaBibliotecaVuota() {
         // Act
@@ -70,6 +100,11 @@ public class BibliotecaTest {
         assertEquals(0, new Biblioteca().dimensione(), "La dimensione dovrebbe rimanere 0 se la biblioteca è vuota");
     }
 
+
+    /**
+     * Verifica il recupero di un libro dalla biblioteca.
+     * Controlla che il libro recuperato corrisponda a quello aggiunto.
+     */
     @Test
     public void testGetLibro() {
         // Arrange
@@ -83,6 +118,12 @@ public class BibliotecaTest {
         assertEquals(libro, recuperato, "Il libro recuperato dovrebbe essere uguale a quello aggiunto");
     }
 
+
+    /**
+     * Verifica l'elenco dei libri quando la biblioteca è vuota.
+     * Controlla che la dimensione sia 0 (verifica manuale necessaria per l'output su console).
+     */
+
     @Test
     public void testElencoLibriVuoto() {
         // Act & Assert
@@ -90,6 +131,12 @@ public class BibliotecaTest {
         assertEquals(0, new Biblioteca().dimensione(), "La biblioteca dovrebbe essere vuota");
         Biblioteca.elencoLibri(); // Verifica manualmente che stampi "Non ci sono libri disponibili"
     }
+
+
+    /**
+     * Verifica l'elenco dei libri quando la biblioteca è vuota.
+     * Controlla che la dimensione sia 0 (verifica manuale necessaria per l'output su console).
+     */
 
     @Test
     public void testElencoLibriConElementi() {
