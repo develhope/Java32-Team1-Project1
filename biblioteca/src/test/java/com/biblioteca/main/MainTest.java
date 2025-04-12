@@ -13,12 +13,24 @@ import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
+/**
+ * Classe di test per il metodo principale della classe {@link Main}.
+ * Questa classe contiene test unitari per verificare il comportamento del flusso principale del programma,
+ * inclusa l'aggiunta di libri, l'elenco dei libri, la gestione dei prestiti e la restituzione dei libri,
+ * catturando l'output della console per validarne i contenuti.
+ */
 public class MainTest {
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
 
 
+     /**
+     * Configura l'ambiente di test prima di ogni test.
+     * Reimposta lo stato della biblioteca e reindirizza l'output di System.out
+     * per catturare i messaggi stampati durante i test.
+     */
     @BeforeEach
     public void setUp() {
         // Resetta lo stato della biblioteca
@@ -30,6 +42,12 @@ public class MainTest {
         System.setOut(new PrintStream(outContent));
     }
 
+
+     /**
+     * Verifica l'esecuzione del flusso principale del programma.
+     * Controlla l'aggiunta di libri, l'elenco dei libri, l'esecuzione di un prestito,
+     * la restituzione di un libro e l'output generato sulla console.
+     */
     @Test
     public void testMainExecution() {
         // Arrange: Simula l'esecuzione del main
@@ -69,6 +87,12 @@ public class MainTest {
         assertTrue(output.contains("Mario ha restituito Quello che so di te"), "L'output dovrebbe confermare la restituzione");
     }
 
+
+    /**
+     * Verifica il comportamento del programma con una biblioteca inizialmente vuota.
+     * Controlla che l'elenco dei libri restituisca un messaggio appropriato
+     * e che la dimensione della biblioteca sia zero.
+     */
     @Test
     public void testMainConBibliotecaVuotaIniziale() {
         // Arrange: Esegui solo elencoLibri su biblioteca vuota
@@ -80,6 +104,12 @@ public class MainTest {
         assertEquals(0, new Biblioteca().dimensione(), "La dimensione dovrebbe essere 0");
     }
 
+
+    /**
+     * Ripristina l'ambiente di test dopo ogni test.
+     * Reimposta System.out al suo stato originale per evitare interferenze
+     * con altri test o output successivi.
+     */
     @AfterEach
     public void tearDown() {
         // Ripristina System.out
