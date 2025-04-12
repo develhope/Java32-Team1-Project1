@@ -4,8 +4,20 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
+/**
+ * Classe di test per la classe {@link Libro}.
+ * Questa classe contiene test unitari per verificare le funzionalità della classe Libro,
+ * inclusi il costruttore di default, il costruttore parametrizzato, i metodi setter/getter e il metodo toString.
+ */
+
 public class LibroTest {
 
+
+   /**
+     * Verifica il costruttore di default della classe Libro.
+     * Controlla che i valori iniziali di titolo, autore, anno di pubblicazione e ISBN siano quelli previsti.
+     */  
     @Test
     public void testCostruttoreDefault() {
         // Arrange & Act
@@ -18,6 +30,11 @@ public class LibroTest {
         assertEquals(0L, libro.getISBN(), "L'ISBN dovrebbe essere 0 per il costruttore di default");
     }
 
+
+     /**
+     * Verifica il costruttore parametrizzato della classe Libro.
+     * Controlla che i valori di titolo, autore, anno di pubblicazione e ISBN corrispondano a quelli forniti.
+     */
     @Test
     public void testCostruttoreParametrizzato() {
         // Arrange & Act
@@ -30,6 +47,11 @@ public class LibroTest {
         assertEquals(9780451524935L, libro.getISBN(), "L'ISBN dovrebbe corrispondere al valore passato");
     }
 
+
+     /**
+     * Verifica i metodi setter e getter della classe Libro.
+     * Controlla che i valori impostati tramite i setter siano correttamente recuperati dai getter.
+     */
     @Test
     public void testSetterEGetter() {
         // Arrange
@@ -49,6 +71,11 @@ public class LibroTest {
         assertEquals(9788804665298L, libro.getISBN(), "L'ISBN dovrebbe essere aggiornato dal setter");
     }
 
+
+    /**
+     * Verifica il metodo toString della classe Libro.
+     * Controlla che la rappresentazione testuale dell'oggetto Libro sia formattata correttamente.
+     */
     @Test
     public void testToString() {
         // Arrange
