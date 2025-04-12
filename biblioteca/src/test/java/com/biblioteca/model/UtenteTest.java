@@ -4,7 +4,20 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+
+/**
+ * Classe di test per la classe {@link Utente}.
+ * Questa classe contiene test unitari per verificare le funzionalità della classe Utente,
+ * inclusi il costruttore, i metodi setter e getter, il metodo dettagliUtente e il comportamento
+ * con valori limite e istanze indipendenti.
+ */
 public class UtenteTest {
+
+
+    /**
+     * Verifica il costruttore della classe Utente.
+     * Controlla che i valori di nome, cognome e ID utente corrispondano a quelli forniti.
+     */
 
     @Test
     public void testCostruttore() {
@@ -17,6 +30,11 @@ public class UtenteTest {
         assertEquals(1, utente.getIdUtente(), "L'ID utente dovrebbe essere quello passato al costruttore");
     }
 
+
+    /**
+     * Verifica i metodi setter e getter della classe Utente.
+     * Controlla che i valori impostati tramite i setter siano correttamente recuperati dai getter.
+     */
     @Test
     public void testSetterEGetter() {
         // Arrange
@@ -33,6 +51,12 @@ public class UtenteTest {
         assertEquals(2, utente.getIdUtente(), "L'ID utente dovrebbe essere aggiornato dal setter");
     }
 
+
+    /**
+     * Verifica il metodo dettagliUtente della classe Utente.
+     * Controlla che i valori dell'utente rimangano invariati dopo l'esecuzione del metodo
+     * (verifica manuale necessaria per l'output su console).
+     */
     @Test
     public void testDettagliUtente() {
         // Arrange
@@ -44,6 +68,12 @@ public class UtenteTest {
         assertEquals("Mario", utente.getNome(), "Il nome dovrebbe rimanere invariato dopo dettagliUtente");
     }
 
+
+    /**
+     * Verifica la creazione di un utente con valori limite.
+     * Controlla che il costruttore accetti stringhe vuote per nome e cognome
+     * e il valore massimo per l'ID utente.
+     */
     @Test
     public void testCreazioneConValoriLimite() {
         // Arrange & Act
@@ -54,6 +84,12 @@ public class UtenteTest {
         assertEquals("", utente.getCognome(), "Il cognome può essere una stringa vuota");
         assertEquals(Integer.MAX_VALUE, utente.getIdUtente(), "L'ID utente dovrebbe accettare il valore massimo di int");
     }
+
+
+    /**
+     * Verifica l'indipendenza tra istanze diverse della classe Utente.
+     * Controlla che la modifica di un'istanza non influenzi un'altra.
+     */
 
     @Test
     public void testIndipendenzaIstanze() {
