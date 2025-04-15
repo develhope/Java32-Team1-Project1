@@ -1,4 +1,4 @@
-package com.biblioteca.Main;
+package com.biblioteca.main;
 
 import com.biblioteca.model.Biblioteca;
 import com.biblioteca.model.Libro;
