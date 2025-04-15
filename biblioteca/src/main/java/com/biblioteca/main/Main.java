@@ -5,7 +5,20 @@ import com.biblioteca.model.Libro;
 import com.biblioteca.model.Utente;
 import com.biblioteca.model.Prestito;
 
-public class Main {
+/**
+ * Classe principale per l'applicazione Biblioteca.
+ * Questa classe dimostra le funzionalità di base di un sistema di gestione di una biblioteca,
+ * inclusa la creazione di libri, l'aggiunta alla biblioteca, la visualizzazione dell'elenco dei libri,
+ * la creazione di un utente e l'esecuzione di operazioni di prestito e restituzione.
+*/
+public class Main { 
+    /**
+     * Punto di ingresso dell'applicazione Biblioteca.
+     * Inizializza i libri, li aggiunge alla biblioteca, crea un utente
+     * ed esegue operazioni di prestito e restituzione per dimostrare le funzionalità del sistema.
+     *
+     * @param args Argomenti della riga di comando (non utilizzati in questa applicazione).
+     */
     public static void main(String[] args) {
         Libro libro1 =new Libro("Quello che so di te", "Nadia Terranova", 2025,  9788823521234L);
         Libro libro2 = new Libro("Fratellino" ,"di Ibrahima Balde e Amets",2025,  9788807895678L);
