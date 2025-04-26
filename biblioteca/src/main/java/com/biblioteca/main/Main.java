@@ -37,8 +37,8 @@ public class Main {
         Utente utente1 = new Utente("Mario", "Rossi", 580);
         Utente.dettagliUtente();
         
-        Prestito.eseguiPrestito(libro1,utente1);
-        Prestito.associaLibroAUtente(libro1);
-        Prestito.restituisciLibro(libro1,utente1);
+        Prestito prestito1 = new Prestito(utente1,libro1);
+        Prestito.mostraStatoLibro(libro1);
+        prestito1.restituisci();
     }
 }
