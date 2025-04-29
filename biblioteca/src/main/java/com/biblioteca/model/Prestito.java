@@ -1,79 +1,71 @@
 package com.biblioteca.model;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**
- * Classe che rappresenta un prestito e ne gestisce l'esecuzione e la restituzione.
+ * Classe che rappresenta un prestito tra un utente e un libro.
  */
 public class Prestito {
     private final Utente utente;
     private final Libro libro;
-
-    // Mappa globale dei prestiti attivi: libro → prestito
-    private static final Map<Libro, Prestito> prestitiAttivi = new HashMap<>();
+    Biblioteca biblioteca = new Biblioteca();
 
     /**
-     * Crea un nuovo prestito e lo registra automaticamente, se possibile.
+     * Costruttore che crea un prestito, verificando la disponibilità del libro.
+     * @throws IllegalArgumentException se il libro non è disponibile.
      */
     public Prestito(Utente utente, Libro libro) {
         this.utente = utente;
         this.libro = libro;
 
-        int posizione = trovaLibroInBiblioteca(libro);
+        try {
+            int posizione = trovaLibroInBiblioteca(libro);
 
-        if (posizione == -1) {
-            System.out.println(" Il libro \"" + libro.getTitolo() + "\" non è disponibile nella biblioteca.");
-        } else if (prestitiAttivi.containsKey(libro)) {
-            System.out.println(" Il libro è già in prestito a " + prestitiAttivi.get(libro).utente.getNome());
-        } else {
-            Biblioteca.rimuovi(posizione);
-            prestitiAttivi.put(libro, this);
-            System.out.println(" Prestito effettuato: " + utente.getNome() + " ha preso \"" + libro.getTitolo() + "\".");
+            if (posizione == -1) {
+                throw new IllegalArgumentException("Il libro \"" + libro.getTitolo() + "\" non è disponibile nella biblioteca.");
+            }
+
+
+
+           biblioteca.aggiungiPrestito(libro);
+        biblioteca.rimuovi(posizione);
+            System.out.println("Prestito effettuato: " + utente.getNome() + " ha preso \"" + libro.getTitolo() + "\".");
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Errore nel costruttore di Prestito: " + e.getMessage());
+            // eventualmente: rethrow se vuoi bloccare comunque
+            // throw e;
         }
     }
 
     /**
-     * Restituisce il libro associato a questo prestito.
+     * Restituisce il libro associato a questo prestito alla biblioteca.
      */
     public void restituisci() {
-        if (prestitiAttivi.containsKey(libro) && prestitiAttivi.get(libro) == this) {
-            Biblioteca.aggiungi(libro);
-            prestitiAttivi.remove(libro);
-            System.out.println( libro.getTitolo() + "\" è stato restituito da " + utente.getNome());
-        } else {
-            System.out.println(" Il prestito non è attivo o non è valido.");
-        }
-    }
-
-    /**
-     * Verifica lo stato attuale di un libro.
-     */
-    public static void mostraStatoLibro(Libro libro) {
-        if (prestitiAttivi.containsKey(libro)) {
-            Prestito p = prestitiAttivi.get(libro);
-            System.out.println( libro.getTitolo() + "\" è in prestito a " + p.utente.getNome());
-        } else {
-            System.out.println( libro.getTitolo() + "\" è disponibile.");
-        }
+        biblioteca.aggiungi(libro);
+        System.out.println("\"" + libro.getTitolo() + "\" è stato restituito da " + utente.getNome());
     }
 
     /**
      * Trova la posizione del libro nella biblioteca.
+     * Metodo temporaneo (meglio delegare alla classe Biblioteca).
      */
-    private static int trovaLibroInBiblioteca(Libro libro) {
-        for (int i = 0; i < Biblioteca.size; i++) {
-            if (Biblioteca.dati[i] != null && Biblioteca.dati[i].equals(libro)) {
+    private  int trovaLibroInBiblioteca(Libro libro) {
+        for (int i = 0; i < biblioteca.size; i++) {
+            if (biblioteca.dati[i] != null && biblioteca.dati[i].equals(libro)) {
                 return i;
             }
         }
         return -1;
     }
-
-    // ============================
-    // Getters e override
-    // ============================
+    public void mostraStatoLibro(Libro libro) {
+        if (trovaLibroInBiblioteca(libro) == -1) {
+            System.out.println("Il libro \"" + libro.getTitolo() + "\" è in prestito.");
+        } else {
+            System.out.println("Il libro \"" + libro.getTitolo() + "\" è disponibile.");
+        }
+    }
+    // Getters
 
     public Utente getUtente() {
         return utente;
@@ -83,13 +75,7 @@ public class Prestito {
         return libro;
     }
 
-    @Override
-    public String toString() {
-        return "Prestito{" +
-                "utente=" + utente +
-                ", libro=" + libro +
-                '}';
-    }
+    // Override di equals e hashCode per confrontare prestiti
 
     @Override
     public boolean equals(Object o) {
@@ -103,5 +89,13 @@ public class Prestito {
     @Override
     public int hashCode() {
         return Objects.hash(utente, libro);
+    }
+
+    @Override
+    public String toString() {
+        return "Prestito{" +
+                "utente=" + utente +
+                ", libro=" + libro +
+                '}';
     }
 }

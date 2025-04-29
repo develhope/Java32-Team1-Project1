@@ -10,8 +10,8 @@ import com.biblioteca.model.Prestito;
  * Questa classe dimostra le funzionalità di base di un sistema di gestione di una biblioteca,
  * inclusa la creazione di libri, l'aggiunta alla biblioteca, la visualizzazione dell'elenco dei libri,
  * la creazione di un utente e l'esecuzione di operazioni di prestito e restituzione.
-*/
-public class Main { 
+ */
+public class Main {
     /**
      * Punto di ingresso dell'applicazione Biblioteca.
      * Inizializza i libri, li aggiunge alla biblioteca, crea un utente
@@ -20,25 +20,26 @@ public class Main {
      * @param args Argomenti della riga di comando (non utilizzati in questa applicazione).
      */
     public static void main(String[] args) {
-        Libro libro1 =new Libro("Quello che so di te", "Nadia Terranova", 2025,  9788823521234L);
-        Libro libro2 = new Libro("Fratellino" ,"di Ibrahima Balde e Amets",2025,  9788807895678L);
+        Libro libro1 = new Libro("Quello che so di te", "Nadia Terranova", 2025,  9788823521234L);
+        Libro libro2 = new Libro("Fratellino" ,"Ibrahima Balde e Amets",2025,  9788807895678L);
         Libro libro3 = new Libro("Macroeconomia","N. Gregory Manki",2016, 9788880085096L);
-        Libro libro4 = new Libro("Il nome della rosa", " Umberto Eco", 1980,  9788845240000L);
+        Libro libro4 = new Libro("Il nome della rosa", "Umberto Eco", 1980,  9788845240000L);
         Libro libro5 = new Libro( "Un mondo nuovo", "Liz Braswell" , 2015, 9781788107686L);
 
+        Biblioteca biblioteca = new Biblioteca();
 
-        Biblioteca.aggiungi(libro1);
-        Biblioteca.aggiungi(libro2);
-        Biblioteca.aggiungi(libro3);
-        Biblioteca.aggiungi(libro4);
-        Biblioteca.aggiungi(libro5);
+        biblioteca.aggiungi(libro1);
+        biblioteca.aggiungi(libro2);
+        biblioteca.aggiungi(libro3);
+        biblioteca.aggiungi(libro4);
+        biblioteca.aggiungi(libro5);
 
-        Biblioteca.elencoLibri();
+        biblioteca.elencoLibri();
         Utente utente1 = new Utente("Mario", "Rossi", 580);
         Utente.dettagliUtente();
-        
-        Prestito prestito1 = new Prestito(utente1,libro1);
-        Prestito.mostraStatoLibro(libro1);
-        prestito1.restituisci();
+
+        Prestito.eseguiPrestito(libro1,utente1);
+        Prestito.associaLibroAUtente(libro1);
+        Prestito.restituisciLibro(libro1,utente1);
     }
 }
