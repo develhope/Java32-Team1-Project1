@@ -9,6 +9,7 @@ public class Prestito {
     private final Utente utente;
     private final Libro libro;
 
+
     /**
      * Costruttore che crea un prestito, verificando la disponibilità del libro.
      * @throws IllegalArgumentException se il libro non è disponibile.
