@@ -3,6 +3,7 @@ package com.biblioteca.model;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Classe che rappresenta una biblioteca per la gestione di un elenco di libri.
  * Consente di aggiungere, rimuovere e visualizzare libri, mantenendo un array fisso
@@ -10,6 +11,11 @@ import java.util.List;
  */
 
 public class Biblioteca {
+
+
+    public List<Prestito> listaPrestiti = new ArrayList<>();
+
+
     /**
      * Array di libri memorizzati nella biblioteca.
      * Ha una capacità massima di 100 elementi.
@@ -78,17 +84,45 @@ public class Biblioteca {
             System.out.println(dati[i]);
         }
 
-        if (size == 0){
+        if (size == 0) {
             System.err.println("Non ci sono libri disponibili");
 
 
         }
     }
-    List<Libro> listaPrestiti= new ArrayList<>();
-    void aggiungiPrestito(Libro l ) {
-        listaPrestiti.add(l);
+
+    public void aggiungiPrestito(Prestito p) {
+        for (int i = 0; i < listaPrestiti.size(); i++) {
+            if (listaPrestiti.get(i).getLibro().equals(p.getLibro())) {
+                throw new IllegalArgumentException("Il libro \"" + p.getLibro().getTitolo() + "\" è già in prestito.");
+            }
+        }
+        listaPrestiti.add(p);
+        System.out.println("Prestito effettuato: " + p.getUtente().getNome() + " ha preso \"" + p.getLibro().getTitolo() + "\".");
     }
 
+    public void rimuoviPrestito(Prestito p) {
+        for (int i = 0; i < listaPrestiti.size(); i++) {
+            if (!(listaPrestiti.get(i).getLibro().equals(p.getLibro()))) {
+                throw new IllegalArgumentException("Il libro \"" + p.getLibro().getTitolo() + "\" non è in prestito impossibile da restituire.");
+            }
+        }
+        listaPrestiti.remove(p);
+        System.out.println("restuzione effettuato: " + p.getUtente().getNome() + " ha restituito \"" + p.getLibro().getTitolo() + "\".");
+    }
+
+    public Libro cercaLibroPerTitolo(String titolo) {
+        for (Libro l : dati) {
+            if (l.getTitolo().equalsIgnoreCase(titolo)) {
+                return l;
+            }
+        }
+        return null;
+    }
 }
+
+
+
+
 
 

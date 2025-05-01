@@ -5,6 +5,8 @@ import com.biblioteca.model.Libro;
 import com.biblioteca.model.Utente;
 import com.biblioteca.model.Prestito;
 
+import java.util.Scanner;
+
 /**
  * Classe principale per l'applicazione Biblioteca.
  * Questa classe dimostra le funzionalità di base di un sistema di gestione di una biblioteca,
@@ -20,6 +22,7 @@ public class Main {
      * @param args Argomenti della riga di comando (non utilizzati in questa applicazione).
      */
     public static void main(String[] args) {
+        Scanner sc =new Scanner(System.in);
         Libro libro1 = new Libro("Quello che so di te", "Nadia Terranova", 2025,  9788823521234L);
         Libro libro2 = new Libro("Fratellino" ,"Ibrahima Balde e Amets",2025,  9788807895678L);
         Libro libro3 = new Libro("Macroeconomia","N. Gregory Manki",2016, 9788880085096L);
@@ -33,13 +36,69 @@ public class Main {
         biblioteca.aggiungi(libro3);
         biblioteca.aggiungi(libro4);
         biblioteca.aggiungi(libro5);
+        System.out.println("Benvenuto,scelga l’operazione che vuoi effettuare digitando il numero corrispondente:\n" +
+                "\n" +
+                "Digita 1 per vedere l’elenco dei libri  in biblioteca\n" +
+                "\n" +
+                "Digita 2 per fare un prestito \n" +
+                "\n" +
+                "Digita 3 per restituire un libro\n" +
+                "\n" +
+                "Attendo la tua scelta!");
+        int sceltaoperazione = sc.nextInt();
+         switch (sceltaoperazione){
+             case  1-> {
+                 System.out.println("Ecco l'elenco dei libri" +"\n" );
+                 biblioteca.elencoLibri();
 
-        biblioteca.elencoLibri();
-        Utente utente1 = new Utente("Mario", "Rossi", 580);
-        Utente.dettagliUtente();
+             }
+             case 2 -> {
+                 System.out.println("Prima di effettuare l'operazione, inserisci i dati richiesti.");
+                 sc.nextLine(); // Pulizia del buffer
 
-        Prestito.eseguiPrestito(libro1,utente1);
-        Prestito.associaLibroAUtente(libro1);
-        Prestito.restituisciLibro(libro1,utente1);
+                 System.out.print("Inserisci il nome: ");
+                 String nome = sc.nextLine();
+
+                 System.out.print("Inserisci il cognome: ");
+                 String cognome = sc.nextLine();
+
+                 Utente utente1 = new Utente(nome, cognome, 580);
+                 System.out.println("Benvenuto");
+                 Utente.dettagliUtente();
+                 Libro libro = null;
+                 while (libro == null) {
+                     System.out.print("Inserisci il titolo del libro che vuole prendere in prestito seguenti libri: "+"\n");
+                     biblioteca.elencoLibri();
+                     String titoloLibro = sc.nextLine();
+
+                     libro = biblioteca.cercaLibroPerTitolo(titoloLibro);
+                     if (libro == null) {
+                         System.out.println("Libro non trovato. Riprova.");
+                     }
+
+                 }Prestito prestito = new Prestito(libro,utente1);
+                 try {
+                     biblioteca.aggiungiPrestito(prestito);
+                 } catch (IllegalArgumentException e) {
+                     System.out.println("Errore: " + e.getMessage());
+                 }
+
+
+             }case 3->{
+
+            biblioteca.rimuoviPrestito(prestito);
+             }
+
+         }
+
+
+
+
+
+
+
+
+
+
     }
 }
