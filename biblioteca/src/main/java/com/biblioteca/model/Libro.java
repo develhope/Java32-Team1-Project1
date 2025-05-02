@@ -10,6 +10,8 @@ package com.biblioteca.model;
 // Classe che rappresenta un libro nella biblioteca
 public class Libro {
 
+    private boolean disponibilita=true;
+
     /** Titolo del libro. */
     private String titolo;
     
@@ -32,6 +34,7 @@ public class Libro {
         autore= "sconoscuto";
         annoPubblicazione= 0000;
         ISBN=0000000000000000L;
+
     }
 
     /**
@@ -47,7 +50,16 @@ public class Libro {
         this.titolo = titolo;
         this.autore = autore;
         this.annoPubblicazione = annoPubblicazione;
+
         this.ISBN = ISBN;
+    }
+
+    public boolean isDisponibilita() {
+        return disponibilita;
+    }
+
+    public void setDisponibilita(boolean disponibilita) {
+        this.disponibilita = disponibilita;
     }
 
     /**
@@ -134,7 +146,9 @@ public class Libro {
                 "titolo='" + titolo + '\'' +
                 ", autore='" + autore + '\'' +
                 ", annoPubblicazione=" + annoPubblicazione +
-                ", ISBN=" + ISBN +
+                ", ISBN=" + ISBN +'\'' +
+                "è disponibile "+ disponibilita+
+
                 '}';
     }
 }

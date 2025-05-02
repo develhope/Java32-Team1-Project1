@@ -3,9 +3,9 @@ package com.biblioteca.model;
 public class Utente {
 
     // variabili nome, cognome e idUtente
-    private static String nome;
-    private static String cognome;
-    private static int idUtente;
+    private  String nome;
+    private  String cognome;
+    private  int idUtente;
 
     // costruttore getter e setter
     public Utente (String nome, String cognome, int idUtente){

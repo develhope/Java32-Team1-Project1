@@ -27,14 +27,14 @@ public class Main {
         Biblioteca biblioteca = new Biblioteca();
 
         // Aggiunta libri
-        biblioteca.aggiungi(new Libro("Quello che so di te", "Nadia Terranova", 2025, 9788823521234L));
+        biblioteca.aggiungi(new Libro("Quello che so di te", "Nadia Terranova", 2025, 9788823521234L ));
         biblioteca.aggiungi(new Libro("Fratellino", "Ibrahima Balde e Amets", 2025, 9788807895678L));
         biblioteca.aggiungi(new Libro("Macroeconomia", "N. Gregory Manki", 2016, 9788880085096L));
         biblioteca.aggiungi(new Libro("Il nome della rosa", "Umberto Eco", 1980, 9788845240000L));
         biblioteca.aggiungi(new Libro("Un mondo nuovo", "Liz Braswell", 2015, 9781788107686L));
 
         boolean uscita = false;
-        boolean haFattoPrestito = false;
+        boolean prestitoEseguito = false;
         Utente utenteCorrente = null;
         Libro libroInPrestito = null;
 
@@ -52,36 +52,48 @@ public class Main {
                 case 1 -> biblioteca.elencoLibri();
 
                 case 2 -> {
-                    System.out.print("Inserisci nome: ");
+                    System.out.println("Prima di effettuare l'operazione, inserisci i dati richiesti.");
+
+
+                    System.out.print("Inserisci il nome: ");
                     String nome = sc.nextLine();
-                    System.out.print("Inserisci cognome: ");
+
+                    System.out.print("Inserisci il cognome: ");
                     String cognome = sc.nextLine();
 
-                    utenteCorrente = new Utente(nome, cognome, 1);
-                    utenteCorrente.stampaDettagliUtente();
+                    Utente utente1 = new Utente(nome, cognome, 580);
+                    System.out.println("Benvenuto");
+                    utente1.stampaDettagliUtente();
 
-                    biblioteca.elencoLibri();
-                    System.out.print("Inserisci il titolo del libro da prendere in prestito: ");
-                    String titolo = sc.nextLine();
+                    Libro libro = null;
 
-                    libroInPrestito = biblioteca.cercaLibroPerTitolo(titolo);
+                    while (libro == null) {
+                        System.out.println("Inserisci il titolo del libro che vuoi prendere in prestito:");
+                        biblioteca.elencoLibri();
+                        String titoloLibro = sc.nextLine();
+                            try{
+                                libro = biblioteca.cercaLibroPerTitolo(titoloLibro);
+                            }catch (NullPointerException e) {
+                               // System.err.println("Errore: " + e.getMessage());
+                            }
 
-                    if (libroInPrestito != null) {
-                        Prestito prestito = new Prestito(libroInPrestito, utenteCorrente);
-                        try {
-                            biblioteca.aggiungiPrestito(prestito);
-                            haFattoPrestito = true;
-                        } catch (IllegalArgumentException e) {
-                            System.out.println("Errore: " + e.getMessage());
+
+                        if (libro == null) {
+                            System.err.println("Titolo non trovato. Riprova.");
                         }
-                    } else {
-                        System.out.println("Libro non trovato.");
+                    }
+
+                    Prestito prestito = new Prestito(libro, utente1);
+                    try {
+                        biblioteca.aggiungiPrestito(prestito);
+                    } catch (IllegalArgumentException e) {
+                        System.err.println("Errore: " + e.getMessage());
                     }
                 }
 
                 case 3 -> {
-                    if (!haFattoPrestito) {
-                        System.out.println("Errore: nessun prestito effettuato. Devi prima prendere in prestito un libro.");
+                    if (!prestitoEseguito) {
+                        System.err.println("Errore: nessun prestito effettuato. Devi prima prendere in prestito un libro.");
                         break;
                     }
                     System.out.print("Conferma nome: ");
@@ -90,14 +102,14 @@ public class Main {
                     String cognome = sc.nextLine();
 
                     if (!utenteCorrente.getNome().equalsIgnoreCase(nome) || !utenteCorrente.getCognome().equalsIgnoreCase(cognome)) {
-                        System.out.println("Utente non corrisponde al prestito registrato.");
+                        System.err.println("Utente non corrisponde al prestito registrato.");
                         break;
                     }
 
                     Prestito prestito = new Prestito(libroInPrestito, utenteCorrente);
                     try {
                         biblioteca.rimuoviPrestito(prestito);
-                        haFattoPrestito = false;
+                        prestitoEseguito = false;
                         libroInPrestito = null;
                     } catch (IllegalArgumentException e) {
                         System.out.println("Errore: " + e.getMessage());
@@ -109,7 +121,7 @@ public class Main {
                     System.out.println("Grazie per aver usato la biblioteca.");
                 }
 
-                default -> System.out.println("Scelta non valida. Riprova.");
+                default -> System.err.println("Scelta non valida. Riprova.");
             }
         }
     }

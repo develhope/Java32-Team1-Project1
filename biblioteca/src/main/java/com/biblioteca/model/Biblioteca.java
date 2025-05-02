@@ -21,12 +21,12 @@ public class Biblioteca {
      * Ha una capacità massima di 100 elementi.
      */
 
-    public Libro[] dati = new Libro[100];
+    private final Libro[] dati = new Libro[100];
 
     /**
      * Numero attuale di libri presenti nella biblioteca.
      */
-    public int size = 0;
+    private int size = 0;
 
     /**
      * Aggiunge un libro alla biblioteca, se c'è spazio disponibile.
@@ -98,6 +98,7 @@ public class Biblioteca {
             }
         }
         listaPrestiti.add(p);
+        p.getLibro().setDisponibilita(false);
         System.out.println("Prestito effettuato: " + p.getUtente().getNome() + " ha preso \"" + p.getLibro().getTitolo() + "\".");
     }
 
@@ -108,6 +109,7 @@ public class Biblioteca {
             }
         }
         listaPrestiti.remove(p);
+        p.getLibro().setDisponibilita(true);
         System.out.println("restuzione effettuato: " + p.getUtente().getNome() + " ha restituito \"" + p.getLibro().getTitolo() + "\".");
     }
 
