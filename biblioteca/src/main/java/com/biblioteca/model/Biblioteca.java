@@ -73,6 +73,17 @@ public class Biblioteca {
         return dati[index];
     }
 
+
+
+    public boolean isDisponibilita(Libro l) {
+        for (Prestito prestito : listaPrestiti) {
+            if (prestito.getLibro().equals(l)) {
+                return  false;
+
+            }
+        }
+        return true;
+    }
     /**
      * Visualizza l'elenco dei libri presenti nella biblioteca.
      * Se la biblioteca è vuota, stampa un messaggio di errore.
@@ -81,7 +92,7 @@ public class Biblioteca {
 
         // Stampa gli elementi
         for (int i = 0; i < size; i++) {
-            System.out.println(dati[i]);
+            System.out.println(dati[i] + "è disponibile "+isDisponibilita(dati[i]));
         }
 
         if (size == 0) {
@@ -92,26 +103,26 @@ public class Biblioteca {
     }
 
     public void aggiungiPrestito(Prestito p) {
-        for (int i = 0; i < listaPrestiti.size(); i++) {
-            if (listaPrestiti.get(i).getLibro().equals(p.getLibro())) {
+
+            if (! isDisponibilita(p.getLibro())) {
                 throw new IllegalArgumentException("Il libro \"" + p.getLibro().getTitolo() + "\" è già in prestito.");
             }
-        }
+
         listaPrestiti.add(p);
-        p.getLibro().setDisponibilita(false);
+
         System.out.println("Prestito effettuato: " + p.getUtente().getNome() + " ha preso \"" + p.getLibro().getTitolo() + "\".");
     }
 
     public void rimuoviPrestito(Prestito p) {
-        for (int i = 0; i < listaPrestiti.size(); i++) {
-            if (!(listaPrestiti.get(i).getLibro().equals(p.getLibro()))) {
-                throw new IllegalArgumentException("Il libro \"" + p.getLibro().getTitolo() + "\" non è in prestito impossibile da restituire.");
-            }
+        boolean rimosso= listaPrestiti.remove(p);
+        if (!rimosso) {
+            throw new IllegalArgumentException("Il libro \"" + p.getLibro().getTitolo() + "\" non è in prestito. Impossibile restituirlo.");
         }
-        listaPrestiti.remove(p);
-        p.getLibro().setDisponibilita(true);
-        System.out.println("restuzione effettuato: " + p.getUtente().getNome() + " ha restituito \"" + p.getLibro().getTitolo() + "\".");
+
+
+        System.out.println("Restituzione effettuata: " + p.getUtente().getNome() + " ha restituito \"" + p.getLibro().getTitolo() + "\".");
     }
+
 
     public Libro cercaLibroPerTitolo(String titolo) {
         for (Libro l : dati) {

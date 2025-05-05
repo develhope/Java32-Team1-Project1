@@ -23,6 +23,12 @@ public class Main {
      */
 
     public static void main(String[] args) {
+
+
+
+
+
+
         Scanner sc = new Scanner(System.in);
         Biblioteca biblioteca = new Biblioteca();
 
@@ -31,8 +37,18 @@ public class Main {
         biblioteca.aggiungi(new Libro("Fratellino", "Ibrahima Balde e Amets", 2025, 9788807895678L));
         biblioteca.aggiungi(new Libro("Macroeconomia", "N. Gregory Manki", 2016, 9788880085096L));
         biblioteca.aggiungi(new Libro("Il nome della rosa", "Umberto Eco", 1980, 9788845240000L));
-        biblioteca.aggiungi(new Libro("Un mondo nuovo", "Liz Braswell", 2015, 9781788107686L));
 
+        Libro libro1=new Libro("Il nome della rosa", "Umberto Eco", 1980, 9788845240000L);
+        Utente ut1= new Utente("fra","carp",897);
+        biblioteca.aggiungi(libro1);
+        Prestito p1=new Prestito(libro1,ut1);
+        biblioteca.aggiungiPrestito(p1);
+        System.out.println( biblioteca.listaPrestiti);
+
+        biblioteca.listaPrestiti.remove(p1);
+        System.out.println( biblioteca.listaPrestiti);
+        System.out.println(libro1+ "è disponibile"+biblioteca.isDisponibilita(libro1));
+        System.exit(0);
         boolean uscita = false;
         boolean prestitoEseguito = false;
         Utente utenteCorrente = null;
@@ -96,14 +112,14 @@ public class Main {
                         System.err.println("Errore: nessun prestito effettuato. Devi prima prendere in prestito un libro.");
                         break;
                     }
-                    System.out.print("Conferma nome: ");
+                    System.out.print("Prima di effettuare l'operazione, inserisci i dati richiesti "+"\n Conferma nome: ");
                     String nome = sc.nextLine();
-                    System.out.print("Conferma cognome: ");
+                    System.out.print("per proseguire con la restituzione "+"\n Conferma cognome: ");
                     String cognome = sc.nextLine();
 
                     if (!utenteCorrente.getNome().equalsIgnoreCase(nome) || !utenteCorrente.getCognome().equalsIgnoreCase(cognome)) {
                         System.err.println("Utente non corrisponde al prestito registrato.");
-                        break;
+                        break; // metti in biblioteca ??
                     }
 
                     Prestito prestito = new Prestito(libroInPrestito, utenteCorrente);

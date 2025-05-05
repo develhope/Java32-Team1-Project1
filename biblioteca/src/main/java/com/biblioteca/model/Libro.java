@@ -10,7 +10,7 @@ package com.biblioteca.model;
 // Classe che rappresenta un libro nella biblioteca
 public class Libro {
 
-    private boolean disponibilita=true;
+;
 
     /** Titolo del libro. */
     private String titolo;
@@ -54,13 +54,8 @@ public class Libro {
         this.ISBN = ISBN;
     }
 
-    public boolean isDisponibilita() {
-        return disponibilita;
-    }
 
-    public void setDisponibilita(boolean disponibilita) {
-        this.disponibilita = disponibilita;
-    }
+
 
     /**
      * Restituisce il titolo del libro.
@@ -147,9 +142,29 @@ public class Libro {
                 ", autore='" + autore + '\'' +
                 ", annoPubblicazione=" + annoPubblicazione +
                 ", ISBN=" + ISBN +'\'' +
-                "è disponibile "+ disponibilita+
+
 
                 '}';
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        Libro libro = (Libro) obj;  // CORRETTO: cast dell'oggetto
+
+        return this.ISBN == libro.ISBN;  // CORRETTO: confronto con ==
+    }
+
+
+    @Override
+
+    public int hashCode() {
+
+        return Long.hashCode(ISBN);
+
     }
 }
 

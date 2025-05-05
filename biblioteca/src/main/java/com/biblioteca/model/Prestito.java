@@ -41,4 +41,19 @@ public class Prestito {
                 ", libro=" + libro +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true; // stesso riferimento
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        Prestito other = (Prestito) obj;
+        return Objects.equals(libro, other.libro) &&
+                Objects.equals(utente, other.utente);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(libro, utente);
+    }
 }
