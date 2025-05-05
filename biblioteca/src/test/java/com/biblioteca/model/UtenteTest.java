@@ -1,109 +1,115 @@
 package com.biblioteca.model;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Classe di test per la classe {@link Utente}.
- * Questa classe contiene test unitari per verificare le funzionalità della classe Utente,
- * inclusi il costruttore, i metodi setter e getter, il metodo dettagliUtente e il comportamento
- * con valori limite e istanze indipendenti.
+ * Contiene test unitari per verificare il funzionamento della classe Utente,
+ * inclusi costruttore, metodi getter e setter, stampaDettagliUtente e toString.
  */
 public class UtenteTest {
 
+    private Utente utente;
+    private final String nome = "Mario";
+    private final String cognome = "Rossi";
+    private final int idUtente = 1001;
 
     /**
-     * Verifica il costruttore della classe Utente.
-     * Controlla che i valori di nome, cognome e ID utente corrispondano a quelli forniti.
+     * Configura l'ambiente di test prima di ogni test.
+     * Inizializza una nuova istanza di {@link Utente} con valori predefiniti.
      */
+    @BeforeEach
+    public void configura() {
+        utente = new Utente(nome, cognome, idUtente);
+    }
 
+    /**
+     * Testa il costruttore della classe {@link Utente}.
+     * Verifica che i valori forniti per nome, cognome e ID utente siano impostati correttamente.
+     */
     @Test
     public void testCostruttore() {
-        // Arrange & Act
-        Utente utente = new Utente("Mario", "Rossi", 1);
-
-        // Assert
-        assertEquals("Mario", utente.getNome(), "Il nome dovrebbe essere quello passato al costruttore");
-        assertEquals("Rossi", utente.getCognome(), "Il cognome dovrebbe essere quello passato al costruttore");
-        assertEquals(1, utente.getIdUtente(), "L'ID utente dovrebbe essere quello passato al costruttore");
+        assertEquals(nome, utente.getNome(), "Il nome dovrebbe corrispondere al valore fornito.");
+        assertEquals(cognome, utente.getCognome(), "Il cognome dovrebbe corrispondere al valore fornito.");
+        assertEquals(idUtente, utente.getIdUtente(), "L'ID utente dovrebbe corrispondere al valore fornito.");
     }
 
-
     /**
-     * Verifica i metodi setter e getter della classe Utente.
-     * Controlla che i valori impostati tramite i setter siano correttamente recuperati dai getter.
+     * Testa i metodi {@link Utente#setNome(String)} e {@link Utente#getNome()}.
+     * Verifica che il nome possa essere aggiornato e recuperato correttamente.
      */
     @Test
-    public void testSetterEGetter() {
-        // Arrange
-        Utente utente = new Utente("Mario", "Rossi", 1);
-
-        // Act
-        utente.setNome("Luigi");
-        utente.setCognome("Bianchi");
-        utente.setIdUtente(2);
-
-        // Assert
-        assertEquals("Luigi", utente.getNome(), "Il nome dovrebbe essere aggiornato dal setter");
-        assertEquals("Bianchi", utente.getCognome(), "Il cognome dovrebbe essere aggiornato dal setter");
-        assertEquals(2, utente.getIdUtente(), "L'ID utente dovrebbe essere aggiornato dal setter");
+    public void testSetAndGetNome() {
+        String nuovoNome = "Luigi";
+        utente.setNome(nuovoNome);
+        assertEquals(nuovoNome, utente.getNome(), "Il nome dovrebbe essere aggiornato al nuovo valore.");
     }
 
-
     /**
-     * Verifica il metodo dettagliUtente della classe Utente.
-     * Controlla che i valori dell'utente rimangano invariati dopo l'esecuzione del metodo
-     * (verifica manuale necessaria per l'output su console).
+     * Testa i metodi {@link Utente#setCognome(String)} e {@link Utente#getCognome()}.
+     * Verifica che il cognome possa essere aggiornato e recuperato correttamente.
      */
     @Test
-    public void testDettagliUtente() {
-        // Arrange
-        Utente utente = new Utente("Mario", "Rossi", 1);
-
-        // Act & Assert
-        // Non possiamo testare direttamente l'output di System.out, ma possiamo chiamare il metodo
-        utente.dettagliUtente(); // Verifica manuale: "Nome: Mario Cognome: Rossi ID Utente: 1"
-        assertEquals("Mario", utente.getNome(), "Il nome dovrebbe rimanere invariato dopo dettagliUtente");
+    public void testSetAndGetCognome() {
+        String nuovoCognome = "Verdi";
+        utente.setCognome(nuovoCognome);
+        assertEquals(nuovoCognome, utente.getCognome(), "Il cognome dovrebbe essere aggiornato al nuovo valore.");
     }
 
-
     /**
-     * Verifica la creazione di un utente con valori limite.
-     * Controlla che il costruttore accetti stringhe vuote per nome e cognome
-     * e il valore massimo per l'ID utente.
+     * Testa i metodi {@link Utente#setIdUtente(int)} e {@link Utente#getIdUtente()}.
+     * Verifica che l'ID utente possa essere aggiornato e recuperato correttamente.
      */
     @Test
-    public void testCreazioneConValoriLimite() {
-        // Arrange & Act
-        Utente utente = new Utente("", "", Integer.MAX_VALUE);
-
-        // Assert
-        assertEquals("", utente.getNome(), "Il nome può essere una stringa vuota");
-        assertEquals("", utente.getCognome(), "Il cognome può essere una stringa vuota");
-        assertEquals(Integer.MAX_VALUE, utente.getIdUtente(), "L'ID utente dovrebbe accettare il valore massimo di int");
+    public void testSetAndGetIdUtente() {
+        int nuovoId = 1002;
+        utente.setIdUtente(nuovoId);
+        assertEquals(nuovoId, utente.getIdUtente(), "L'ID utente dovrebbe essere aggiornato al nuovo valore.");
     }
 
+    /**
+     * Testa il metodo {@link Utente#stampaDettagliUtente()}.
+     * Verifica che i dettagli dell'utente siano stampati correttamente sulla console.
+     */
+    @Test
+    public void testStampaDettagliUtente() {
+        // Reindirizza System.out a un ByteArrayOutputStream per catturare l'output
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        System.setOut(new PrintStream(outContent));
+
+        // Esegue il metodo
+        utente.stampaDettagliUtente();
+
+        // Costruisce l'output atteso
+        String outputAtteso = "Nome: " + nome + System.lineSeparator() +
+                "Cognome: " + cognome + System.lineSeparator() +
+                "ID Utente: " + idUtente + System.lineSeparator();
+
+        // Verifica l'output
+        assertEquals(outputAtteso, outContent.toString(), "L'output di stampaDettagliUtente dovrebbe corrispondere al formato atteso.");
+
+        // Ripristina System.out
+        System.setOut(originalOut);
+    }
 
     /**
-     * Verifica l'indipendenza tra istanze diverse della classe Utente.
-     * Controlla che la modifica di un'istanza non influenzi un'altra.
+     * Testa il metodo {@link Utente#toString()}.
+     * Verifica che la rappresentazione testuale dell'oggetto Utente contenga le informazioni attese.
      */
-
     @Test
-    public void testIndipendenzaIstanze() {
-        // Arrange
-        Utente utente1 = new Utente("Mario", "Rossi", 1);
-        Utente utente2 = new Utente("Luigi", "Bianchi", 2);
+    public void testToString() {
+        // 1. Crea un oggetto Utente
+        Utente utente = new Utente("Mario", "Rossi", 100);
 
-        // Act
-        utente1.setNome("Giovanni");
+        // 2. Costruisci la stringa attesa
+        String atteso = "Utente{nome='Mario', cognome='Rossi', idUtente=100}";
 
-        // Assert
-        assertEquals("Giovanni", utente1.getNome(), "Il nome di utente1 dovrebbe essere aggiornato");
-        assertEquals("Luigi", utente2.getNome(), "Il nome di utente2 dovrebbe rimanere invariato");
-        assertEquals("Rossi", utente1.getCognome(), "Il cognome di utente1 dovrebbe rimanere invariato");
-        assertEquals("Bianchi", utente2.getCognome(), "Il cognome di utente2 dovrebbe rimanere invariato");
+        // 3. Confronta
+        assertEquals(atteso, utente.toString(), "toString dovrebbe restituire la corretta rappresentazione testuale.");
     }
 }

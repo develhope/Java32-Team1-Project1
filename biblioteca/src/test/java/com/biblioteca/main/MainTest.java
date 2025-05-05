@@ -1,118 +1,124 @@
 package com.biblioteca.main;
 
-import com.biblioteca.model.Biblioteca;
-import com.biblioteca.model.Libro;
-import com.biblioteca.model.Utente;
-import com.biblioteca.model.Prestito;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+import java.io.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
-/**
- * Classe di test per il metodo principale della classe {@link Main}.
- * Questa classe contiene test unitari per verificare il comportamento del flusso principale del programma,
- * inclusa l'aggiunta di libri, l'elenco dei libri, la gestione dei prestiti e la restituzione dei libri,
- * catturando l'output della console per validarne i contenuti.
- */
 public class MainTest {
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
+    private final PrintStream originalErr = System.err;
+    private final InputStream originalIn = System.in;
 
-
-     /**
-     * Configura l'ambiente di test prima di ogni test.
-     * Reimposta lo stato della biblioteca e reindirizza l'output di System.out
-     * per catturare i messaggi stampati durante i test.
-     */
     @BeforeEach
     public void setUp() {
-        // Resetta lo stato della biblioteca
-        Biblioteca.size = 0;
-        for (int i = 0; i < Biblioteca.dati.length; i++) {
-            Biblioteca.dati[i] = null;
-        }
-        // Reindirizza System.out per catturare l'output
         System.setOut(new PrintStream(outContent));
+        System.setErr(new PrintStream(errContent));
     }
 
-
-     /**
-     * Verifica l'esecuzione del flusso principale del programma.
-     * Controlla l'aggiunta di libri, l'elenco dei libri, l'esecuzione di un prestito,
-     * la restituzione di un libro e l'output generato sulla console.
-     */
-    @Test
-    public void testMainExecution() {
-        // Arrange: Simula l'esecuzione del main
-        Libro libro1 = new Libro("Quello che so di te", "Nadia Terranova", 2025, 9788823521234L);
-        Libro libro2 = new Libro("Fratellino", "di Ibrahima Balde e Amets", 2025, 9788807895678L);
-        Libro libro3 = new Libro("Macroeconomia", "N. Gregory Manki", 2016, 9788880085096L);
-        Libro libro4 = new Libro("Il nome della rosa", " Umberto Eco", 1980, 9788845240000L);
-        Libro libro5 = new Libro("Un mondo nuovo", "Liz Braswell", 2015, 9781788107686L);
-
-        Utente utente1 = new Utente("Mario", "Rossi", 580);
-
-
-        // Act: Esegui le operazioni del main
-        Biblioteca.aggiungi(libro1);
-        Biblioteca.aggiungi(libro2);
-        Biblioteca.aggiungi(libro3);
-        Biblioteca.aggiungi(libro4);
-        Biblioteca.aggiungi(libro5);
-
-        Biblioteca.elencoLibri();
-        Utente.dettagliUtente();
-        Prestito.eseguiPrestito(libro1, utente1);
-        Prestito.restituisciLibro(libro1, utente1);
-
-        // Assert: Verifica lo stato della biblioteca e l'output
-        assertEquals(5, new Biblioteca().dimensione(), "La biblioteca dovrebbe contenere 5 libri dopo tutte le operazioni");
-
-        String output = outContent.toString();
-        // Verifica che l'output contenga le parti attese
-        assertTrue(output.contains("Quello chQe so di te"), "L'output dovrebbe elencare il primo libro");
-        assertTrue(output.contains("Fratellino"), "L'output dovrebbe elencare il secondo libro");
-        assertTrue(output.contains("Macroegitconomia"), "L'output dovrebbe elencare il terzo libro");
-        assertTrue(output.contains("Il nome della rosa"), "L'output dovrebbe elencare il quarto libro");
-        assertTrue(output.contains("Un mondo nuovo"), "L'output dovrebbe elencare il quinto libro");
-        assertTrue(output.contains("Nome: Mario Cognome: Rossi ID Utente: 580"), "L'output dovrebbe includere i dettagli dell'utente");
-        assertTrue(output.contains("Quello che so di te è stato preso in prestito da Mario"), "L'output dovrebbe confermare il prestito");
-        assertTrue(output.contains("Mario ha restituito Quello che so di te"), "L'output dovrebbe confermare la restituzione");
-    }
-
-
-    /**
-     * Verifica il comportamento del programma con una biblioteca inizialmente vuota.
-     * Controlla che l'elenco dei libri restituisca un messaggio appropriato
-     * e che la dimensione della biblioteca sia zero.
-     */
-    @Test
-    public void testMainConBibliotecaVuotaIniziale() {
-        // Arrange: Esegui solo elencoLibri su biblioteca vuota
-        Biblioteca.elencoLibri();
-
-        // Assert
-        String output = outContent.toString();
-        assertTrue(output.contains("Non ci sono libri disponibili"), "L'output dovrebbe indicare che la biblioteca è vuota");
-        assertEquals(0, new Biblioteca().dimensione(), "La dimensione dovrebbe essere 0");
-    }
-
-
-    /**
-     * Ripristina l'ambiente di test dopo ogni test.
-     * Reimposta System.out al suo stato originale per evitare interferenze
-     * con altri test o output successivi.
-     */
     @AfterEach
     public void tearDown() {
-        // Ripristina System.out
         System.setOut(originalOut);
+        System.setErr(originalErr);
+        System.setIn(originalIn);
+    }
+
+    @Test
+    public void testAvvioEElencoLibri() {
+        String input = "1\n0\n"; // Visualizza libri e poi esce
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        Main.main(new String[]{});
+
+        String output = outContent.toString();
+
+        assertTrue(output.contains("Quello che so di te"));
+        assertTrue(output.contains("Fratellino"));
+        assertTrue(output.contains("Macroeconomia"));
+        assertTrue(output.contains("Il nome della rosa"));
+    }
+
+    @Test
+    public void testPrestitoLibroValido() {
+        String input = "2\nMario\nRossi\nIl nome della rosa\n0\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        Main.main(new String[]{});
+
+        String output = outContent.toString();
+        assertTrue(output.contains("Prestito effettuato: Mario Rossi ha preso \"Il nome della rosa\""));
+    }
+
+    @Test
+    public void testPrestitoLibroNonEsistentePoiValido() {
+        String input = "2\nMario\nRossi\nLibro Inesistente\nIl nome della rosa\n0\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        Main.main(new String[]{});
+
+        String errOutput = errContent.toString();
+        String output = outContent.toString();
+
+        assertTrue(errOutput.contains("Titolo non trovato. Riprova."));
+        assertTrue(output.contains("Prestito effettuato: Mario Rossi ha preso \"Il nome della rosa\""));
+    }
+
+    @Test
+    public void testRestituzioneLibro() {
+        String input = "2\nMario\nRossi\nIl nome della rosa\n3\nMario\nRossi\n0\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        Main.main(new String[]{});
+
+        String output = outContent.toString();
+        assertTrue(output.contains("Restituzione effettuata: Mario Rossi ha restituito \"Il nome della rosa\""));
+    }
+
+    @Test
+    public void testRestituzioneConUtenteErrato() {
+        String input = "2\nMario\nRossi\nIl nome della rosa\n3\nLuigi\nVerdi\n0\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        Main.main(new String[]{});
+
+        String errOutput = errContent.toString();
+        assertTrue(errOutput.contains("Utente non corrisponde al prestito registrato."));
+    }
+
+    @Test
+    public void testRestituzioneSenzaPrestito() {
+        String input = "3\n0\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        Main.main(new String[]{});
+
+        String errOutput = errContent.toString();
+        assertTrue(errOutput.contains("Errore: nessun prestito effettuato. Devi prima prendere in prestito un libro."));
+    }
+
+    @Test
+    public void testSceltaNonValida() {
+        String input = "99\n0\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        Main.main(new String[]{});
+
+        String errOutput = errContent.toString();
+        assertTrue(errOutput.contains("Scelta non valida. Riprova."));
+    }
+
+    @Test
+    public void testEsci() {
+        String input = "0\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        Main.main(new String[]{});
+
+        String output = outContent.toString();
+        assertTrue(output.contains("Grazie per aver usato la biblioteca."));
     }
 }

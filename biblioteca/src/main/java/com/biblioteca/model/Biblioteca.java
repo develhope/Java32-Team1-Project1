@@ -125,13 +125,15 @@ public class Biblioteca {
 
 
     public Libro cercaLibroPerTitolo(String titolo) {
-        for (Libro l : dati) {
-            if (l.getTitolo().equalsIgnoreCase(titolo)) {
+        for (int i = 0; i < size; i++) {
+            Libro l = dati[i];
+            if (l != null && l.getTitolo().equalsIgnoreCase(titolo)) {
                 return l;
             }
         }
         return null;
     }
+
 }
 
 

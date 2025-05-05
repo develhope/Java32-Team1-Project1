@@ -45,4 +45,13 @@ public class Utente {
         System.out.println("Cognome: " + cognome);
         System.out.println("ID Utente: " + idUtente);
     }
+
+    @Override
+    public String toString() {
+        return "Utente{" +
+                "nome='" + nome + '\'' +
+                ", cognome='" + cognome + '\'' +
+                ", idUtente=" + idUtente +
+                '}';
+    }
 }

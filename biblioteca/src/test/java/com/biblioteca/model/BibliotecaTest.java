@@ -2,152 +2,147 @@ package com.biblioteca.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-
 /**
- * Classe di test per la classe {@link Biblioteca}.
- * Questa classe contiene test unitari per verificare le funzionalità della classe Biblioteca,
- * inclusi l'aggiunta, la rimozione, il recupero e l'elenco dei libri.
+ * Test class for the {@link Biblioteca} class.
+ * This class contains unit tests to verify the functionality of the Biblioteca class,
+ * including adding, removing, retrieving books, managing loans, and searching for books by title.
  */
 public class BibliotecaTest {
 
+    private Biblioteca biblioteca;
+    private Libro libro1;
+    private Libro libro2;
+    private Utente utente;
+    private Prestito prestito;
+
     /**
-     * Configura l'ambiente di test prima di ogni test.
-     * Reimposta la dimensione della biblioteca a 0 e svuota l'array dei dati.
+     * Sets up the test environment before each test.
+     * Initializes a new {@link Biblioteca}, two {@link Libro} instances, an {@link Utente}, and a {@link Prestito}.
      */
     @BeforeEach
     public void setUp() {
-        // Resetta lo stato della biblioteca prima di ogni test
-        Biblioteca.size = 0;
-        for (int i = 0; i < Biblioteca.dati.length; i++) {
-            Biblioteca.dati[i] = null;
-        }
+        biblioteca = new Biblioteca();
+        libro1 = new Libro("Il Signore degli Anelli", "J.R.R. Tolkien" , 1984 , 234657891027485L );
+        libro2 = new Libro("1984", "George Orwell", 1984, 37895007386964L);
+        utente = new Utente("Mario", "Rossi", 238);
+        prestito = new Prestito(libro1, utente);
     }
 
-    
-     /**
-     * Verifica l'aggiunta di un singolo libro alla biblioteca.
-     * Controlla che la dimensione aumenti di 1 e che il libro aggiunto possa essere recuperato correttamente.
+    /**
+     * Tests the {@link Biblioteca#aggiungi(Libro)} method.
+     * Verifies that a book can be added to the library and that the size increases accordingly.
      */
     @Test
     public void testAggiungiLibro() {
-        // Arrange
-        Libro libro = new Libro("Il Nome della Rosa", "Umberto Eco", 1980, 9788804665298L);
-
-        // Act
-        Biblioteca.aggiungi(libro);
-
-        // Assert
-        assertEquals(1, new Biblioteca().dimensione(), "La dimensione dovrebbe essere 1 dopo aver aggiunto un libro");
-        assertEquals(libro, new Biblioteca().get(0), "Il libro recuperato dovrebbe essere lo stesso aggiunto");
+        biblioteca.aggiungi(libro1);
+        assertEquals(1, biblioteca.dimensione(), "The library size should be 1 after adding a book.");
+        assertEquals(libro1, biblioteca.get(0), "The added book should be retrievable at index 0.");
     }
-
-    
-     /**
-     * Verifica il comportamento quando si tenta di aggiungere un libro oltre la capacità della biblioteca (100).
-     * Controlla che la dimensione non aumenti oltre la capacità massima.
-     */
-    @Test
-    public void testAggiungiLibroOltreCapacita() {
-        // Arrange: Riempi l'array oltre la capacità (100)
-        for (int i = 0; i < 100; i++) {
-            Biblioteca.aggiungi(new Libro("Titolo" + i, "Autore", 2023, 1234567890000L + i));
-        }
-        int dimensioneIniziale = new Biblioteca().dimensione();
-        Libro libroExtra = new Libro("Extra", "Autore", 2023, 9999999999999L);
-
-        // Act
-        Biblioteca.aggiungi(libroExtra);
-
-        // Assert
-        assertEquals(dimensioneIniziale, new Biblioteca().dimensione(), "La dimensione non dovrebbe aumentare oltre 100");
-    }
-
 
     /**
-     * Verifica la rimozione di un libro dalla biblioteca.
-     * Controlla che la dimensione diminuisca di 1 e che il libro rimanente sia corretto.
+     * Tests the {@link Biblioteca#rimuovi(int)} method.
+     * Verifies that a book can be removed from the library and that the size decreases accordingly.
      */
     @Test
     public void testRimuoviLibro() {
-        // Arrange
-        Libro libro1 = new Libro("1984", "George Orwell", 1949, 9780451524935L);
-        Libro libro2 = new Libro("Il Nome della Rosa", "Umberto Eco", 1980, 9788804665298L);
-        Biblioteca.aggiungi(libro1);
-        Biblioteca.aggiungi(libro2);
-
-        // Act
-        Biblioteca.rimuovi(0);
-
-        // Assert
-        assertEquals(1, new Biblioteca().dimensione(), "La dimensione dovrebbe essere 1 dopo la rimozione");
-        assertEquals(libro2, new Biblioteca().get(0), "Il libro rimanente dovrebbe essere il secondo aggiunto");
+        biblioteca.aggiungi(libro1);
+        biblioteca.aggiungi(libro2);
+        biblioteca.rimuovi(0);
+        assertEquals(1, biblioteca.dimensione(), "The library size should be 1 after removing a book.");
+        assertEquals(libro2, biblioteca.get(0), "The remaining book should be the second one added.");
     }
-
-
-     /**
-     * Verifica l'elenco dei libri quando la biblioteca è vuota.
-     * Controlla che la dimensione sia 0 (verifica manuale necessaria per l'output su console).
-     */
-    @Test
-    public void testRimuoviDaBibliotecaVuota() {
-        // Act
-        Biblioteca.rimuovi(0);
-
-        // Assert
-        assertEquals(0, new Biblioteca().dimensione(), "La dimensione dovrebbe rimanere 0 se la biblioteca è vuota");
-    }
-
 
     /**
-     * Verifica il recupero di un libro dalla biblioteca.
-     * Controlla che il libro recuperato corrisponda a quello aggiunto.
+     * Tests the {@link Biblioteca#dimensione()} method.
+     * Verifies that the size of the library is correctly reported.
+     */
+    @Test
+    public void testDimensione() {
+        assertEquals(0, biblioteca.dimensione(), "The library should be empty initially.");
+        biblioteca.aggiungi(libro1);
+        assertEquals(1, biblioteca.dimensione(), "The library size should be 1 after adding a book.");
+    }
+
+    /**
+     * Tests the {@link Biblioteca#get(int)} method.
+     * Verifies that a book can be retrieved by its index.
      */
     @Test
     public void testGetLibro() {
-        // Arrange
-        Libro libro = new Libro("1984", "George Orwell", 1949, 9780451524935L);
-        Biblioteca.aggiungi(libro);
+        biblioteca.aggiungi(libro1);
+        assertEquals(libro1, biblioteca.get(0), "The book at index 0 should be the one added.");
+    }
 
-        // Act
-        Libro recuperato = new Biblioteca().get(0);
+    /**
+     * Tests the {@link Biblioteca#isDisponibilita(Libro)} method.
+     * Verifies that a book is marked as available when not on loan and unavailable when on loan.
+     */
+    @Test
+    public void testIsDisponibilita() {
+        assertTrue(biblioteca.isDisponibilita(libro1), "The book should be available initially.");
+        biblioteca.aggiungiPrestito(prestito);
+        assertFalse(biblioteca.isDisponibilita(libro1), "The book should be unavailable when on loan.");
+    }
 
-        // Assert
-        assertEquals(libro, recuperato, "Il libro recuperato dovrebbe essere uguale a quello aggiunto");
+    /**
+     * Tests the {@link Biblioteca#aggiungiPrestito(Prestito)} method.
+     * Verifies that a loan can be added and that attempting to loan an already loaned book throws an exception.
+     */
+    @Test
+    public void testAggiungiPrestito() {
+        biblioteca.aggiungiPrestito(prestito);
+        assertFalse(biblioteca.isDisponibilita(libro1), "The book should be unavailable after being loaned.");
+
+        Prestito altroPrestito = new Prestito(libro1, new Utente("Luigi", "Verdi", 665));
+        assertThrows(IllegalArgumentException.class, () -> biblioteca.aggiungiPrestito(altroPrestito),
+                "Adding a loan for an already loaned book should throw an exception.");
+    }
+    /**
+     * Tests the {@link Biblioteca#rimuoviPrestito(Prestito)} method.
+     * Verifies that a loan can be removed and that attempting to remove a non-existent loan throws an exception.
+     */
+    @Test
+    public void testRimuoviPrestito() {
+        biblioteca.aggiungiPrestito(prestito);
+        biblioteca.rimuoviPrestito(prestito);
+        assertTrue(biblioteca.isDisponibilita(libro1), "The book should be available after the loan is removed.");
+
+        assertThrows(IllegalArgumentException.class, () -> biblioteca.rimuoviPrestito(prestito),
+                "Removing a non-existent loan should throw an exception.");
+    }
+
+    /**
+     * Tests the {@link Biblioteca#cercaLibroPerTitolo(String)} method.
+     * Verifies that a book can be found by its title and that a non-existent title returns null.
+     */
+
+
+
+
+    @Test
+    public void testCercaLibroPerTitolo() {
+        Libro libro1 = new Libro("Il Signore degli Anelli", "Tolkien", 1954 ,1234567890683087L);
+        biblioteca.aggiungi(libro1);
+
+        assertEquals(libro1, biblioteca.cercaLibroPerTitolo("Il Signore degli Anelli"));
+        assertNull(biblioteca.cercaLibroPerTitolo("Un titolo che non esiste"));
     }
 
 
     /**
-     * Verifica l'elenco dei libri quando la biblioteca è vuota.
-     * Controlla che la dimensione sia 0 (verifica manuale necessaria per l'output su console).
+     * Tests the {@link Biblioteca#elencoLibri()} method.
+     * Verifies that the list of books is printed correctly (tested indirectly via size and availability).
      */
-
     @Test
-    public void testElencoLibriVuoto() {
-        // Act & Assert
-        // Non possiamo testare direttamente l'output di System.err, ma possiamo verificare che size sia 0
-        assertEquals(0, new Biblioteca().dimensione(), "La biblioteca dovrebbe essere vuota");
-        Biblioteca.elencoLibri(); // Verifica manualmente che stampi "Non ci sono libri disponibili"
-    }
-
-
-    /**
-     * Verifica l'elenco dei libri quando la biblioteca è vuota.
-     * Controlla che la dimensione sia 0 (verifica manuale necessaria per l'output su console).
-     */
-
-    @Test
-    public void testElencoLibriConElementi() {
-        // Arrange
-        Libro libro1 = new Libro("1984", "George Orwell", 1949, 9780451524935L);
-        Libro libro2 = new Libro("Il Nome della Rosa", "Umberto Eco", 1980, 9788804665298L);
-        Biblioteca.aggiungi(libro1);
-        Biblioteca.aggiungi(libro2);
-
-        // Act & Assert
-        assertEquals(2, new Biblioteca().dimensione(), "La dimensione dovrebbe essere 2");
-        Biblioteca.elencoLibri(); // Verifica manualmente che stampi i due libri
+    public void testElencoLibri() {
+        biblioteca.aggiungi(libro1);
+        biblioteca.aggiungi(libro2);
+        biblioteca.aggiungiPrestito(prestito);
+        // Since elencoLibri prints to console, we verify indirectly by checking size and availability
+        assertEquals(2, biblioteca.dimensione(), "The library should contain 2 books.");
+        assertFalse(biblioteca.isDisponibilita(libro1), "The first book should be unavailable.");
+        assertTrue(biblioteca.isDisponibilita(libro2), "The second book should be available.");
     }
 }
