@@ -40,26 +40,18 @@ public class Main {
 
         Libro libro1=new Libro("Il nome della rosa", "Umberto Eco", 1980, 9788845240000L);
         Utente ut1= new Utente("fra","carp",897);
-        biblioteca.aggiungi(libro1);
-        Prestito p1=new Prestito(libro1,ut1);
-        biblioteca.aggiungiPrestito(p1);
-        System.out.println( biblioteca.listaPrestiti);
 
-        biblioteca.listaPrestiti.remove(p1);
-        System.out.println( biblioteca.listaPrestiti);
-        System.out.println(libro1+ "è disponibile"+biblioteca.isDisponibilita(libro1));
-        System.exit(0);
         boolean uscita = false;
-        boolean prestitoEseguito = false;
-        Utente utenteCorrente = null;
-        Libro libroInPrestito = null;
+        Utente  utenteCorrente= new Utente("amnistratore","N/D",000);
+
 
         while (!uscita) {
-            System.out.println("\nScegli un'operazione:");
-            System.out.println("1 - Vedi elenco libri");
-            System.out.println("2 - Fai un prestito");
-            System.out.println("3 - Restituisci un libro");
-            System.out.println("0 - Esci");
+            System.out.println("\nScegli un'operazione:"+"\n"+
+                                "1 - Vedi elenco libri"+"\n"+
+                                "2 - Fai un prestito"+"\n"+
+                                "3 - Restituisci un libro"+"\n"+
+                                "4 visualizzi i prestiti effetuati"+"\n"+
+                                    "0 - Esci");
 
             int scelta = sc.nextInt();
             sc.nextLine(); // pulizia buffer
@@ -68,18 +60,9 @@ public class Main {
                 case 1 -> biblioteca.elencoLibri();
 
                 case 2 -> {
-                    System.out.println("Prima di effettuare l'operazione, inserisci i dati richiesti.");
 
-
-                    System.out.print("Inserisci il nome: ");
-                    String nome = sc.nextLine();
-
-                    System.out.print("Inserisci il cognome: ");
-                    String cognome = sc.nextLine();
-
-                    Utente utente1 = new Utente(nome, cognome, 580);
                     System.out.println("Benvenuto");
-                    utente1.stampaDettagliUtente();
+                    utenteCorrente.stampaDettagliUtente();
 
                     Libro libro = null;
 
@@ -99,38 +82,80 @@ public class Main {
                         }
                     }
 
-                    Prestito prestito = new Prestito(libro, utente1);
+                    Prestito prestito = new Prestito(libro, utenteCorrente);
                     try {
                         biblioteca.aggiungiPrestito(prestito);
                     } catch (IllegalArgumentException e) {
                         System.err.println("Errore: " + e.getMessage());
                     }
+                    System.out.println("Prestito effettuato: " + prestito.getUtente().getNome() + " ha preso \"" + prestito.getLibro().getTitolo() + "\".");
                 }
 
                 case 3 -> {
-                    if (!prestitoEseguito) {
+                    if (biblioteca.listaPrestiti.isEmpty()) {
                         System.err.println("Errore: nessun prestito effettuato. Devi prima prendere in prestito un libro.");
                         break;
                     }
                     System.out.print("Prima di effettuare l'operazione, inserisci i dati richiesti "+"\n Conferma nome: ");
                     String nome = sc.nextLine();
-                    System.out.print("per proseguire con la restituzione "+"\n Conferma cognome: ");
+                    System.out.print("per proseguire inserisca "+"\n  cognome: ");
                     String cognome = sc.nextLine();
-
-                    if (!utenteCorrente.getNome().equalsIgnoreCase(nome) || !utenteCorrente.getCognome().equalsIgnoreCase(cognome)) {
-                        System.err.println("Utente non corrisponde al prestito registrato.");
-                        break; // metti in biblioteca ??
+                    System.out.print("per proseguire inserisca "+"\n  id: ");
+                    int id = sc.nextInt();
+                    Utente utenteDaVerificare= new Utente(nome, cognome, id);
+                    try {
+                        Prestito prestito = biblioteca.listaPrestitiPerUtenti(utenteDaVerificare);
+                        System.out.println("Ecco i prestiti effettuati:\n" + prestito);
+                    } catch (IllegalArgumentException e) {
+                        System.err.println("Errore: " + e.getMessage());
                     }
 
-                    Prestito prestito = new Prestito(libroInPrestito, utenteCorrente);
+
+                    Libro libro = null;
+
+                    while (libro == null) {
+                        System.out.println("dei seguenti libri inserire il titolo del quale  voi restituire");
+
+                        String titoloLibro = sc.nextLine();
+                        try{
+                            libro = biblioteca.cercaLibroPerTitolo(titoloLibro);
+                        }catch (NullPointerException e) {
+                            // System.err.println("Errore: " + e.getMessage());
+                        }
+
+
+                        if (libro == null) {
+                            System.err.println("Titolo non trovato. Riprova.");
+                        }
+                    }
+
+                    Prestito prestito = new Prestito(libro, utenteDaVerificare);
+
                     try {
                         biblioteca.rimuoviPrestito(prestito);
-                        prestitoEseguito = false;
-                        libroInPrestito = null;
+
+                        System.out.println("Restituzione effettuata");
                     } catch (IllegalArgumentException e) {
                         System.out.println("Errore: " + e.getMessage());
                     }
                 }
+                case 4-> {
+                    System.out.print("Prima di effettuare l'operazione, inserisci i dati richiesti "+"\n Conferma nome: ");
+                    String nome = sc.nextLine();
+                    System.out.print("per proseguire inserisca "+"\n  cognome: ");
+                    String cognome = sc.nextLine();
+                    System.out.print("per proseguire inserisca "+"\n  id: ");
+                    int id = sc.nextInt();
+                    Utente utenteDaVerificare= new Utente(nome, cognome, id);
+                    try {
+                        Prestito prestito = biblioteca.listaPrestitiPerUtenti(utenteDaVerificare);
+                        System.out.println("Ecco i prestiti effettuati:\n" + prestito);
+                    } catch (IllegalArgumentException e) {
+                        System.err.println("Errore: " + e.getMessage());
+                    }
+
+                }
+
 
                 case 0 -> {
                     uscita = true;

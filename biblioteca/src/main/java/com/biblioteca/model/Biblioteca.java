@@ -1,6 +1,7 @@
 package com.biblioteca.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -110,19 +111,43 @@ public class Biblioteca {
 
         listaPrestiti.add(p);
 
-        System.out.println("Prestito effettuato: " + p.getUtente().getNome() + " ha preso \"" + p.getLibro().getTitolo() + "\".");
     }
 
     public void rimuoviPrestito(Prestito p) {
-        boolean rimosso= listaPrestiti.remove(p);
-        if (!rimosso) {
-            throw new IllegalArgumentException("Il libro \"" + p.getLibro().getTitolo() + "\" non è in prestito. Impossibile restituirlo.");
+        boolean trovato = false;
+
+        Iterator<Prestito> iterator = listaPrestiti.iterator();
+        while (iterator.hasNext()) {
+            Prestito prestito = iterator.next();
+            if (prestito.equals(p)) {
+                iterator.remove();  // Rimozione sicura durante l'iterazione
+                trovato = true;
+                break;
+            }
         }
 
-
-        System.out.println("Restituzione effettuata: " + p.getUtente().getNome() + " ha restituito \"" + p.getLibro().getTitolo() + "\".");
+        if (!trovato) {
+            throw new IllegalArgumentException("Il libro \"" + p.getLibro().getTitolo() + "\" non è in prestito. Impossibile restituirlo.");
+        }
     }
 
+
+    public Prestito listaPrestitiPerUtenti(Utente utenteVerifica) {
+        boolean utenteTrovato = false;
+
+        for (Prestito prestito : listaPrestiti) {
+            if (prestito.getUtente().equals(utenteVerifica)) {
+                utenteTrovato = true;
+                return prestito;
+            }
+        }
+
+        if (!utenteTrovato) {
+            throw new IllegalArgumentException("non ha preso in prestito alcun libro, o dati inseriti non corretti.");
+        }
+
+        return null; // In teoria mai raggiunto, ma richiesto dalla firma del metodo
+    }
 
     public Libro cercaLibroPerTitolo(String titolo) {
         for (int i = 0; i < size; i++) {

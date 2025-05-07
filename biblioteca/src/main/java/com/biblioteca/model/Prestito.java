@@ -17,7 +17,7 @@ public class Prestito {
     public Prestito( Libro libro, Utente utente ) {
         this.utente = utente;
         this.libro = libro;
-            System.out.println("Prestito effettuato: " + utente.getNome() + " ha preso \"" + libro.getTitolo() + "\".");
+
 
     }
 
@@ -56,4 +56,5 @@ public class Prestito {
     public int hashCode() {
         return Objects.hash(libro, utente);
     }
+
 }
