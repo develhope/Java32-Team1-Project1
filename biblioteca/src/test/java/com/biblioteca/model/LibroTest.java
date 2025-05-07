@@ -1,91 +1,138 @@
 package com.biblioteca.model;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
-
 
 /**
  * Classe di test per la classe {@link Libro}.
- * Questa classe contiene test unitari per verificare le funzionalità della classe Libro,
- * inclusi il costruttore di default, il costruttore parametrizzato, i metodi setter/getter e il metodo toString.
+ * Contiene test unitari per verificare il funzionamento della classe Libro,
+ * inclusi costruttori, metodi getter e setter, toString, equals e hashCode.
  */
-
 public class LibroTest {
 
+    private Libro libro;
+    private final String titolo = "Il Signore degli Anelli";
+    private final String autore = "J.R.R. Tolkien";
+    private final int annoPubblicazione = 1954;
+    private final long isbn = 9788804688372L;
 
-   /**
-     * Verifica il costruttore di default della classe Libro.
-     * Controlla che i valori iniziali di titolo, autore, anno di pubblicazione e ISBN siano quelli previsti.
-     */  
-    @Test
-    public void testCostruttoreDefault() {
-        // Arrange & Act
-        Libro libro = new Libro();
-
-        // Assert
-        assertEquals("titolo", libro.getTitolo(), "Il titolo dovrebbe essere 'titolo' per il costruttore di default");
-        assertEquals("sconoscuto", libro.getAutore(), "L'autore dovrebbe essere 'sconoscuto' per il costruttore di default");
-        assertEquals(0, libro.getAnnoPubblicazione(), "L'anno di pubblicazione dovrebbe essere 0 per il costruttore di default");
-        assertEquals(0L, libro.getISBN(), "L'ISBN dovrebbe essere 0 per il costruttore di default");
+    /**
+     * Configura l'ambiente di test prima di ogni test.
+     * Inizializza una nuova istanza di {@link Libro} con valori predefiniti.
+     */
+    @BeforeEach
+    public void configura() {
+        libro = new Libro(titolo, autore, annoPubblicazione, isbn);
     }
 
+    /**
+     * Testa il costruttore di default della classe {@link Libro}.
+     * Verifica che i valori predefiniti per titolo, autore, anno di pubblicazione e ISBN siano impostati correttamente.
+     */
+    @Test
+    public void testCostruttoreDefault() {
+        Libro libroDefault = new Libro();
+        assertEquals("titolo", libroDefault.getTitolo(), "Il titolo predefinito dovrebbe essere 'titolo'.");
+        assertEquals("sconoscuto", libroDefault.getAutore(), "L'autore predefinito dovrebbe essere 'sconoscuto'.");
+        assertEquals(0, libroDefault.getAnnoPubblicazione(), "L'anno di pubblicazione predefinito dovrebbe essere 0000.");
+        assertEquals(0L, libroDefault.getISBN(), "L'ISBN predefinito dovrebbe essere 0000000000000000.");
+    }
 
-     /**
-     * Verifica il costruttore parametrizzato della classe Libro.
-     * Controlla che i valori di titolo, autore, anno di pubblicazione e ISBN corrispondano a quelli forniti.
+    /**
+     * Testa il costruttore parametrizzato della classe {@link Libro}.
+     * Verifica che i valori forniti per titolo, autore, anno di pubblicazione e ISBN siano impostati correttamente.
      */
     @Test
     public void testCostruttoreParametrizzato() {
-        // Arrange & Act
-        Libro libro = new Libro("1984", "George Orwell", 1949, 9780451524935L);
-
-        // Assert
-        assertEquals("1984", libro.getTitolo(), "Il titolo dovrebbe corrispondere al valore passato");
-        assertEquals("George Orwell", libro.getAutore(), "L'autore dovrebbe corrispondere al valore passato");
-        assertEquals(1949, libro.getAnnoPubblicazione(), "L'anno di pubblicazione dovrebbe corrispondere al valore passato");
-        assertEquals(9780451524935L, libro.getISBN(), "L'ISBN dovrebbe corrispondere al valore passato");
+        assertEquals(titolo, libro.getTitolo(), "Il titolo dovrebbe corrispondere al valore fornito.");
+        assertEquals(autore, libro.getAutore(), "L'autore dovrebbe corrispondere al valore fornito.");
+        assertEquals(annoPubblicazione, libro.getAnnoPubblicazione(), "L'anno di pubblicazione dovrebbe corrispondere al valore fornito.");
+        assertEquals(isbn, libro.getISBN(), "L'ISBN dovrebbe corrispondere al valore fornito.");
     }
-
-
-     /**
-     * Verifica i metodi setter e getter della classe Libro.
-     * Controlla che i valori impostati tramite i setter siano correttamente recuperati dai getter.
-     */
-    @Test
-    public void testSetterEGetter() {
-        // Arrange
-        Libro libro = new Libro();
-
-        // Act
-        libro.setTitolo("Il Nome della Rosa");
-        libro.setAutore("Umberto Eco");
-        libro.setAnnoPubblicazione(1980);
-        libro.setISBN(9788804665298L);
-
-
-        // Assert
-        assertEquals("Il Nome della Rosa", libro.getTitolo(), "Il titolo dovrebbe essere aggiornato dal setter");
-        assertEquals("Umberto Eco", libro.getAutore(), "L'autore dovrebbe essere aggiornato dal setter");
-        assertEquals(1980, libro.getAnnoPubblicazione(), "L'anno di pubblicazione dovrebbe essere aggiornato dal setter");
-        assertEquals(9788804665298L, libro.getISBN(), "L'ISBN dovrebbe essere aggiornato dal setter");
-    }
-
 
     /**
-     * Verifica il metodo toString della classe Libro.
-     * Controlla che la rappresentazione testuale dell'oggetto Libro sia formattata correttamente.
+     * Testa i metodi {@link Libro#setTitolo(String)} e {@link Libro#getTitolo()}.
+     * Verifica che il titolo possa essere aggiornato e recuperato correttamente.
+     */
+    @Test
+    public void testSetAndGetTitolo() {
+        String nuovoTitolo = "1984";
+        libro.setTitolo(nuovoTitolo);
+        assertEquals(nuovoTitolo, libro.getTitolo(), "Il titolo dovrebbe essere aggiornato al nuovo valore.");
+    }
+
+    /**
+     * Testa i metodi {@link Libro#setAutore(String)} e {@link Libro#getAutore()}.
+     * Verifica che l'autore possa essere aggiornato e recuperato correttamente.
+     */
+    @Test
+    public void testSetAndGetAutore() {
+        String nuovoAutore = "George Orwell";
+        libro.setAutore(nuovoAutore);
+        assertEquals(nuovoAutore, libro.getAutore(), "L'autore dovrebbe essere aggiornato al nuovo valore.");
+    }
+
+    /**
+     * Testa i metodi {@link Libro#setAnnoPubblicazione(int)} e {@link Libro#getAnnoPubblicazione()}.
+     * Verifica che l'anno di pubblicazione possa essere aggiornato e recuperato correttamente.
+     */
+    @Test
+    public void testSetAndGetAnnoPubblicazione() {
+        int nuovoAnno = 2020;
+        libro.setAnnoPubblicazione(nuovoAnno);
+        assertEquals(nuovoAnno, libro.getAnnoPubblicazione(), "L'anno di pubblicazione dovrebbe essere aggiornato al nuovo valore.");
+    }
+
+    /**
+     * Testa i metodi {@link Libro#setISBN(long)} e {@link Libro#getISBN()}.
+     * Verifica che l'ISBN possa essere aggiornato e recuperato correttamente.
+     */
+    @Test
+    public void testSetAndGetISBN() {
+        long nuovoISBN = 9780141036144L;
+        libro.setISBN(nuovoISBN);
+        assertEquals(nuovoISBN, libro.getISBN(), "L'ISBN dovrebbe essere aggiornato al nuovo valore.");
+    }
+
+    /**
+     * Testa il metodo {@link Libro#toString()}.
+     * Verifica che la rappresentazione testuale dell'oggetto Libro contenga le informazioni attese.
      */
     @Test
     public void testToString() {
-        // Arrange
-        Libro libro = new Libro("1984", "George Orwell", 1949, 9780451524935L);
+        String attesa = "Libro{titolo='" + titolo + "', autore='" + autore + "', annoPubblicazione=" + annoPubblicazione + ", ISBN=" + isbn + "'}";
+        assertEquals(attesa, libro.toString(), "toString dovrebbe restituire la corretta rappresentazione testuale.");
+    }
 
-        // Act
-        String risultato = libro.toString();
+    /**
+     * Testa il metodo {@link Libro#equals(Object)}.
+     * Verifica che due oggetti Libro con lo stesso ISBN siano considerati uguali,
+     * e che oggetti con ISBN diversi o di tipi diversi non siano uguali.
+     */
+    @Test
+    public void testEquals() {
+        Libro stessoLibro = new Libro("Altro Titolo", "Altro Autore", 2000, isbn);
+        Libro libroDiverso = new Libro("1984", "George Orwell", 1949, 9780141036144L);
 
-        // Assert
-        String atteso = "Libro{Titolo='1984', Autore='George Orwell', Anno di Pubblicazione=1949, ISBN='9780451524935'}";
-        assertEquals(atteso, risultato, "Il metodo toString dovrebbe restituire una stringa formattata correttamente");
+        assertTrue(libro.equals(stessoLibro), "I libri con lo stesso ISBN dovrebbero essere uguali.");
+        assertFalse(libro.equals(libroDiverso), "I libri con ISBN diversi non dovrebbero essere uguali.");
+        assertFalse(libro.equals(null), "Un libro non dovrebbe essere uguale a null.");
+        assertFalse(libro.equals(new Object()), "Un libro non dovrebbe essere uguale a un oggetto di tipo diverso.");
+        assertTrue(libro.equals(libro), "Un libro dovrebbe essere uguale a se stesso.");
+    }
+
+    /**
+     * Testa il metodo {@link Libro#hashCode()}.
+     * Verifica che due oggetti Libro con lo stesso ISBN abbiano lo stesso hash code,
+     * e che oggetti con ISBN diversi abbiano hash code diversi.
+     */
+    @Test
+    public void testHashCode() {
+        Libro stessoLibro = new Libro("Altro Titolo", "Altro Autore", 2000, isbn);
+        Libro libroDiverso = new Libro("1984", "George Orwell", 1949, 9780141036144L);
+
+        assertEquals(libro.hashCode(), stessoLibro.hashCode(), "I libri con lo stesso ISBN dovrebbero avere lo stesso hash code.");
+        assertNotEquals(libro.hashCode(), libroDiverso.hashCode(), "I libri con ISBN diversi dovrebbero avere hash code diversi.");
     }
 }

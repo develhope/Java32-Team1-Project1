@@ -10,6 +10,8 @@ package com.biblioteca.model;
 // Classe che rappresenta un libro nella biblioteca
 public class Libro {
 
+;
+
     /** Titolo del libro. */
     private String titolo;
     
@@ -32,6 +34,7 @@ public class Libro {
         autore= "sconoscuto";
         annoPubblicazione= 0000;
         ISBN=0000000000000000L;
+
     }
 
     /**
@@ -47,8 +50,12 @@ public class Libro {
         this.titolo = titolo;
         this.autore = autore;
         this.annoPubblicazione = annoPubblicazione;
+
         this.ISBN = ISBN;
     }
+
+
+
 
     /**
      * Restituisce il titolo del libro.
@@ -134,8 +141,30 @@ public class Libro {
                 "titolo='" + titolo + '\'' +
                 ", autore='" + autore + '\'' +
                 ", annoPubblicazione=" + annoPubblicazione +
-                ", ISBN=" + ISBN +
+                ", ISBN=" + ISBN +'\'' +
+
+
                 '}';
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        Libro libro = (Libro) obj;  // CORRETTO: cast dell'oggetto
+
+        return this.ISBN == libro.ISBN;  // CORRETTO: confronto con ==
+    }
+
+
+    @Override
+
+    public int hashCode() {
+
+        return Long.hashCode(ISBN);
+
     }
 }
 
