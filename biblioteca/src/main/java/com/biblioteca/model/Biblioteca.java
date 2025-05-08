@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 public class Biblioteca {
-
+  public List<Utente> listaUtenti= new ArrayList<>();
 
     public List<Prestito> listaPrestiti = new ArrayList<>();
 
@@ -130,24 +130,35 @@ public class Biblioteca {
             throw new IllegalArgumentException("Il libro \"" + p.getLibro().getTitolo() + "\" non è in prestito. Impossibile restituirlo.");
         }
     }
+    public  boolean esisteUtente (Utente utenteVerifica) {
 
 
-    public Prestito listaPrestitiPerUtenti(Utente utenteVerifica) {
-        boolean utenteTrovato = false;
+        for (Utente utente : listaUtenti) {
+            if (utente.equals(utenteVerifica)) {
+                return true ;
+
+            }
+        }
+        return  false;
+    }
+    public void  stampaListaPrestiti( List <Prestito> list){
+        for (Prestito p: list){
+            System.out.println(p);
+        }
+    }
+
+    public List<Prestito> listaPrestitiPerUtente(Utente utenteVerifica) {
+        List<Prestito> prestitiUtente = new ArrayList<>();
 
         for (Prestito prestito : listaPrestiti) {
             if (prestito.getUtente().equals(utenteVerifica)) {
-                utenteTrovato = true;
-                return prestito;
+                prestitiUtente.add(prestito);
+
             }
         }
-
-        if (!utenteTrovato) {
-            throw new IllegalArgumentException("non ha preso in prestito alcun libro, o dati inseriti non corretti.");
-        }
-
-        return null; // In teoria mai raggiunto, ma richiesto dalla firma del metodo
+        return  prestitiUtente;
     }
+
 
     public Libro cercaLibroPerTitolo(String titolo) {
         for (int i = 0; i < size; i++) {
