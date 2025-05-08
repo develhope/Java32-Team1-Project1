@@ -1,5 +1,7 @@
 package com.biblioteca.model;
 
+import java.util.Objects;
+
 public class Utente {
 
     // variabili nome, cognome e idUtente
@@ -53,5 +55,17 @@ public class Utente {
                 ", cognome='" + cognome + '\'' +
                 ", idUtente=" + idUtente +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Utente utente = (Utente) o;
+        return idUtente == utente.idUtente && Objects.equals(nome, utente.nome) && Objects.equals(cognome, utente.cognome);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome, cognome, idUtente);
     }
 }
