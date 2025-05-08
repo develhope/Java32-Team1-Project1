@@ -3,25 +3,21 @@ package com.biblioteca.model;
 /**
  * Classe che rappresenta un libro nella biblioteca.
  * Contiene informazioni come il titolo, l'autore, l'anno di pubblicazione e l'ISBN.
- *
-*/
-
-
-// Classe che rappresenta un libro nella biblioteca
+ */
 public class Libro {
 
-;
+    ;
 
     /** Titolo del libro. */
     private String titolo;
-    
+
     /** Autore del libro. */
     private String autore;
-    
+
     /** Anno di pubblicazione del libro. */
     private int annoPubblicazione;
-    
-     /** Numero ISBN del libro. */
+
+    /** Numero ISBN del libro. */
     private long ISBN;
 
     /**
@@ -30,11 +26,10 @@ public class Libro {
      * anno di pubblicazione 0000 e ISBN 0000000000000000.
      */
     public Libro() {
-        titolo= "titolo";
-        autore= "sconoscuto";
-        annoPubblicazione= 0000;
-        ISBN=0000000000000000L;
-
+        titolo = "titolo";
+        autore = "sconoscuto";
+        annoPubblicazione = 0000;
+        ISBN = 0000000000000000L;
     }
 
     /**
@@ -46,16 +41,12 @@ public class Libro {
      * @param annoPubblicazione L'anno di pubblicazione del libro.
      * @param ISBN              Il numero ISBN del libro.
      */
-    public Libro(String titolo, String autore, int annoPubblicazione, long  ISBN) {
+    public Libro(String titolo, String autore, int annoPubblicazione, long ISBN) {
         this.titolo = titolo;
         this.autore = autore;
         this.annoPubblicazione = annoPubblicazione;
-
         this.ISBN = ISBN;
     }
-
-
-
 
     /**
      * Restituisce il titolo del libro.
@@ -65,7 +56,7 @@ public class Libro {
     public String getTitolo() {
         return titolo;
     }
-    
+
     /**
      * Imposta il titolo del libro.
      *
@@ -74,8 +65,8 @@ public class Libro {
     public void setTitolo(String titolo) {
         this.titolo = titolo;
     }
-    
-     /**
+
+    /**
      * Restituisce l'autore del libro.
      *
      * @return L'autore del libro.
@@ -83,7 +74,7 @@ public class Libro {
     public String getAutore() {
         return autore;
     }
-    
+
     /**
      * Imposta l'autore del libro.
      *
@@ -141,13 +132,17 @@ public class Libro {
                 "titolo='" + titolo + '\'' +
                 ", autore='" + autore + '\'' +
                 ", annoPubblicazione=" + annoPubblicazione +
-                ", ISBN=" + ISBN +'\'' +
-
-
+                ", ISBN=" + ISBN + '\'' +
                 '}';
     }
 
-
+    /**
+     * Confronta questo libro con un altro oggetto per verificarne l'uguaglianza.
+     * Due libri sono considerati uguali se hanno lo stesso ISBN.
+     *
+     * @param obj L'oggetto con cui confrontare questo libro.
+     * @return true se i libri hanno lo stesso ISBN, false altrimenti.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -158,13 +153,13 @@ public class Libro {
         return this.ISBN == libro.ISBN;  // CORRETTO: confronto con ==
     }
 
-
+    /**
+     * Calcola il codice hash del libro basato sul suo ISBN.
+     *
+     * @return Il codice hash del libro.
+     */
     @Override
-
     public int hashCode() {
-
         return Long.hashCode(ISBN);
-
     }
 }
-

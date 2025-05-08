@@ -2,94 +2,123 @@ package com.biblioteca.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Classe di test per la classe {@link Prestito}.
- * Contiene test unitari per verificare il funzionamento della classe Prestito,
- * inclusi costruttore, metodi getter, toString, equals e hashCode.
+ * Test class for the {@link Prestito} class.
+ * This class contains unit tests to verify the functionality of the Prestito class,
+ * including constructor behavior, getter methods, and the overridden equals, hashCode, and toString methods.
  */
 public class PrestitoTest {
 
-    private Prestito prestito;
-    private Libro libro;
-    private Utente utente;
+    private Libro libro1;
+    private Libro libro2;
+    private Utente utente1;
+    private Utente utente2;
+    private Prestito prestito1;
+    private Prestito prestito2;
 
     /**
-     * Configura l'ambiente di test prima di ogni test.
-     * Inizializza una nuova istanza di {@link Libro}, {@link Utente} e {@link Prestito} con valori predefiniti.
+     * Sets up the test environment before each test.
+     * Initializes sample books, users, and loans for testing.
      */
     @BeforeEach
-    public void configura() {
-        libro = new Libro("Il Signore degli Anelli", "J.R.R. Tolkien", 1954, 9788804688372L);
-        utente = new Utente("Mario" , "Rossi", 668);
-        prestito = new Prestito(libro, utente);
+    public void setUp() {
+        libro1 = new Libro("Il Nome del Vento", "Patrick Rothfuss", 1910, 123456789758L);
+        libro2 = new Libro("1984", "George Orwell", 1980 ,  987654321567L);
+        utente1 = new Utente("Mario", "Rossi", 001);
+        utente2 = new Utente("Luigi", "Bianchi", 002);
+        prestito1 = new Prestito(libro1, utente1);
+        prestito2 = new Prestito(libro1, utente1); // Same as prestito1 for equals testing
     }
 
     /**
-     * Testa il costruttore della classe {@link Prestito}.
-     * Verifica che il libro e l'utente siano correttamente assegnati al prestito.
+     * Tests the {@link Prestito#Prestito(Libro, Utente)} constructor.
+     * Verifies that a loan is correctly initialized with the provided book and user.
      */
     @Test
     public void testCostruttore() {
-        assertEquals(libro, prestito.getLibro(), "Il libro dovrebbe corrispondere al valore fornito.");
-        assertEquals(utente, prestito.getUtente(), "L'utente dovrebbe corrispondere al valore fornito.");
+        assertEquals(libro1, prestito1.getLibro(), "The book in the loan should match the one provided.");
+        assertEquals(utente1, prestito1.getUtente(), "The user in the loan should match the one provided.");
     }
 
     /**
-     * Testa il metodo {@link Prestito#getLibro()}.
-     * Verifica che il libro associato al prestito sia restituito correttamente.
+     * Tests the {@link Prestito#Prestito(Libro, Utente)} constructor with null arguments.
+     * Verifies that the constructor accepts null values (as it does not explicitly check for them).
+     */
+    @Test
+    public void testCostruttoreConNull() {
+        Prestito prestitoConNull = new Prestito(null, null);
+        assertNull(prestitoConNull.getLibro(), "The book should be null when constructed with null.");
+        assertNull(prestitoConNull.getUtente(), "The user should be null when constructed with null.");
+    }
+
+    /**
+     * Tests the {@link Prestito#getLibro()} method.
+     * Verifies that the correct book is returned.
      */
     @Test
     public void testGetLibro() {
-        assertEquals(libro, prestito.getLibro(), "Il metodo getLibro dovrebbe restituire il libro corretto.");
+        assertEquals(libro1, prestito1.getLibro(), "The getLibro method should return the correct book.");
     }
 
     /**
-     * Testa il metodo {@link Prestito#getUtente()}.
-     * Verifica che l'utente associato al prestito sia restituito correttamente.
+     * Tests the {@link Prestito#getUtente()} method.
+     * Verifies that the correct user is returned.
      */
     @Test
     public void testGetUtente() {
-        assertEquals(utente, prestito.getUtente(), "Il metodo getUtente dovrebbe restituire l'utente corretto.");
+        assertEquals(utente1, prestito1.getUtente(), "The getUtente method should return the correct user.");
     }
 
     /**
-     * Testa il metodo {@link Prestito#toString()}.
-     * Verifica che la rappresentazione testuale dell'oggetto Prestito contenga le informazioni attese.
-     */
-    @Test
-    public void testToString() {
-        String attesa = "Prestito{utente=" + utente.toString() + ", libro=" + libro.toString() + "}";
-        assertEquals(attesa, prestito.toString(), "toString dovrebbe restituire la corretta rappresentazione testuale.");
-    }
-
-    /**
-     * Testa il metodo {@link Prestito#equals(Object)}.
-     * Verifica che due oggetti Prestito con lo stesso libro e utente siano considerati uguali,
-     * e che oggetti con libro o utente diversi o di tipi diversi non siano uguali.
+     * Tests the {@link Prestito#equals(Object)} method.
+     * Verifies that two loans with the same book and user are considered equal,
+     * and loans with different books or users are not equal.
      */
     @Test
     public void testEquals() {
-        // Stesso libro e utente
-        Prestito stessoPrestito = new Prestito(libro, utente);
-        // Libro o utente diversi
-        Libro altroLibro = new Libro("1984", "George Orwell", 1949, 9780141036144L);
-        Utente altroUtente = new Utente("Luigi", "Verdi", 667);
-        Prestito prestitoDiverso1 = new Prestito(altroLibro, utente);
-        Prestito prestitoDiverso2 = new Prestito(libro, altroUtente);
+        // Same book and user
+        assertEquals(prestito1, prestito2, "Loans with the same book and user should be equal.");
+        assertEquals(prestito1.hashCode(), prestito2.hashCode(), "Equal loans should have the same hash code.");
 
-        assertTrue(prestito.equals(stessoPrestito), "I prestiti con lo stesso libro e utente dovrebbero essere uguali.");
-        assertFalse(prestito.equals(prestitoDiverso1), "I prestiti con libri diversi non dovrebbero essere uguali.");
-        assertFalse(prestito.equals(prestitoDiverso2), "I prestiti con utenti diversi non dovrebbero essere uguali.");
-        assertFalse(prestito.equals(null), "Un prestito non dovrebbe essere uguale a null.");
-        assertFalse(prestito.equals(new Object()), "Un prestito non dovrebbe essere uguale a un oggetto di tipo diverso.");
-        assertTrue(prestito.equals(prestito), "Un prestito dovrebbe essere uguale a se stesso.");
+        // Different book
+        Prestito prestitoDiversoLibro = new Prestito(libro2, utente1);
+        assertNotEquals(prestito1, prestitoDiversoLibro, "Loans with different books should not be equal.");
+
+        // Different user
+        Prestito prestitoDiversoUtente = new Prestito(libro1, utente2);
+        assertNotEquals(prestito1, prestitoDiversoUtente, "Loans with different users should not be equal.");
+
+        // Null and different class
+        assertNotEquals(prestito1, null, "A loan should not be equal to null.");
+        assertNotEquals(prestito1, new Object(), "A loan should not be equal to an object of a different class.");
+
+        // Same object
+        assertEquals(prestito1, prestito1, "A loan should be equal to itself.");
+    }
+
+    /**
+     * Tests the {@link Prestito#hashCode()} method.
+     * Verifies that equal loans produce the same hash code.
+     */
+    @Test
+    public void testHashCode() {
+        assertEquals(prestito1.hashCode(), prestito2.hashCode(), "Equal loans should have the same hash code.");
+        Prestito prestitoDiverso = new Prestito(libro2, utente2);
+        assertNotEquals(prestito1.hashCode(), prestitoDiverso.hashCode(), "Different loans should have different hash codes.");
+    }
+
+    /**
+     * Tests the {@link Prestito#toString()} method.
+     * Verifies that the string representation contains the expected information.
+     */
+    @Test
+    public void testToString() {
+        String result = prestito1.toString();
+        assertTrue(result.contains("utente=" + utente1.toString()), "The toString should include the user.");
+        assertTrue(result.contains("libro=" + libro1.toString()), "The toString should include the book.");
+        assertTrue(result.startsWith("Prestito{"), "The toString should start with 'Prestito{'.");
     }
 }
-
-/**
- * Testa il metodo {@link Prestito#hashCode()}.
- * Verifica che due oggetti Prestito con lo stesso libro e utente abbiano lo stesso hash code,
- * e che oggetti con libro o utente
- */

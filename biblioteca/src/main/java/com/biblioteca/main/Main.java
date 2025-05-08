@@ -15,215 +15,242 @@ import java.util.Scanner;
  * la creazione di un utente e l'esecuzione di operazioni di prestito e restituzione.
  */
 public class Main {
+
     /**
      * Punto di ingresso dell'applicazione Biblioteca.
      * Inizializza i libri, li aggiunge alla biblioteca, crea un utente
-     * ed esegue operazioni di prestito e restituzione per dimostrare le funzionalità del sistema.
+     * e fornisce un menu interattivo per eseguire operazioni di biblioteca come
+     * visualizzare i libri, effettuare prestiti, restituire libri e visualizzare i prestiti.
      *
      * @param args Argomenti della riga di comando (non utilizzati in questa applicazione).
      */
-
     public static void main(String[] args) {
-
-
-
-
-
-
+        /** Scanner per la lettura dell'input dell'utente dalla console. */
         Scanner sc = new Scanner(System.in);
+
+        /** Istanza della biblioteca per gestire libri, utenti e prestiti. */
         Biblioteca biblioteca = new Biblioteca();
 
-        // Aggiunta libri
-        biblioteca.aggiungi(new Libro("Quello che so di te", "Nadia Terranova", 2025, 9788823521234L ));
-        biblioteca.aggiungi(new Libro("Fratellino", "Ibrahima Balde e Amets", 2025, 9788807895678L));
-        biblioteca.aggiungi(new Libro("Macroeconomia", "N. Gregory Manki", 2016, 9788880085096L));
-        biblioteca.aggiungi(new Libro("Il nome della rosa", "Umberto Eco", 1980, 9788845240000L));
+        // Aggiunta di libri alla biblioteca
+        Libro libro1 = new Libro("Quello che so di te", "Nadia Terranova", 2025, 9788823521234L);
+        Libro libro2 = new Libro("Fratellino", "Ibrahima Balde e Amets", 2025, 9788807895678L);
+        Libro libro3 =new Libro("Macroeconomia", "N. Gregory Manki", 2016, 9788880085096L);
+        Libro libro4 =new Libro("Il nome della rosa", "Umberto Eco", 1980, 9788845240000L);
+        Libro libro5= new Libro("Il nome della rosa", "Umberto Eco", 1980, 9788845240000L);
 
-        Libro libro1=new Libro("Il nome della rosa", "Umberto Eco", 1980, 9788845240000L);
+        biblioteca.aggiungi(libro1);
+        biblioteca.aggiungi(libro2);
+        biblioteca.aggiungi(libro3);
+        biblioteca.aggiungi(libro4);
+        biblioteca.aggiungi(libro5);
+        /** Utente di esempio per testare la funzionalità di prestito. */
+        Utente ut1 = new Utente("fra", "carp", 897);
 
+        /** Prestito di esempio che associa l'utente e il libro. */
+        Prestito p1 = new Prestito(libro1, ut1);
+        biblioteca.aggiungiPrestito(p1);
 
+        // Aggiunta dell'utente di esempio alla lista degli utenti della biblioteca
+        biblioteca.listaUtenti.add(ut1);
 
-
-
-        Utente ut1= new Utente("fra","carp",897);
-         Prestito p1 = new Prestito(libro1,ut1);
-         biblioteca.aggiungiPrestito(p1);
-
-
-         biblioteca.listaUtenti.add(ut1);
-
-
-
-
+        /** Flag per controllare il ciclo principale per l'uscita dall'applicazione. */
         boolean uscita = false;
-        Utente  utenteCorrente= new Utente("Aministratore","N/D",000);
+
+        /** Utente corrente, inizializzato come amministratore. */
+        Utente utenteCorrente = new Utente("Amministratore", "N/D", 000);
         biblioteca.listaUtenti.add(utenteCorrente);
 
+        /**
+         * Ciclo principale dell'applicazione che mostra un menu e processa l'input dell'utente.
+         * Il ciclo continua finché l'utente non sceglie di uscire (opzione 0).
+         */
         while (!uscita) {
-            System.out.println("\nScegli un'operazione:"+"\n"+
-                                "1 - Vedi elenco libri"+"\n"+
-                                "2 - Fai un prestito"+"\n"+
-                                "3 - Restituisci un libro"+"\n"+
-                                "4 visualizzi i prestiti effetuati"+"\n"+
-                                    "0 - Esci");
+            // Mostra le opzioni del menu
+            System.out.println("\nScegli un'operazione:" + "\n" +
+                    "1 - Vedi elenco libri" + "\n" +
+                    "2 - Fai un prestito" + "\n" +
+                    "3 - Restituisci un libro" + "\n" +
+                    "4 - Visualizza i prestiti effettuati" + "\n" +
+                    "0 - Esci");
 
-            int scelta=9;
+            /** Scelta dell'utente dal menu, inizializzata a un valore non valido. */
+            int scelta = 9;
+
+            // Legge la scelta dell'utente, gestendo input non validi
             try {
                 scelta = sc.nextInt();
-            } catch (InputMismatchException e){
-                System.out.println("erore inserire un numero");
+            } catch (InputMismatchException e) {
+                System.err.println("Errore: Inserire un numero.");
             }
-            sc.nextLine(); // pulizia buffer
+            sc.nextLine(); // Pulizia del buffer di input
 
+            /**
+             * Processa la scelta dell'utente dal menu.
+             * Ogni caso corrisponde a un'operazione diversa della biblioteca.
+             */
             switch (scelta) {
-                case 1 -> biblioteca.elencoLibri();
+                case 1:
+                    /** Visualizza l'elenco dei libri nella biblioteca. */
+                    biblioteca.elencoLibri();
+                    break;
 
-                case 2 -> {
-
+                case 2:
+                    /** Gestisce il processo di prestito di un libro. */
                     System.out.println("Benvenuto");
                     utenteCorrente.stampaDettagliUtente();
 
+                    /** Libro da prendere in prestito, inizialmente nullo. */
                     Libro libro = null;
 
+                    // Richiede il titolo del libro finché non viene trovato un libro valido
                     while (libro == null) {
                         System.out.println("Inserisci il titolo del libro che vuoi prendere in prestito:");
                         biblioteca.elencoLibri();
                         String titoloLibro = sc.nextLine();
-                            try{
-                                libro = biblioteca.cercaLibroPerTitolo(titoloLibro);
-                            }catch (NullPointerException e) {
-                               // System.err.println("Errore: " + e.getMessage());
-                            }
-
+                        try {
+                            libro = biblioteca.cercaLibroPerTitolo(titoloLibro);
+                        } catch (NullPointerException e) {
+                            // Gestisce eventuali eccezioni di puntatore nullo (anche se non tipicamente sollevate qui)
+                        }
 
                         if (libro == null) {
                             System.err.println("Titolo non trovato. Riprova.");
                         }
                     }
 
+                    // Crea e aggiunge il prestito
                     Prestito prestito = new Prestito(libro, utenteCorrente);
                     try {
                         biblioteca.aggiungiPrestito(prestito);
+                        System.out.println("Prestito effettuato: " + prestito.getUtente().getNome() +
+                                " ha preso \"" + prestito.getLibro().getTitolo() + "\".");
                     } catch (IllegalArgumentException e) {
                         System.err.println("Errore: " + e.getMessage());
                     }
-                    System.out.println("Prestito effettuato: " + prestito.getUtente().getNome() + " ha preso \"" + prestito.getLibro().getTitolo() + "\".");
-                }
+                    break;
 
-                case 3 -> {
+                case 3:
+                    /** Gestisce il processo di restituzione di un libro. */
                     if (biblioteca.listaPrestiti.isEmpty()) {
-                        System.err.println("Nessun utente ha effettuato prestiti, bisogna prima effettuare un prestito ");
+                        System.err.println("Nessun utente ha effettuato prestiti, bisogna prima effettuare un prestito.");
                         break;
                     }
-                    System.out.print("Prima di effettuare l'operazione, inserisci i dati richiesti "+"\n Conferma nome: ");
+
+                    // Richiede i dettagli dell'utente per verificare l'identità
+                    System.out.print("Prima di effettuare l'operazione, inserisci i dati richiesti " +
+                            "\nConferma nome: ");
                     String nome = sc.nextLine();
-                    System.out.print("per proseguire inserisca "+"\n  cognome: ");
+                    System.out.print("Per proseguire inserisca " + "\ncognome: ");
                     String cognome = sc.nextLine();
-                    System.out.print("per proseguire inserisca "+"\n  id: ");
-                    int id =-1;
+                    System.out.print("Per proseguire inserisca " + "\nid: ");
+                    int id = -1;
                     try {
                         id = sc.nextInt();
-                    } catch (InputMismatchException e){
-                        System.out.println();
+                    } catch (InputMismatchException e) {
+                        System.out.println(); // Gestisce silenziosamente l'input non valido
                     }
+                    sc.nextLine(); // Pulizia del buffer di input
 
-                    Utente utenteDaVerificare= new Utente(nome, cognome, id);
-                    if(biblioteca.esisteUtente(utenteDaVerificare)== false){
-                        System.err.println("L' utente non esiste");
+                    /** Utente da verificare per l'operazione di restituzione. */
+                    Utente utenteDaVerificare = new Utente(nome, cognome, id);
+
+                    // Verifica se l'utente esiste
+                    if (!biblioteca.esisteUtente(utenteDaVerificare)) {
+                        System.err.println("L'utente non esiste.");
                         break;
-
                     }
-                    try {
 
-                        biblioteca.stampaListaPrestiti( biblioteca.listaPrestitiPerUtente(utenteDaVerificare));
+                    // Visualizza i prestiti attivi dell'utente
+                    try {
+                        biblioteca.stampaListaPrestiti(biblioteca.listaPrestitiPerUtente(utenteDaVerificare));
                     } catch (IllegalArgumentException e) {
                         System.err.println("Errore: " + e.getMessage());
                     }
-                     if (   id !=-1 && ( biblioteca.listaPrestitiPerUtente(utenteDaVerificare).isEmpty())){
-                        System.err.println("L'utente non ha eseguito nessun prestito");
-                         break;
+
+                    // Verifica se l'utente ha prestiti attivi
+                    if (id != -1 && biblioteca.listaPrestitiPerUtente(utenteDaVerificare).isEmpty()) {
+                        System.err.println("L'utente non ha eseguito nessun prestito.");
+                        break;
                     }
 
-                    Libro libro = null;
-                    System.out.println("dei seguenti libri inserire il titolo del quale  voi restituire");
+                    /** Libro da restituire, inizialmente nullo. */
+                    libro = null;
+                    System.out.println("Dei seguenti libri, inserire il titolo del quale vuoi restituire:");
                     while (libro == null) {
-
-
                         String titoloLibro = sc.nextLine();
-                        try{
+                        try {
                             libro = biblioteca.cercaLibroPerTitolo(titoloLibro);
-                        }catch (NullPointerException e) {
-                            // System.err.println("Errore: " + e.getMessage());
-                             if (libro == null) {
-                                                        System.err.println("Titolo non trovato. Riprova.");
-                                                    }
+                        } catch (NullPointerException e) {
+                            // Gestisce eventuali eccezioni di puntatore nullo
+                            if (libro == null) {
+                                System.err.println("Titolo non trovato. Riprova.");
+                            }
                         }
-
-
-
                     }
 
-                    Prestito prestito = new Prestito(libro, utenteDaVerificare);
-
+                    // Crea e rimuove il prestito
+                    prestito = new Prestito(libro, utenteDaVerificare);
                     try {
                         biblioteca.rimuoviPrestito(prestito);
-
-                        System.out.println("Restituzione effettuata");
+                        System.out.println("Restituzione effettuata.");
                     } catch (IllegalArgumentException e) {
                         System.out.println("Errore: " + e.getMessage());
                     }
-                }
-                case 4-> {
-                    System.out.print("Prima di effettuare l'operazione, inserisci i dati richiesti "+"\n Conferma nome: ");
-                    String nome = sc.nextLine();
-                    System.out.print("per proseguire inserisca "+"\n  cognome: ");
-                    String cognome = sc.nextLine();
-                    System.out.print("per proseguire inserisca "+"\n  id: ");
-                    int id =-1;
+                    break;
+
+                case 4:
+                    /** Visualizza i prestiti effettuati da un utente specifico. */
+                    System.out.print("Prima di effettuare l'operazione, inserisci i dati richiesti " +
+                            "\nConferma nome: ");
+                    nome = sc.nextLine();
+                    System.out.print("Per proseguire inserisca " + "\ncognome: ");
+                    cognome = sc.nextLine();
+                    System.out.print("Per proseguire inserisca " + "\nid: ");
+                    id = -1;
                     try {
                         id = sc.nextInt();
-                    } catch (InputMismatchException e){
-                        System.out.println();
+                    } catch (InputMismatchException e) {
+                        System.out.println(); // Gestisce silenziosamente l'input non valido
                     }
+                    sc.nextLine(); // Pulizia del buffer di input
 
-                    Utente utenteDaVerificare= new Utente(nome, cognome, id);
-                    if(biblioteca.esisteUtente(utenteDaVerificare)== false){
-                        System.err.println("L' utente non esiste");
+                    /** Utente da verificare per la visualizzazione dei prestiti. */
+                    utenteDaVerificare = new Utente(nome, cognome, id);
+
+                    // Verifica se l'utente esiste
+                    if (!biblioteca.esisteUtente(utenteDaVerificare)) {
+                        System.err.println("L'utente non esiste.");
                         break;
-
                     }
-                    try {
 
-                     biblioteca.stampaListaPrestiti( biblioteca.listaPrestitiPerUtente(utenteDaVerificare));
+                    // Visualizza i prestiti dell'utente
+                    try {
+                        biblioteca.stampaListaPrestiti(biblioteca.listaPrestitiPerUtente(utenteDaVerificare));
                     } catch (IllegalArgumentException e) {
                         System.err.println("Errore: " + e.getMessage());
                     }
-                    if (id!=-1 &&( biblioteca.listaPrestitiPerUtente(utenteDaVerificare).isEmpty())){
-                        System.err.println("L'utente non ha eseguito nessun prestito");
+
+                    // Verifica se l'utente ha prestiti attivi
+                    if (id != -1 && biblioteca.listaPrestitiPerUtente(utenteDaVerificare).isEmpty()) {
+                        System.err.println("L'utente non ha eseguito nessun prestito.");
                         break;
                     }
+                    break;
 
-                }
-
-
-                case 0 -> {
+                case 0:
+                    /** Esce dall'applicazione. */
                     uscita = true;
                     System.out.println("Grazie per aver usato la biblioteca.");
-                }
+                    break;
 
-                default -> System.err.println("Scelta non valida. Riprova.");
+                default:
+                    /** Gestisce una scelta non valida. */
+                    System.err.println("Scelta non valida. Riprova.");
+                    break;
             }
         }
+
+        /** Chiude lo scanner per liberare le risorse. */
+        sc.close();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
