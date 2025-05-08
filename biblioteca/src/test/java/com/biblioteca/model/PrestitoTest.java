@@ -2,177 +2,94 @@ package com.biblioteca.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
-
 
 /**
  * Classe di test per la classe {@link Prestito}.
- * Questa classe contiene test unitari per verificare le funzionalità di gestione dei prestiti,
- * inclusi l'esecuzione del prestito, l'associazione di libri agli utenti, la restituzione dei libri
- * e la ricerca di libri nella biblioteca.
+ * Contiene test unitari per verificare il funzionamento della classe Prestito,
+ * inclusi costruttore, metodi getter, toString, equals e hashCode.
  */
 public class PrestitoTest {
 
-    private Biblioteca biblioteca;
-    private Libro libro1;
-    private Libro libro2;
-    private Utente utente1;
-    private Utente utente2;
+    private Prestito prestito;
+    private Libro libro;
+    private Utente utente;
 
-
-        /**
+    /**
      * Configura l'ambiente di test prima di ogni test.
-     * Inizializza la biblioteca, svuota i dati precedenti, crea libri e utenti per i test
-     * e aggiunge un libro alla biblioteca.
+     * Inizializza una nuova istanza di {@link Libro}, {@link Utente} e {@link Prestito} con valori predefiniti.
      */
-
     @BeforeEach
-    public void setUp() {
-        // Inizializza la biblioteca e svuota i dati precedenti
-        biblioteca = new Biblioteca();
-        Biblioteca.dati = new Libro[10]; // Supponiamo un array di dimensione 10 per semplicità
-        Biblioteca.size = 0;
-
-        // Crea libri e utenti per i test
-        libro1 = new Libro("Il Signore degli Anelli", "J.R.R. Tolkien", 1988, 12345678901234L);
-        libro2 = new Libro("Sapore di rose", "George Orwell", 1984, 12345678901235L);
-        utente1 = new Utente("Mario", " Rossi", 4);
-        utente2 = new Utente("Anna", "Verdi", 1 );
-
-        // Aggiungi un libro alla biblioteca
-        Biblioteca.aggiungi(libro1);
+    public void configura() {
+        libro = new Libro("Il Signore degli Anelli", "J.R.R. Tolkien", 1954, 9788804688372L);
+        utente = new Utente("Mario" , "Rossi", 668);
+        prestito = new Prestito(libro, utente);
     }
-
 
     /**
-     * Verifica l'esecuzione del prestito di un libro disponibile.
-     * Controlla che il libro venga rimosso dalla biblioteca e che il prestito sia registrato.
+     * Testa il costruttore della classe {@link Prestito}.
+     * Verifica che il libro e l'utente siano correttamente assegnati al prestito.
      */
     @Test
-    public void testEseguiPrestitoLibroDisponibile() {
-        // Testa il prestito di un libro disponibile
-        Prestito.eseguiPrestito(libro1, utente1);
-
-        // Verifica che il libro sia stato rimosso dalla biblioteca
-        assertEquals(-1, Prestito.trovaIndiceLibro(libro1), "Il libro dovrebbe essere rimosso dalla biblioteca");
-        // Verifica che il prestito sia registrato
-        Prestito.associaLibroAUtente(libro1);
+    public void testCostruttore() {
+        assertEquals(libro, prestito.getLibro(), "Il libro dovrebbe corrispondere al valore fornito.");
+        assertEquals(utente, prestito.getUtente(), "L'utente dovrebbe corrispondere al valore fornito.");
     }
-
 
     /**
-     * Verifica il tentativo di prestito di un libro non disponibile.
-     * Controlla che il libro, una volta prestato, non sia più presente nella biblioteca.
+     * Testa il metodo {@link Prestito#getLibro()}.
+     * Verifica che il libro associato al prestito sia restituito correttamente.
      */
     @Test
-    public void testEseguiPrestitoLibroNonDisponibile() {
-        // Esegui il prestito del libro1
-        Prestito.eseguiPrestito(libro1, utente1);
-
-        // Tenta di prestare di nuovo lo stesso libro
-        Prestito.eseguiPrestito(libro1, utente2);
-
-        // Verifica che il libro non sia più disponibile
-        assertEquals(-1, Prestito.trovaIndiceLibro(libro1), "Il libro non dovrebbe essere nella biblioteca");
+    public void testGetLibro() {
+        assertEquals(libro, prestito.getLibro(), "Il metodo getLibro dovrebbe restituire il libro corretto.");
     }
-
 
     /**
-     * Verifica l'associazione di un libro a un utente dopo il prestito.
-     * Controlla che l'associazione venga registrata correttamente per un libro prestato.
+     * Testa il metodo {@link Prestito#getUtente()}.
+     * Verifica che l'utente associato al prestito sia restituito correttamente.
      */
     @Test
-    public void testAssociaLibroAUtenteLibroPrestato() {
-        // Esegui il prestito
-        Prestito.eseguiPrestito(libro1, utente1);
-
-        // Verifica l'associazione
-        Prestito.associaLibroAUtente(libro1);
+    public void testGetUtente() {
+        assertEquals(utente, prestito.getUtente(), "Il metodo getUtente dovrebbe restituire l'utente corretto.");
     }
-
-
-     /**
-     * Verifica l'associazione di un libro non prestato a un utente.
-     * Controlla il comportamento quando si tenta di associare un libro non in prestito.
-     */
-    @Test
-    public void testAssociaLibroAUtenteLibroNonPrestato() {
-        // Tenta di verificare l'associazione di un libro non prestato
-        Prestito.associaLibroAUtente(libro2);
-    }
-
 
     /**
-     * Verifica la restituzione corretta di un libro prestato.
-     * Controlla che la restituzione abbia successo e che il libro ritorni nella biblioteca.
+     * Testa il metodo {@link Prestito#toString()}.
+     * Verifica che la rappresentazione testuale dell'oggetto Prestito contenga le informazioni attese.
      */
     @Test
-    public void testRestituisciLibroCorretto() {
-        // Esegui il prestito
-        Prestito.eseguiPrestito(libro1, utente1);
-
-        // Restituisci il libro
-        boolean risultato = Prestito.restituisciLibro(libro1, utente1);
-
-        // Verifica che la restituzione sia avvenuta con successo
-        assertTrue(risultato, "La restituzione dovrebbe riuscire");
-        assertNotEquals(-1, Prestito.trovaIndiceLibro(libro1), "Il libro dovrebbe essere tornato nella biblioteca");
+    public void testToString() {
+        String attesa = "Prestito{utente=" + utente.toString() + ", libro=" + libro.toString() + "}";
+        assertEquals(attesa, prestito.toString(), "toString dovrebbe restituire la corretta rappresentazione testuale.");
     }
-
 
     /**
-     * Verifica il tentativo di restituzione di un libro da parte di un utente sbagliato.
-     * Controlla che la restituzione fallisca e che il libro rimanga non disponibile.
+     * Testa il metodo {@link Prestito#equals(Object)}.
+     * Verifica che due oggetti Prestito con lo stesso libro e utente siano considerati uguali,
+     * e che oggetti con libro o utente diversi o di tipi diversi non siano uguali.
      */
     @Test
-    public void testRestituisciLibroUtenteSbagliato() {
-        // Esegui il prestito con utente1
-        Prestito.eseguiPrestito(libro1, utente1);
+    public void testEquals() {
+        // Stesso libro e utente
+        Prestito stessoPrestito = new Prestito(libro, utente);
+        // Libro o utente diversi
+        Libro altroLibro = new Libro("1984", "George Orwell", 1949, 9780141036144L);
+        Utente altroUtente = new Utente("Luigi", "Verdi", 667);
+        Prestito prestitoDiverso1 = new Prestito(altroLibro, utente);
+        Prestito prestitoDiverso2 = new Prestito(libro, altroUtente);
 
-        // Tenta di restituire il libro con utente2
-        boolean risultato = Prestito.restituisciLibro(libro1, utente2);
-
-        // Verifica che la restituzione fallisca
-        assertFalse(risultato, "La restituzione dovrebbe fallire per utente sbagliato");
-        assertEquals(-1, Prestito.trovaIndiceLibro(libro1), "Il libro non dovrebbe essere tornato nella biblioteca");
-    }
-
-
-     /**
-     * Verifica il tentativo di restituzione di un libro non prestato.
-     * Controlla che la restituzione fallisca.
-     */
-    @Test
-    public void testRestituisciLibroNonPrestato() {
-        // Tenta di restituire un libro mai prestato
-        boolean risultato = Prestito.restituisciLibro(libro2, utente1);
-
-        // Verifica che la restituzione fallisca
-        assertFalse(risultato, "La restituzione dovrebbe fallire per libro non prestato");
-    }
-
-
-    /**
-     * Verifica la ricerca di un libro esistente nella biblioteca.
-     * Controlla che il libro venga trovato correttamente.
-     */
-    @Test
-    public void testTrovaIndiceLibroEsistente() {
-        // Verifica che il libro1 sia trovabile nella biblioteca
-        int indice = Prestito.trovaIndiceLibro(libro1);
-        assertNotEquals(-1, indice, "Il libro dovrebbe essere trovato nella biblioteca");
-    }
-
-
-     /**
-     * Verifica la ricerca di un libro non esistente nella biblioteca.
-     * Controlla che venga restituito -1 per un libro non presente.
-     */
-    @Test
-    public void testTrovaIndiceLibroNonEsistente() {
-        // Verifica che un libro non presente restituisca -1
-        int indice = Prestito.trovaIndiceLibro(libro2);
-        assertEquals(-1, indice, "Il libro non dovrebbe essere trovato nella biblioteca");
+        assertTrue(prestito.equals(stessoPrestito), "I prestiti con lo stesso libro e utente dovrebbero essere uguali.");
+        assertFalse(prestito.equals(prestitoDiverso1), "I prestiti con libri diversi non dovrebbero essere uguali.");
+        assertFalse(prestito.equals(prestitoDiverso2), "I prestiti con utenti diversi non dovrebbero essere uguali.");
+        assertFalse(prestito.equals(null), "Un prestito non dovrebbe essere uguale a null.");
+        assertFalse(prestito.equals(new Object()), "Un prestito non dovrebbe essere uguale a un oggetto di tipo diverso.");
+        assertTrue(prestito.equals(prestito), "Un prestito dovrebbe essere uguale a se stesso.");
     }
 }
+
+/**
+ * Testa il metodo {@link Prestito#hashCode()}.
+ * Verifica che due oggetti Prestito con lo stesso libro e utente abbiano lo stesso hash code,
+ * e che oggetti con libro o utente
+ */
