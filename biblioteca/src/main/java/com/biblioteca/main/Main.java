@@ -21,7 +21,6 @@ public class Main {
      *
      * @param args Argomenti della riga di comando (non utilizzati in questa applicazione).
      */
-
     public static void main(String[] args) {
 
 

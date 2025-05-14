@@ -35,7 +35,7 @@ public class Biblioteca {
      * @param l Il libro da aggiungere.
      */
     public void aggiungi(Libro l) {
-        if (size < dati.length) {
+        if (size < dati.length) { // deve diventare una INSERT
             dati[size++] = l;
         }
     }
@@ -48,7 +48,7 @@ public class Biblioteca {
     public void rimuovi(int index) {
         if (index >= 0 && index < size) {
             for (int i = index; i < size - 1; i++) {
-                dati[i] = dati[i + 1];
+                dati[i] = dati[i + 1]; // diventerà DELETE
             }
             dati[--size] = null;
         }
@@ -61,7 +61,7 @@ public class Biblioteca {
      */
     public int dimensione() {
 
-        return size;
+        return size; // SELECT COUNT() FROM LIBRI
     }
 
     /**
@@ -92,7 +92,7 @@ public class Biblioteca {
     public void elencoLibri() {
 
         // Stampa gli elementi
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) { // SELECT * FROM Libri
             System.out.println(dati[i] + "è disponibile "+isDisponibilita(dati[i]));
         }
 
@@ -150,7 +150,7 @@ public class Biblioteca {
     }
 
     public Libro cercaLibroPerTitolo(String titolo) {
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) { // SELECT * FROM Libri WHERE Nome LIKE '%titolo%'......
             Libro l = dati[i];
             if (l != null && l.getTitolo().equalsIgnoreCase(titolo)) {
                 return l;
