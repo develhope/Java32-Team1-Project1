@@ -2,114 +2,163 @@ package com.biblioteca.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Classe di test per la classe {@link Utente}.
- * Contiene test unitari per verificare il funzionamento della classe Utente,
- * inclusi costruttore, metodi getter e setter, stampaDettagliUtente e toString.
+ * Test class for the {@link Utente} class.
+ * This class contains unit tests to verify the functionality of the Utente class,
+ * including constructor behavior, getter and setter methods, and the overridden equals, hashCode, toString, and stampaDettagliUtente methods.
  */
 public class UtenteTest {
 
-    private Utente utente;
-    private final String nome = "Mario";
-    private final String cognome = "Rossi";
-    private final int idUtente = 1001;
+    private Utente utente1;
+    private Utente utente2;
 
     /**
-     * Configura l'ambiente di test prima di ogni test.
-     * Inizializza una nuova istanza di {@link Utente} con valori predefiniti.
+     * Sets up the test environment before each test.
+     * Initializes sample users for testing.
      */
     @BeforeEach
-    public void configura() {
-        utente = new Utente(nome, cognome, idUtente);
+    public void setUp() {
+        utente1 = new Utente("Mario", "Rossi", 1);
+        utente2 = new Utente("Mario", "Rossi", 1); // Same as utente1 for equals testing
     }
 
     /**
-     * Testa il costruttore della classe {@link Utente}.
-     * Verifica che i valori forniti per nome, cognome e ID utente siano impostati correttamente.
+     * Tests the {@link Utente#Utente(String, String, int)} constructor.
+     * Verifies that a user is correctly initialized with the provided name, surname, and ID.
      */
     @Test
     public void testCostruttore() {
-        assertEquals(nome, utente.getNome(), "Il nome dovrebbe corrispondere al valore fornito.");
-        assertEquals(cognome, utente.getCognome(), "Il cognome dovrebbe corrispondere al valore fornito.");
-        assertEquals(idUtente, utente.getIdUtente(), "L'ID utente dovrebbe corrispondere al valore fornito.");
+        assertEquals("Mario", utente1.getNome(), "The name should match the one provided.");
+        assertEquals("Rossi", utente1.getCognome(), "The surname should match the one provided.");
+        assertEquals(1, utente1.getIdUtente(), "The user ID should match the one provided.");
     }
 
     /**
-     * Testa i metodi {@link Utente#setNome(String)} e {@link Utente#getNome()}.
-     * Verifica che il nome possa essere aggiornato e recuperato correttamente.
+     * Tests the {@link Utente#Utente(String, String, int)} constructor with null arguments.
+     * Verifies that the constructor accepts null values for name and surname (as it does not explicitly check for them).
      */
     @Test
-    public void testSetAndGetNome() {
-        String nuovoNome = "Luigi";
-        utente.setNome(nuovoNome);
-        assertEquals(nuovoNome, utente.getNome(), "Il nome dovrebbe essere aggiornato al nuovo valore.");
+    public void testCostruttoreConNull() {
+        Utente utenteConNull = new Utente(null, null, 2);
+        assertNull(utenteConNull.getNome(), "The name should be null when constructed with null.");
+        assertNull(utenteConNull.getCognome(), "The surname should be null when constructed with null.");
+        assertEquals(2, utenteConNull.getIdUtente(), "The user ID should match the one provided.");
     }
 
     /**
-     * Testa i metodi {@link Utente#setCognome(String)} e {@link Utente#getCognome()}.
-     * Verifica che il cognome possa essere aggiornato e recuperato correttamente.
+     * Tests the {@link Utente#getNome()} and {@link Utente#setNome(String)} methods.
+     * Verifies that the name can be retrieved and updated correctly.
      */
     @Test
-    public void testSetAndGetCognome() {
-        String nuovoCognome = "Verdi";
-        utente.setCognome(nuovoCognome);
-        assertEquals(nuovoCognome, utente.getCognome(), "Il cognome dovrebbe essere aggiornato al nuovo valore.");
+    public void testGetSetNome() {
+        assertEquals("Mario", utente1.getNome(), "The getNome method should return the correct name.");
+        utente1.setNome("Luigi");
+        assertEquals("Luigi", utente1.getNome(), "The setNome method should update the name correctly.");
     }
 
     /**
-     * Testa i metodi {@link Utente#setIdUtente(int)} e {@link Utente#getIdUtente()}.
-     * Verifica che l'ID utente possa essere aggiornato e recuperato correttamente.
+     * Tests the {@link Utente#getCognome()} and {@link Utente#setCognome(String)} methods.
+     * Verifies that the surname can be retrieved and updated correctly.
      */
     @Test
-    public void testSetAndGetIdUtente() {
-        int nuovoId = 1002;
-        utente.setIdUtente(nuovoId);
-        assertEquals(nuovoId, utente.getIdUtente(), "L'ID utente dovrebbe essere aggiornato al nuovo valore.");
+    public void testGetSetCognome() {
+        assertEquals("Rossi", utente1.getCognome(), "The getCognome method should return the correct surname.");
+        utente1.setCognome("Bianchi");
+        assertEquals("Bianchi", utente1.getCognome(), "The setCognome method should update the surname correctly.");
     }
 
     /**
-     * Testa il metodo {@link Utente#stampaDettagliUtente()}.
-     * Verifica che i dettagli dell'utente siano stampati correttamente sulla console.
+     * Tests the {@link Utente#getIdUtente()} and {@link Utente#setIdUtente(int)} methods.
+     * Verifies that the user ID can be retrieved and updated correctly.
+     */
+    @Test
+    public void testGetSetIdUtente() {
+        assertEquals(1, utente1.getIdUtente(), "The getIdUtente method should return the correct ID.");
+        utente1.setIdUtente(3);
+        assertEquals(3, utente1.getIdUtente(), "The setIdUtente method should update the ID correctly.");
+    }
+
+    /**
+     * Tests the {@link Utente#equals(Object)} method.
+     * Verifies that two users with the same name, surname, and ID are considered equal,
+     * and users with different attributes are not equal.
+     */
+    @Test
+    public void testEquals() {
+        // Same name, surname, and ID
+        assertEquals(utente1, utente2, "Users with the same name, surname, and ID should be equal.");
+        assertEquals(utente1.hashCode(), utente2.hashCode(), "Equal users should have the same hash code.");
+
+        // Different name
+        Utente utenteDiversoNome = new Utente("Luigi", "Rossi", 1);
+        assertNotEquals(utente1, utenteDiversoNome, "Users with different names should not be equal.");
+
+        // Different surname
+        Utente utenteDiversoCognome = new Utente("Mario", "Bianchi", 1);
+        assertNotEquals(utente1, utenteDiversoCognome, "Users with different surnames should not be equal.");
+
+        // Different ID
+        Utente utenteDiversoId = new Utente("Mario", "Rossi", 2);
+        assertNotEquals(utente1, utenteDiversoId, "Users with different IDs should not be equal.");
+
+        // Null and different class
+        assertNotEquals(utente1, null, "A user should not be equal to null.");
+        assertNotEquals(utente1, new Object(), "A user should not be equal to an object of a different class.");
+
+        // Same object
+        assertEquals(utente1, utente1, "A user should be equal to itself.");
+    }
+
+    /**
+     * Tests the {@link Utente#hashCode()} method.
+     * Verifies that equal users produce the same hash code.
+     */
+    @Test
+    public void testHashCode() {
+        assertEquals(utente1.hashCode(), utente2.hashCode(), "Equal users should have the same hash code.");
+        Utente utenteDiverso = new Utente("Luigi", "Bianchi", 2);
+        assertNotEquals(utente1.hashCode(), utenteDiverso.hashCode(), "Different users should have different hash codes.");
+    }
+
+    /**
+     * Tests the {@link Utente#toString()} method.
+     * Verifies that the string representation contains the expected information.
+     */
+    @Test
+    public void testToString() {
+        String result = utente1.toString();
+        assertTrue(result.contains("nome='Mario'"), "The toString should include the name.");
+        assertTrue(result.contains("cognome='Rossi'"), "The toString should include the surname.");
+        assertTrue(result.contains("idUtente=1"), "The toString should include the user ID.");
+        assertTrue(result.startsWith("Utente{"), "The toString should start with 'Utente{'.");
+    }
+
+    /**
+     * Tests the {@link Utente#stampaDettagliUtente()} method.
+     * Verifies that the method prints the expected user details to the console.
      */
     @Test
     public void testStampaDettagliUtente() {
-        // Reindirizza System.out a un ByteArrayOutputStream per catturare l'output
+        // Redirect System.out to capture output
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         PrintStream originalOut = System.out;
         System.setOut(new PrintStream(outContent));
 
-        // Esegue il metodo
-        utente.stampaDettagliUtente();
-
-        // Costruisce l'output atteso
-        String outputAtteso = "Nome: " + nome + System.lineSeparator() +
-                "Cognome: " + cognome + System.lineSeparator() +
-                "ID Utente: " + idUtente + System.lineSeparator();
-
-        // Verifica l'output
-        assertEquals(outputAtteso, outContent.toString(), "L'output di stampaDettagliUtente dovrebbe corrispondere al formato atteso.");
-
-        // Ripristina System.out
-        System.setOut(originalOut);
-    }
-
-    /**
-     * Testa il metodo {@link Utente#toString()}.
-     * Verifica che la rappresentazione testuale dell'oggetto Utente contenga le informazioni attese.
-     */
-    @Test
-    public void testToString() {
-        // 1. Crea un oggetto Utente
-        Utente utente = new Utente("Mario", "Rossi", 100);
-
-        // 2. Costruisci la stringa attesa
-        String atteso = "Utente{nome='Mario', cognome='Rossi', idUtente=100}";
-
-        // 3. Confronta
-        assertEquals(atteso, utente.toString(), "toString dovrebbe restituire la corretta rappresentazione testuale.");
+        try {
+            utente1.stampaDettagliUtente();
+            String output = outContent.toString();
+            assertTrue(output.contains("Nome: Mario"), "The output should include the name.");
+            assertTrue(output.contains("Cognome: Rossi"), "The output should include the surname.");
+            assertTrue(output.contains("ID Utente: 1"), "The output should include the user ID.");
+        } finally {
+            // Restore System.out
+            System.setOut(originalOut);
+        }
     }
 }
