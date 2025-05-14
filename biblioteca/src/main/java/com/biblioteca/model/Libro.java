@@ -18,7 +18,7 @@ public class Libro {
     private int annoPubblicazione;
 
     /** Numero ISBN del libro. */
-    private long ISBN;
+    private String ISBN;
 
     /**
      * Costruttore di default.
@@ -29,7 +29,7 @@ public class Libro {
         titolo = "titolo";
         autore = "sconoscuto";
         annoPubblicazione = 0000;
-        ISBN = 0000000000000000L;
+        ISBN = "0000000000000000";
     }
 
     /**
@@ -41,7 +41,7 @@ public class Libro {
      * @param annoPubblicazione L'anno di pubblicazione del libro.
      * @param ISBN              Il numero ISBN del libro.
      */
-    public Libro(String titolo, String autore, int annoPubblicazione, long ISBN) {
+    public Libro(String titolo, String autore, int annoPubblicazione, String ISBN) {
         this.titolo = titolo;
         this.autore = autore;
         this.annoPubblicazione = annoPubblicazione;
@@ -107,7 +107,7 @@ public class Libro {
      *
      * @return L'ISBN del libro.
      */
-    public long getISBN() {
+    public String getISBN() {
         return ISBN;
     }
 
@@ -116,7 +116,7 @@ public class Libro {
      *
      * @param ISBN Il nuovo ISBN del libro.
      */
-    public void setISBN(long ISBN) {
+    public void setISBN(String ISBN) {
         this.ISBN = ISBN;
     }
 
@@ -158,8 +158,8 @@ public class Libro {
      *
      * @return Il codice hash del libro.
      */
-    @Override
-    public int hashCode() {
-        return Long.hashCode(ISBN);
-    }
+//    @Override
+//    public String hashCode() {
+//        return String.hashCode(ISBN);
+//    }
 }

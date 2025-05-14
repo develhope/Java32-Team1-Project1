@@ -1,8 +1,15 @@
 package com.biblioteca.model;
 
+import com.biblioteca.main.Configuration;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.sql.*;
 
 /**
  * Classe che rappresenta una biblioteca per la gestione di un elenco di libri.
@@ -11,10 +18,24 @@ import java.util.List;
  */
 public class Biblioteca {
 
-    /** Lista degli utenti registrati nella biblioteca. */
+    private static final Configuration c = new Configuration();
+
+    private static final String JDBC_URL = c.getProperties().getProperty("jdbcurl");
+
+    private static final String USERNAME = c.getProperties().getProperty("username");
+
+    private static final String PASSWORD = c.getProperties().getProperty("password");
+
+    Connection connection = null;
+
+    /**
+     * Lista degli utenti registrati nella biblioteca.
+     */
     public List<Utente> listaUtenti = new ArrayList<>();
 
-    /** Lista dei prestiti attivi nella biblioteca. */
+    /**
+     * Lista dei prestiti attivi nella biblioteca.
+     */
     public List<Prestito> listaPrestiti = new ArrayList<>();
 
     /**
@@ -91,110 +112,130 @@ public class Biblioteca {
      * Visualizza l'elenco dei libri presenti nella biblioteca.
      * Se la biblioteca è vuota, stampa un messaggio di errore.
      */
-    public void elencoLibri() {
-        // Stampa gli elementi
-        for (int i = 0; i < size; i++) { // SELECT * FROM Libri
-            System.out.println(dati[i] + "è disponibile "+isDisponibilita(dati[i]));
-        }
+    public void elencoLibri(Biblioteca biblioteca) {
 
-        if (size == 0) {
-            System.err.println("Non ci sono libri disponibili");
+
+        try {
+            connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+
+            Statement statement = connection.createStatement();
+
+            String queryElencoLibri = "SELECT * FROM biblioteca.libri";
+
+            ResultSet resultSet = statement.executeQuery(queryElencoLibri);
+
+            System.out.println("\n");
+            while (resultSet.next()) {
+                String titolo = resultSet.getString("titolo");
+                String autore = resultSet.getString("autore");
+                int annoPubblicazione = resultSet.getInt("anno_pubblicazione");
+                String isbn = resultSet.getString("isbn");
+
+                Libro libro1 = new Libro(titolo, autore, annoPubblicazione, isbn);
+                biblioteca.aggiungi(libro1);
+
+
+                System.out.println("Titolo: " + titolo + ", Autore: " + autore + ", Anno Pubblicazione: " + annoPubblicazione
+                        + " ISBN: " + isbn + " E' disponibile? " + isDisponibilita(libro1));
+            }
+            }catch(SQLException e){
+            System.out.println("Errore: " + e.getMessage());
         }
     }
 
-    /**
-     * Aggiunge un prestito alla lista dei prestiti, verificando la disponibilità del libro.
-     *
-     * @param p Il prestito da aggiungere.
-     * @throws IllegalArgumentException se il libro è già in prestito.
-     */
-    public void aggiungiPrestito(Prestito p) {
-        if (!isDisponibilita(p.getLibro())) {
-            throw new IllegalArgumentException("Il libro \"" + p.getLibro().getTitolo() + "\" è già in prestito.");
-        }
-        listaPrestiti.add(p);
-    }
+            /**
+             * Aggiunge un prestito alla lista dei prestiti, verificando la disponibilità del libro.
+             *
+             * @param p Il prestito da aggiungere.
+             * @throws IllegalArgumentException se il libro è già in prestito.
+             */
+            public void aggiungiPrestito (Prestito p){
+                if (!isDisponibilita(p.getLibro())) {
+                    throw new IllegalArgumentException("Il libro \"" + p.getLibro().getTitolo() + "\" è già in prestito.");
+                }
+                listaPrestiti.add(p);
+            }
 
-    /**
-     * Rimuove un prestito dalla lista dei prestiti.
-     *
-     * @param p Il prestito da rimuovere.
-     * @throws IllegalArgumentException se il libro non è in prestito.
-     */
-    public void rimuoviPrestito(Prestito p) {
-        boolean trovato = false;
+            /**
+             * Rimuove un prestito dalla lista dei prestiti.
+             *
+             * @param p Il prestito da rimuovere.
+             * @throws IllegalArgumentException se il libro non è in prestito.
+             */
+            public void rimuoviPrestito (Prestito p){
+                boolean trovato = false;
 
-        Iterator<Prestito> iterator = listaPrestiti.iterator();
-        while (iterator.hasNext()) {
-            Prestito prestito = iterator.next();
-            if (prestito.equals(p)) {
-                iterator.remove();  // Rimozione sicura durante l'iterazione
-                trovato = true;
-                break;
+                Iterator<Prestito> iterator = listaPrestiti.iterator();
+                while (iterator.hasNext()) {
+                    Prestito prestito = iterator.next();
+                    if (prestito.equals(p)) {
+                        iterator.remove();  // Rimozione sicura durante l'iterazione
+                        trovato = true;
+                        break;
+                    }
+                }
+
+                if (!trovato) {
+                    throw new IllegalArgumentException("Il libro \"" + p.getLibro().getTitolo() + "\" non è in prestito. Impossibile restituirlo.");
+                }
+            }
+
+            /**
+             * Verifica se un utente esiste nella lista degli utenti registrati.
+             *
+             * @param utenteVerifica L'utente da verificare.
+             * @return true se l'utente esiste, false altrimenti.
+             */
+            public boolean esisteUtente (Utente utenteVerifica){
+                for (Utente utente : listaUtenti) {
+                    if (utente.equals(utenteVerifica)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            /**
+             * Stampa l'elenco dei prestiti specificati.
+             *
+             * @param list La lista di prestiti da stampare.
+             */
+            public void stampaListaPrestiti (List < Prestito > list) {
+                for (Prestito p : list) {
+                    System.out.println(p);
+                }
+            }
+
+            /**
+             * Restituisce la lista dei prestiti associati a un utente specifico.
+             *
+             * @param utenteVerifica L'utente di cui recuperare i prestiti.
+             * @return La lista dei prestiti dell'utente specificato.
+             */
+            public List<Prestito> listaPrestitiPerUtente (Utente utenteVerifica){
+                List<Prestito> prestitiUtente = new ArrayList<>();
+
+                for (Prestito prestito : listaPrestiti) {
+                    if (prestito.getUtente().equals(utenteVerifica)) {
+                        prestitiUtente.add(prestito);
+                    }
+                }
+                return prestitiUtente;
+            }
+
+            /**
+             * Cerca un libro nella biblioteca in base al titolo, ignorando maiuscole e minuscole.
+             *
+             * @param titolo Il titolo del libro da cercare.
+             * @return Il libro trovato, o null se nessun libro corrisponde al titolo.
+             */
+            public Libro cercaLibroPerTitolo (String titolo){
+                for (int i = 0; i < size; i++) { // SELECT * FROM Libri WHERE Nome LIKE '%titolo%'......
+                    Libro l = dati[i];
+                    if (l != null && l.getTitolo().equalsIgnoreCase(titolo)) {
+                        return l;
+                    }
+                }
+                return null;
             }
         }
-
-        if (!trovato) {
-            throw new IllegalArgumentException("Il libro \"" + p.getLibro().getTitolo() + "\" non è in prestito. Impossibile restituirlo.");
-        }
-    }
-
-    /**
-     * Verifica se un utente esiste nella lista degli utenti registrati.
-     *
-     * @param utenteVerifica L'utente da verificare.
-     * @return true se l'utente esiste, false altrimenti.
-     */
-    public boolean esisteUtente(Utente utenteVerifica) {
-        for (Utente utente : listaUtenti) {
-            if (utente.equals(utenteVerifica)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Stampa l'elenco dei prestiti specificati.
-     *
-     * @param list La lista di prestiti da stampare.
-     */
-    public void stampaListaPrestiti(List<Prestito> list) {
-        for (Prestito p : list) {
-            System.out.println(p);
-        }
-    }
-
-    /**
-     * Restituisce la lista dei prestiti associati a un utente specifico.
-     *
-     * @param utenteVerifica L'utente di cui recuperare i prestiti.
-     * @return La lista dei prestiti dell'utente specificato.
-     */
-    public List<Prestito> listaPrestitiPerUtente(Utente utenteVerifica) {
-        List<Prestito> prestitiUtente = new ArrayList<>();
-
-        for (Prestito prestito : listaPrestiti) {
-            if (prestito.getUtente().equals(utenteVerifica)) {
-                prestitiUtente.add(prestito);
-            }
-        }
-        return prestitiUtente;
-    }
-
-    /**
-     * Cerca un libro nella biblioteca in base al titolo, ignorando maiuscole e minuscole.
-     *
-     * @param titolo Il titolo del libro da cercare.
-     * @return Il libro trovato, o null se nessun libro corrisponde al titolo.
-     */
-    public Libro cercaLibroPerTitolo(String titolo) {
-        for (int i = 0; i < size; i++) { // SELECT * FROM Libri WHERE Nome LIKE '%titolo%'......
-            Libro l = dati[i];
-            if (l != null && l.getTitolo().equalsIgnoreCase(titolo)) {
-                return l;
-            }
-        }
-        return null;
-    }
-}
