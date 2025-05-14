@@ -5,6 +5,8 @@ import com.biblioteca.model.Libro;
 import com.biblioteca.model.Utente;
 import com.biblioteca.model.Prestito;
 
+import java.lang.module.Configuration;
+import java.sql.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -16,6 +18,14 @@ import java.util.Scanner;
  */
 public class Main {
 
+    private static final Configuration c = new Configuration();
+
+    private static final String JDBC_URL = c.getProperties().getProperty("jdbcurl");
+
+    private static final String USERNAME = c.getProperties().getProperty("username");
+
+    private static final String PASSWORD = c.getProperties().getProperty("password");
+
     /**
      * Punto di ingresso dell'applicazione Biblioteca.
      * Inizializza i libri, li aggiunge alla biblioteca, crea un utente
@@ -25,6 +35,47 @@ public class Main {
      * @param args Argomenti della riga di comando (non utilizzati in questa applicazione).
      */
     public static void main(String[] args) {
+
+        System.out.println(c.getProperties().getProperty("username"));
+
+        Biblioteca biblioteca = new Biblioteca();
+
+        Connection connection = null;
+        try {
+            connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            System.out.println("Connected to the database!");
+
+            Statement statement = connection.createStatement();
+
+            String query = "SELECT * FROM biblioteca.libri";
+
+            System.out.println("QUERY UTENTE: " + query);
+            ResultSet resultSet = statement.executeQuery(query);
+
+            System.out.println("\n");
+            while (resultSet.next()) {
+                String titolo = resultSet.getString("titolo");
+                String autore = resultSet.getString("autore");
+                int annoPubblicazione = resultSet.getInt("anno_pubblicazione");
+                long isbn = resultSet.getLong("isbn");
+
+                Libro libro1 = new Libro(titolo, autore, annoPubblicazione, isbn);
+                biblioteca.aggiungi(libro1);
+
+
+                System.out.println("Titolo: " + titolo + ", Autore: " + autore + ", Anno Pubblicazione: " + annoPubblicazione
+                        + " ISBN: " + isbn);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Errore: " + e.getMessage());
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                System.out.println("Error");
+            }
+        }
         /** Scanner per la lettura dell'input dell'utente dalla console. */
         Scanner sc = new Scanner(System.in);
 
