@@ -1,6 +1,7 @@
 package com.biblioteca.model;
 
 import com.biblioteca.main.Configuration;
+import com.biblioteca.repository.BibliotecaRepository;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,15 +19,7 @@ import java.sql.*;
  */
 public class Biblioteca {
 
-    private static final Configuration c = new Configuration();
-
-    private static final String JDBC_URL = c.getProperties().getProperty("jdbcurl");
-
-    private static final String USERNAME = c.getProperties().getProperty("username");
-
-    private static final String PASSWORD = c.getProperties().getProperty("password");
-
-    Connection connection = null;
+    BibliotecaRepository repository = new BibliotecaRepository();
 
     /**
      * Lista degli utenti registrati nella biblioteca.
@@ -55,9 +48,13 @@ public class Biblioteca {
      * @param l Il libro da aggiungere.
      */
     public void aggiungi(Libro l) {
-        if (size < dati.length) { // deve diventare una INSERT
-            dati[size++] = l;
+
+        try {
+            repository.addNewLibro(l.getTitolo(), l.getAutore(), l.getAnnoPubblicazione(), l.getISBN());
+        } catch (SQLException e) {
+            System.err.println("Libro non aggiunto " + e);
         }
+
     }
 
     /**
@@ -112,34 +109,16 @@ public class Biblioteca {
      * Visualizza l'elenco dei libri presenti nella biblioteca.
      * Se la biblioteca è vuota, stampa un messaggio di errore.
      */
-    public void elencoLibri(Biblioteca biblioteca) {
-
+    public void elencoLibri() {
 
         try {
-            connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            List<Libro> listaLibri = repository.findAllLibri();
 
-            Statement statement = connection.createStatement();
-
-            String queryElencoLibri = "SELECT * FROM biblioteca.libri";
-
-            ResultSet resultSet = statement.executeQuery(queryElencoLibri);
-
-            System.out.println("\n");
-            while (resultSet.next()) {
-                String titolo = resultSet.getString("titolo");
-                String autore = resultSet.getString("autore");
-                int annoPubblicazione = resultSet.getInt("anno_pubblicazione");
-                String isbn = resultSet.getString("isbn");
-
-                Libro libro1 = new Libro(titolo, autore, annoPubblicazione, isbn);
-                biblioteca.aggiungi(libro1);
-
-
-                System.out.println("Titolo: " + titolo + ", Autore: " + autore + ", Anno Pubblicazione: " + annoPubblicazione
-                        + " ISBN: " + isbn + " E' disponibile? " + isDisponibilita(libro1));
+            for (Libro l : listaLibri) {
+                System.out.println(l);
             }
-            }catch(SQLException e){
-            System.out.println("Errore: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Elenco non trovato " + e);
         }
     }
 

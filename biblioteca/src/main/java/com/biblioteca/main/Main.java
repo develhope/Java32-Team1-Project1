@@ -4,6 +4,7 @@ import com.biblioteca.model.Biblioteca;
 import com.biblioteca.model.Libro;
 import com.biblioteca.model.Utente;
 import com.biblioteca.model.Prestito;
+import com.biblioteca.repository.BibliotecaRepository;
 
 import java.sql.*;
 import java.util.InputMismatchException;
@@ -88,6 +89,7 @@ public class Main {
                     "2 - Fai un prestito" + "\n" +
                     "3 - Restituisci un libro" + "\n" +
                     "4 - Visualizza i prestiti effettuati" + "\n" +
+                    "5 - Aggiungi un libro" + "\n" +
                     "0 - Esci");
 
             /** Scelta dell'utente dal menu, inizializzata a un valore non valido. */
@@ -107,10 +109,10 @@ public class Main {
              */
             switch (scelta) {
                 case 1:
-                    /** Visualizza l'elenco dei libri nella biblioteca. */
-                    System.out.println("Elenco dei libri disponibili: ");
-                    biblioteca.elencoLibri(biblioteca);
-                    break;
+                        /** Visualizza l'elenco dei libri nella biblioteca. */
+                        System.out.println("Elenco dei libri disponibili: ");
+                        biblioteca.elencoLibri();
+                        break;
 
                 case 2:
                     /** Gestisce il processo di prestito di un libro. */
@@ -121,9 +123,9 @@ public class Main {
                     Libro libro = null;
 
                     // Richiede il titolo del libro finché non viene trovato un libro valido
-                    while (libro == null) {
+                    while (libro == null) { // try catch
                         System.out.println("Inserisci il titolo del libro che vuoi prendere in prestito:");
-                        biblioteca.elencoLibri(biblioteca);
+                        biblioteca.elencoLibri();
                         String titoloLibro = sc.nextLine();
                         try {
                             libro = biblioteca.cercaLibroPerTitolo(titoloLibro);
@@ -252,6 +254,41 @@ public class Main {
                     if (id != -1 && biblioteca.listaPrestitiPerUtente(utenteDaVerificare).isEmpty()) {
                         System.err.println("L'utente non ha eseguito nessun prestito.");
                         break;
+                    }
+                    break;
+
+                case 5:
+                    Libro libroNuovo = null;
+
+                    // Richiede il titolo del libro finché non viene trovato un libro valido
+                    while (libroNuovo == null) { // try catch
+                        System.out.println("Inserisci i dati del libro nuovo");
+
+                        libroNuovo = new Libro();
+
+                        System.out.println("\n Inserisci il titolo del libro: ");
+                        String titoloLibroNuovo = sc.nextLine();
+                        System.out.println("Inserisci l'autore del libro: ");
+                        String autoreLibroNuovo = sc.nextLine();
+                        System.out.println("Inserisci l'anno di pubblicazione: ");
+                        int annoLibroNuovo = sc.nextInt();
+                        sc.nextLine();
+                        System.out.println("Inserisci l'ISBN del libro: ");
+                        String isbnLibroNuovo = sc.nextLine();
+
+
+                        libroNuovo.setTitolo(titoloLibroNuovo);
+                        libroNuovo.setAutore(autoreLibroNuovo);
+                        libroNuovo.setAnnoPubblicazione(annoLibroNuovo);
+                        libroNuovo.setISBN(isbnLibroNuovo);
+
+                        biblioteca.aggiungi(libroNuovo);
+
+                        System.out.println("Libro aggiunto con successo!");
+
+                        if (libroNuovo == null) {
+                            System.err.println("Devi inserire i dati");
+                        }
                     }
                     break;
 
