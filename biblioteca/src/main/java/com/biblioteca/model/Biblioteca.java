@@ -87,7 +87,7 @@ public class Biblioteca {
      * @return Il libro all'indice specificato, o null se l'indice non è valido.
      */
     public Libro get(int index) {
-        return dati[index];
+        return dati[index]; // SELECT * FROM libri WHERE ID = '2' OR titolo = 'titolo libro'
     }
 
     /**
@@ -209,12 +209,14 @@ public class Biblioteca {
              * @return Il libro trovato, o null se nessun libro corrisponde al titolo.
              */
             public Libro cercaLibroPerTitolo (String titolo){
-                for (int i = 0; i < size; i++) { // SELECT * FROM Libri WHERE Nome LIKE '%titolo%'......
-                    Libro l = dati[i];
-                    if (l != null && l.getTitolo().equalsIgnoreCase(titolo)) {
-                        return l;
-                    }
+
+                Libro libroRisultato = null;
+
+                try {
+                    libroRisultato = repository.cercaTitolo(titolo);
+                } catch (SQLException e) {
+                    System.err.println("Errore nella ricerca del libro " + e);
                 }
-                return null;
+                return libroRisultato;
             }
         }

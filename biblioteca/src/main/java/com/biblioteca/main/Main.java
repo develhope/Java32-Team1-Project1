@@ -90,6 +90,7 @@ public class Main {
                     "3 - Restituisci un libro" + "\n" +
                     "4 - Visualizza i prestiti effettuati" + "\n" +
                     "5 - Aggiungi un libro" + "\n" +
+                    "6 - Cerca libro" + "\n" +
                     "0 - Esci");
 
             /** Scelta dell'utente dal menu, inizializzata a un valore non valido. */
@@ -260,8 +261,7 @@ public class Main {
                 case 5:
                     Libro libroNuovo = null;
 
-                    // Richiede il titolo del libro finché non viene trovato un libro valido
-                    while (libroNuovo == null) { // try catch
+                    while (libroNuovo == null) {
                         System.out.println("Inserisci i dati del libro nuovo");
 
                         libroNuovo = new Libro();
@@ -291,6 +291,15 @@ public class Main {
                         }
                     }
                     break;
+
+                case 6:
+                        System.out.println("Inserisci il titolo del libro che vuoi cercare:");
+
+                        String t = sc.nextLine();
+
+                        System.out.println(biblioteca.cercaLibroPerTitolo(t));
+
+                        break;
 
                 case 0:
                     /** Esce dall'applicazione. */

@@ -65,5 +65,22 @@ public class BibliotecaRepository {
 
     }
 
+    public Libro cercaTitolo (String titolo) throws SQLException {
 
+        String queryCercaTitolo = "SELECT * FROM libri WHERE titolo LIKE CONCAT('%', ?, '%')";
+        PreparedStatement statement = connection.prepareStatement(queryCercaTitolo);
+
+        statement.setString(1, titolo);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            String t = resultSet.getString("titolo");
+            String a = resultSet.getString("autore");
+            int annoP = resultSet.getInt("anno_pubblicazione");
+            String i = resultSet.getString("isbn");
+            return new Libro(t, a, annoP, i);
+        } else {
+            System.out.println("Nessun libro trovato.");
+        }
+        return null;
+    }
 }
