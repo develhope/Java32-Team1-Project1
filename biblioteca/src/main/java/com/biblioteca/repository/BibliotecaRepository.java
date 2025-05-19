@@ -53,7 +53,7 @@ public class BibliotecaRepository {
     }
 
     public void addNewLibro(String titolo, String autore, int annoPubblicazione, String isbn) throws SQLException {
-        String queryAddNewLibro = "INSERT INTO biblioteca.libri VALUES (?, ?, ?, ?)";
+        String queryAddNewLibro = "INSERT INTO biblioteca.libri (titolo , autore , anno_pubblicazione , isbn) VALUES (?, ?, ?, ?)"; //specificare valori
         PreparedStatement statement = connection.prepareStatement(queryAddNewLibro);
 
         statement.setString(1, titolo);
