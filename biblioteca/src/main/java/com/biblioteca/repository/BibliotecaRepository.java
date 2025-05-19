@@ -24,7 +24,7 @@ public class BibliotecaRepository {
                     c.getProperties().getProperty("password")
             );
         } catch (SQLException e) {
-            System.err.println("Errore di connessione " + e);
+            throw new IllegalStateException("Errore di connessione ", e);
         }
     }
 
@@ -53,7 +53,8 @@ public class BibliotecaRepository {
     }
 
     public void addNewLibro(String titolo, String autore, int annoPubblicazione, String isbn) throws SQLException {
-        String queryAddNewLibro = "INSERT INTO biblioteca.libri (titolo , autore , anno_pubblicazione , isbn) VALUES (?, ?, ?, ?)"; //specificare valori
+        String queryAddNewLibro = "INSERT INTO biblioteca.libri (titolo , autore , anno_pubblicazione , isbn)" +
+                " VALUES (?, ?, ?, ?)"; //specificare valori
         PreparedStatement statement = connection.prepareStatement(queryAddNewLibro);
 
         statement.setString(1, titolo);
