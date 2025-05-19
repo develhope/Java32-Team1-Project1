@@ -46,6 +46,7 @@ public class Libro {
         this.autore = autore;
         this.annoPubblicazione = annoPubblicazione;
         this.ISBN = ISBN;
+        //aggiungere controlli
     }
 
     /**

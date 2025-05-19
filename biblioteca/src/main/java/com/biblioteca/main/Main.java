@@ -18,13 +18,13 @@ import java.util.Scanner;
  */
 public class Main {
 
-    private static final Configuration c = new Configuration();
-
-    private static final String JDBC_URL = c.getProperties().getProperty("jdbcurl");
-
-    private static final String USERNAME = c.getProperties().getProperty("username");
-
-    private static final String PASSWORD = c.getProperties().getProperty("password");
+//    private static final Configuration c = new Configuration();
+//
+//    private static final String JDBC_URL = c.getProperties().getProperty("jdbcurl");
+//
+//    private static final String USERNAME = c.getProperties().getProperty("username");
+//
+//    private static final String PASSWORD = c.getProperties().getProperty("password");
 
     /**
      * Punto di ingresso dell'applicazione Biblioteca.
@@ -261,10 +261,8 @@ public class Main {
                 case 5:
                     Libro libroNuovo = null;
 
-                    while (libroNuovo == null) {
+                    while (libroNuovo == null) {// da modificare
                         System.out.println("Inserisci i dati del libro nuovo");
-
-                        libroNuovo = new Libro();
 
                         System.out.println("\n Inserisci il titolo del libro: ");
                         String titoloLibroNuovo = sc.nextLine();
@@ -276,19 +274,15 @@ public class Main {
                         System.out.println("Inserisci l'ISBN del libro: ");
                         String isbnLibroNuovo = sc.nextLine();
 
-
-                        libroNuovo.setTitolo(titoloLibroNuovo);
-                        libroNuovo.setAutore(autoreLibroNuovo);
-                        libroNuovo.setAnnoPubblicazione(annoLibroNuovo);
-                        libroNuovo.setISBN(isbnLibroNuovo);
-
-                        biblioteca.aggiungi(libroNuovo);
-
-                        System.out.println("Libro aggiunto con successo!");
-
-                        if (libroNuovo == null) {
-                            System.err.println("Devi inserire i dati");
+                        try {
+                            libroNuovo = new Libro(titoloLibroNuovo, autoreLibroNuovo, annoLibroNuovo, isbnLibroNuovo);
+                            biblioteca.aggiungi(libroNuovo);
+                            System.out.println("Libro aggiunto con successo!");
                         }
+                        catch (IllegalArgumentException e){
+                            System.err.println("Dati non validi"+e.getMessage());
+                        }
+
                     }
                     break;
 
