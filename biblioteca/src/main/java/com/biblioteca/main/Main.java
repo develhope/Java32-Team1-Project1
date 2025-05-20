@@ -5,6 +5,7 @@ import com.biblioteca.model.Libro;
 import com.biblioteca.model.Utente;
 import com.biblioteca.model.Prestito;
 import com.biblioteca.repository.BibliotecaRepository;
+import com.biblioteca.repository.UtenteRepository;
 
 import java.sql.*;
 import java.util.InputMismatchException;
@@ -34,7 +35,7 @@ public class Main {
      *
      * @param args Argomenti della riga di comando (non utilizzati in questa applicazione).
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
         Biblioteca biblioteca = new Biblioteca();
 
@@ -75,8 +76,9 @@ public class Main {
         boolean uscita = false;
 
         /** Utente corrente, inizializzato come amministratore. */
-        Utente utenteCorrente = new Utente("Amministratore", "N/D", 000);
-        biblioteca.listaUtenti.add(utenteCorrente);
+        System.out.println("Benvenuto, inserisca il suo id !");
+        int idUtente = sc.nextInt();
+        biblioteca.cercaUtentePerId(idUtente);
 
         /**
          * Ciclo principale dell'applicazione che mostra un menu e processa l'input dell'utente.
@@ -294,6 +296,10 @@ public class Main {
                         System.out.println(biblioteca.cercaLibroPerTitolo(t));
 
                         break;
+
+//                case 7:
+//                    UtenteRepository utente = new UtenteRepository();
+//                        utente.findById(4);
 
                 case 0:
                     /** Esce dall'applicazione. */
