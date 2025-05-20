@@ -5,7 +5,7 @@ CREATE TABLE libri (
 titolo VARCHAR (100),
 autore VARCHAR (100),
 anno_pubblicazione INT,
-isbn VARCHAR (20) PRIMARY KEY;
+isbn VARCHAR (20) PRIMARY KEY);
 
 -- utenti
 CREATE TABLE utenti (

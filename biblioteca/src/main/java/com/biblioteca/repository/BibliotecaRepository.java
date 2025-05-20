@@ -11,22 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class BibliotecaRepository {
-
-    private static final Configuration c = new Configuration();
-    private Connection connection;
-
-    public BibliotecaRepository() {
-        try {
-            connection = DriverManager.getConnection(
-                    c.getProperties().getProperty("jdbcurl"),
-                    c.getProperties().getProperty("username"),
-                    c.getProperties().getProperty("password")
-            );
-        } catch (SQLException e) {
-            throw new IllegalStateException("Errore di connessione ", e);
-        }
-    }
+public class BibliotecaRepository extends AbstractRepository {
 
 
     public List<Libro> findAllLibri() throws SQLException {
