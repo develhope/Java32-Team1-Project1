@@ -6,6 +6,7 @@ import com.biblioteca.model.Utente;
 import com.biblioteca.model.Prestito;
 import com.biblioteca.repository.BibliotecaRepository;
 import com.biblioteca.repository.UtenteRepository;
+import com.biblioteca.service.BibliotecaService;
 
 import java.sql.*;
 import java.util.InputMismatchException;
@@ -22,13 +23,7 @@ public class Main {
     static UtenteRepository utenteRepository = new UtenteRepository();
     static BibliotecaRepository bibliotecaRepository = new BibliotecaRepository();
 
-//    private static final Configuration c = new Configuration();
-//
-//    private static final String JDBC_URL = c.getProperties().getProperty("jdbcurl");
-//
-//    private static final String USERNAME = c.getProperties().getProperty("username");
-//
-//    private static final String PASSWORD = c.getProperties().getProperty("password");
+    static BibliotecaService bibliotecaService = new BibliotecaService();
 
     /**
      * Punto di ingresso dell'applicazione Biblioteca.
@@ -81,7 +76,7 @@ public class Main {
         /** Utente corrente, inizializzato come amministratore. */
         System.out.println("Benvenuto, inserisca il suo id !");
         int idUtente = sc.nextInt();
-        biblioteca.cercaUtentePerId(idUtente);
+        Utente utenteCorrente = utenteRepository.findById(idUtente);
 
         /**
          * Ciclo principale dell'applicazione che mostra un menu e processa l'input dell'utente.
@@ -117,7 +112,7 @@ public class Main {
                 case 1:
                         /** Visualizza l'elenco dei libri nella biblioteca. */
                         System.out.println("Elenco dei libri disponibili: ");
-                        biblioteca.elencoLibri();
+                        bibliotecaService.elencoLibri();
                         break;
 
                 case 2:
@@ -131,10 +126,10 @@ public class Main {
                     // Richiede il titolo del libro finché non viene trovato un libro valido
                     while (libro == null) { // try catch
                         System.out.println("Inserisci il titolo del libro che vuoi prendere in prestito:");
-                        biblioteca.elencoLibri();
+                        bibliotecaService.elencoLibri();
                         String titoloLibro = sc.nextLine();
                         try {
-                            libro = biblioteca.cercaLibroPerTitolo(titoloLibro);
+                            libro = bibliotecaRepository.cercaTitolo(titoloLibro);
                         } catch (NullPointerException e) {
                             // Gestisce eventuali eccezioni di puntatore nullo (anche se non tipicamente sollevate qui)
                         }
@@ -187,17 +182,17 @@ public class Main {
                     }
 
                     // Visualizza i prestiti attivi dell'utente
-                    try {
-                        biblioteca.stampaListaPrestiti(biblioteca.listaPrestitiPerUtente(utenteDaVerificare));
-                    } catch (IllegalArgumentException e) {
-                        System.err.println("Errore: " + e.getMessage());
-                    }
+//                    try {
+//                        biblioteca.stampaListaPrestiti(biblioteca.listaPrestitiPerUtente(utenteDaVerificare));
+//                    } catch (IllegalArgumentException e) {
+//                        System.err.println("Errore: " + e.getMessage());
+//                    }
 
                     // Verifica se l'utente ha prestiti attivi
-                    if (id != -1 && biblioteca.listaPrestitiPerUtente(utenteDaVerificare).isEmpty()) {
-                        System.err.println("L'utente non ha eseguito nessun prestito.");
-                        break;
-                    }
+//                    if (id != -1 && biblioteca.listaPrestitiPerUtente(utenteDaVerificare).isEmpty()) {
+//                        System.err.println("L'utente non ha eseguito nessun prestito.");
+//                        break;
+//                    }
 
                     /** Libro da restituire, inizialmente nullo. */
                     libro = null;
@@ -205,7 +200,7 @@ public class Main {
                     while (libro == null) {
                         String titoloLibro = sc.nextLine();
                         try {
-                            libro = biblioteca.cercaLibroPerTitolo(titoloLibro);
+                            libro = bibliotecaRepository.cercaTitolo(titoloLibro);
                         } catch (NullPointerException e) {
                             // Gestisce eventuali eccezioni di puntatore nullo
                             if (libro == null) {
@@ -250,17 +245,17 @@ public class Main {
                     }
 
                     // Visualizza i prestiti dell'utente
-                    try {
-                        biblioteca.stampaListaPrestiti(biblioteca.listaPrestitiPerUtente(utenteDaVerificare));
-                    } catch (IllegalArgumentException e) {
-                        System.err.println("Errore: " + e.getMessage());
-                    }
+//                    try {
+//                        biblioteca.stampaListaPrestiti(biblioteca.listaPrestitiPerUtente(utenteDaVerificare));
+//                    } catch (IllegalArgumentException e) {
+//                        System.err.println("Errore: " + e.getMessage());
+//                    }
 
                     // Verifica se l'utente ha prestiti attivi
-                    if (id != -1 && biblioteca.listaPrestitiPerUtente(utenteDaVerificare).isEmpty()) {
-                        System.err.println("L'utente non ha eseguito nessun prestito.");
-                        break;
-                    }
+//                    if (id != -1 && biblioteca.listaPrestitiPerUtente(utenteDaVerificare).isEmpty()) {
+//                        System.err.println("L'utente non ha eseguito nessun prestito.");
+//                        break;
+//                    }
                     break;
 
                 case 5:
@@ -281,7 +276,7 @@ public class Main {
 
                         try {
                             libroNuovo = new Libro(titoloLibroNuovo, autoreLibroNuovo, annoLibroNuovo, isbnLibroNuovo);
-                            biblioteca.aggiungi(libroNuovo);
+//                            bibliotecaRepository.addNewLibro(libroNuovo); //modificare i parametri
                             System.out.println("Libro aggiunto con successo!");
                         }
                         catch (IllegalArgumentException e){
@@ -296,7 +291,7 @@ public class Main {
 
                         String t = sc.nextLine();
 
-                        System.out.println(biblioteca.cercaLibroPerTitolo(t));
+                        System.out.println(bibliotecaRepository.cercaTitolo(t));
 
                         break;
 
