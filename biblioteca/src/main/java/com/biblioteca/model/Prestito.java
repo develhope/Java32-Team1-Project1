@@ -1,5 +1,8 @@
 package com.biblioteca.model;
 
+
+
+import java.sql.Date; //oppure import java.util.Date?
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -13,9 +16,10 @@ public class Prestito {
     /** Libro associato al prestito. */
     private final Libro libro;
 
-    private LocalDateTime dataPrestito;
+    //prima era LocalDateTime ma dava problemi con il tipo nel db
+    private Date dataPrestito;
 
-    private LocalDateTime dataRestituzione;
+    private Date dataRestituzione;
     /**
      * Costruttore che crea un prestito, verificando la disponibilità del libro.
      *
@@ -23,7 +27,7 @@ public class Prestito {
      * @param utente L'utente che prende in prestito il libro.
      * @throws IllegalArgumentException se il libro non è disponibile.
      */
-    public Prestito(Libro libro, Utente utente, LocalDateTime dataPrestito, LocalDateTime dataRestituzione ) {
+    public Prestito(Libro libro, Utente utente, Date dataPrestito, Date dataRestituzione ) {
         this.utente = utente;
         this.libro = libro;
         this.dataPrestito = dataPrestito;
@@ -50,19 +54,19 @@ public class Prestito {
 
     // Override di equals e hashCode per confrontare prestiti
 
-    public LocalDateTime getDataPrestito() {
+    public Date getDataPrestito() {
         return dataPrestito;
     }
 
-    public LocalDateTime getDataRestituzione() {
+    public Date getDataRestituzione() {
         return dataRestituzione;
     }
 
-    public void setDataPrestito(LocalDateTime dataPrestito) {
+    public void setDataPrestito(Date dataPrestito) {
         this.dataPrestito = dataPrestito;
     }
 
-    public void setDataRestituzione(LocalDateTime dataRestituzione) {
+    public void setDataRestituzione(Date dataRestituzione) {
         this.dataRestituzione = dataRestituzione;
     }
     /**
@@ -95,6 +99,8 @@ public class Prestito {
         return Objects.equals(libro, other.libro) &&
                 Objects.equals(utente, other.utente);
     }
+
+
 
     /**
      * Calcola il codice hash del prestito basato sull'utente e sul libro.

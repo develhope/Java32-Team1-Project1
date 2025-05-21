@@ -1,23 +1,43 @@
 package com.biblioteca.repository;
 
+import com.biblioteca.model.Libro;
 import com.biblioteca.model.Prestito;
 import com.biblioteca.model.Utente;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 public class PrestitoRepository  extends AbstractRepository{
 
     public Prestito findById(int id) throws SQLException {
-        String queryFindById = "SELECT isbn, titolo, id_prestito, nome, cognome, u.id_utente data_prestito FROM prestiti AS p JOIN  utenti AS u ON p.id_utente = u.id_utente WHERE " + id + " id_prestito " ;
-//        SELECT id_prestito, nome, cognome, data_prestito FROM prestiti AS p JOIN  utenti AS u ON p.id_utente = u.id_utente WHERE  id_prestito = ?;
+
+        String queryFindById =
+                "SELECT * " +
+                "FROM prestiti AS p JOIN  utenti AS u ON p.id_utente = u.id_utente " +
+                "JOIN libri AS l ON l.isbn = p.isbn WHERE p.id_prestito = ?";
+
         PreparedStatement statement = connection.prepareStatement(queryFindById);
+        statement.setInt(1,id);
         ResultSet resultSet = statement.executeQuery();
+
         if (resultSet.next()) {
-            return new Prestito(resultSet.getInt("id"), resultSet.getString("cognome"),id );
+            Utente u = new Utente(resultSet.getString("nome"),
+                                  resultSet.getString("cognome"),
+                                    resultSet.getInt("id_utente"));
+
+            Libro l = new Libro(resultSet.getString("titolo"),
+                                resultSet.getString("autore"),
+                                resultSet.getInt("anno_pubblicazione"),
+                                resultSet.getString("isbn"));
+
+            Date data_prestito = resultSet.getDate("data_prestito");
+            Date data_restituzione = resultSet.getDate("data_restituzione");
+            return new Prestito(l,u,data_prestito,data_restituzione);
         }
-        System.out.println(resultSet.next());
+
 
         return null;
     }

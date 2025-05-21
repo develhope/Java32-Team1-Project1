@@ -5,6 +5,7 @@ import com.biblioteca.model.Libro;
 import com.biblioteca.model.Utente;
 import com.biblioteca.model.Prestito;
 import com.biblioteca.repository.LibroRepository;
+import com.biblioteca.repository.PrestitoRepository;
 import com.biblioteca.repository.UtenteRepository;
 import com.biblioteca.service.BibliotecaService;
 
@@ -127,13 +128,13 @@ public class Main {
                         }
                     }
 
-                    try {
-                        biblioteca.aggiungiPrestito(prestito);
-                        System.out.println("Prestito effettuato: " + prestito.getUtente().getNome() +
-                                " ha preso \"" + prestito.getLibro().getTitolo() + "\".");
-                    } catch (IllegalArgumentException e) {
-                        System.err.println("Errore: " + e.getMessage());
-                    }
+//                    try {
+//                        biblioteca.aggiungiPrestito(prestito);
+//                        System.out.println("Prestito effettuato: " + prestito.getUtente().getNome() +
+//                                " ha preso \"" + prestito.getLibro().getTitolo() + "\".");
+//                    } catch (IllegalArgumentException e) {
+//                        System.err.println("Errore: " + e.getMessage());
+//                    }
                     break;
 
                 case 3:
@@ -195,14 +196,14 @@ public class Main {
                     }
 
                     // Crea e rimuove il prestito
-                    prestito = new Prestito(libro, utenteDaVerificare);
-                    try {
-                        biblioteca.rimuoviPrestito(prestito);
-                        System.out.println("Restituzione effettuata.");
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("Errore: " + e.getMessage());
-                    }
-                    break;
+//                    prestito = new Prestito(libro, utenteDaVerificare);
+//                    try {
+//                        biblioteca.rimuoviPrestito(prestito);
+//                        System.out.println("Restituzione effettuata.");
+//                    } catch (IllegalArgumentException e) {
+//                        System.out.println("Errore: " + e.getMessage());
+//                    }
+//                    break;
 
                 case 4:
                     /* Visualizza i prestiti effettuati da un utente specifico. */
