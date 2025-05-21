@@ -1,6 +1,6 @@
 package com.biblioteca.main;
 
-import com.biblioteca.model.Biblioteca;
+//import com.biblioteca.model.Biblioteca;
 import com.biblioteca.model.Libro;
 import com.biblioteca.model.Utente;
 import com.biblioteca.model.Prestito;
@@ -35,21 +35,21 @@ public class Main {
      * @param args Argomenti della riga di comando (non utilizzati in questa applicazione).
      */
     public static void main(String[] args) throws SQLException {
-
-        Biblioteca biblioteca = new Biblioteca();
+//
+//        Biblioteca biblioteca = new Biblioteca();
 
         /* Scanner per la lettura dell'input dell'utente dalla console. */
         Scanner sc = new Scanner(System.in);
 
-        /* Utente di esempio per testare la funzionalità di prestito. */
-        Utente ut1 = new Utente("fra", "carp", 897);
+////        /* Utente di esempio per testare la funzionalità di prestito. */
+//        Utente ut1 = new Utente("fra", "carp", 897);
 
         /* Prestito di esempio che associa l'utente e il libro. */
 //        Prestito p1 = new Prestito(libro1, ut1);
 //        biblioteca.aggiungiPrestito(p1);
 
-        // Aggiunta dell'utente di esempio alla lista degli utenti della biblioteca
-        biblioteca.listaUtenti.add(ut1);
+//        // Aggiunta dell'utente di esempio alla lista degli utenti della biblioteca
+//        biblioteca.listaUtenti.add(ut1);
 
         /* Flag per controllare il ciclo principale per l'uscita dall'applicazione. */
         boolean uscita = false;
@@ -57,10 +57,31 @@ public class Main {
         /* Utente corrente, inizializzato come amministratore. */
         Utente utenteCorrente = null;
         while (utenteCorrente == null) {
-            System.out.println("Benvenuto, inserisca il suo id !");
-            int idUtente = sc.nextInt();
-            utenteCorrente = utenteRepository.findById(idUtente);
+            System.out.println("Benvenuto, inserisca il suo ID:");
+
+            try {
+                int idUtente = sc.nextInt();
+                utenteCorrente = utenteRepository.findById(idUtente);
+
+                if (utenteCorrente == null) {
+                    System.out.println("Utente non trovato. Riprova.");
+                }
+
+            } catch (InputMismatchException e) {
+                System.err.println("Errore: inserire un numero intero.");
+                sc.nextLine(); // consuma l'input errato
+            } catch (Exception e) {
+                System.err.println("Errore durante la ricerca dell'utente: " + e.getMessage());
+                break; // esce dal ciclo in caso di errore grave
+            }
         }
+
+        if (utenteCorrente != null) {
+            System.out.println("Accesso effettuato con successo: " + utenteCorrente);
+        }
+
+        // sc.close(); // facoltativo se lo scanner viene riutilizzato
+
         System.out.println("Ciao, " + utenteCorrente.getNome() + " " + utenteCorrente.getCognome());
 
         /*
@@ -138,11 +159,11 @@ public class Main {
                     break;
 
                 case 3:
-                    /* Gestisce il processo di restituzione di un libro. */
-                    if (biblioteca.listaPrestiti.isEmpty()) {
-                        System.err.println("Nessun utente ha effettuato prestiti, bisogna prima effettuare un prestito.");
-                        break;
-                    }
+//                    /* Gestisce il processo di restituzione di un libro. */
+//                    if (biblioteca.listaPrestiti.isEmpty()) {
+//                        System.err.println("Nessun utente ha effettuato prestiti, bisogna prima effettuare un prestito.");
+//                        break;
+//                    }
 
                     // Richiede i dettagli dell'utente per verificare l'identità
                     System.out.print("Prima di effettuare l'operazione, inserisci i dati richiesti " +
@@ -163,10 +184,10 @@ public class Main {
                     Utente utenteDaVerificare = new Utente(nome, cognome, id);
 
                     // Verifica se l'utente esiste
-                    if (!biblioteca.esisteUtente(utenteDaVerificare)) {
-                        System.err.println("L'utente non esiste.");
-                        break;
-                    }
+//                    if (!utenteRepository.findById(idUtente)) {
+//                        System.err.println("L'utente non esiste.");
+//                        break;
+//                    }
 
                     // Visualizza i prestiti attivi dell'utente
 //                    try {
@@ -221,14 +242,14 @@ public class Main {
                     }
                     sc.nextLine(); // Pulizia del buffer di input
 
-                    /* Utente da verificare per la visualizzazione dei prestiti. */
-                    utenteDaVerificare = new Utente(nome, cognome, id);
+//                    /* Utente da verificare per la visualizzazione dei prestiti. */
+//                    utenteDaVerificare = new Utente(nome, cognome, id);
 
                     // Verifica se l'utente esiste
-                    if (!biblioteca.esisteUtente(utenteDaVerificare)) {
-                        System.err.println("L'utente non esiste.");
-                        break;
-                    }
+//                    if (!biblioteca.esisteUtente(utenteDaVerificare)) {
+//                        System.err.println("L'utente non esiste.");
+//                        break;
+//                    }
 
                     // Visualizza i prestiti dell'utente
 //                    try {
