@@ -65,4 +65,27 @@ public class LibroRepository extends AbstractRepository {
         }
         return null;
     }
+
+    //metodo ricerca libro per isbn
+    public Libro findById(String isbn){
+        String query = "SELECT * FROM libri WHERE isbn = ?";
+        //try with resources per chiudere le risorse al termine del blocco try-catch
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query))
+        {
+
+            preparedStatement.setString(1,isbn);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if(resultSet.next()){
+                return new Libro(resultSet.getString("titolo"),
+                                 resultSet.getString("autore"),
+                                 resultSet.getInt("anno_pubblicazione"),
+                                 isbn);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+
+    }
 }

@@ -10,4 +10,5 @@ import java.sql.SQLException;
 //serve creare un metodo per la select tramite id di libro
 public class PrestitoRepository extends AbstractRepository {
 
+
 }
