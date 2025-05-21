@@ -19,6 +19,9 @@ import java.util.Scanner;
  */
 public class Main {
 
+    static UtenteRepository utenteRepository = new UtenteRepository();
+    static BibliotecaRepository bibliotecaRepository = new BibliotecaRepository();
+
 //    private static final Configuration c = new Configuration();
 //
 //    private static final String JDBC_URL = c.getProperties().getProperty("jdbcurl");

@@ -18,9 +18,7 @@ import java.sql.*;
  * di capacità massima pari a 100 libri. Gestisce inoltre utenti e prestiti.
  */
 public class Biblioteca {
-
     UtenteRepository utenteRepository = new UtenteRepository();
-    BibliotecaRepository bibliotecaRepository = new BibliotecaRepository();
 
     /**
      * Lista degli utenti registrati nella biblioteca.
@@ -42,21 +40,6 @@ public class Biblioteca {
      * Numero attuale di libri presenti nella biblioteca.
      */
     private int size = 0;
-
-    /**
-     * Aggiunge un libro alla biblioteca, se c'è spazio disponibile.
-     *
-     * @param l Il libro da aggiungere.
-     */
-    public void aggiungi(Libro l) {
-
-        try {
-            bibliotecaRepository.addNewLibro(l.getTitolo(), l.getAutore(), l.getAnnoPubblicazione(), l.getISBN());
-        } catch (SQLException e) {
-            System.err.println("Libro non aggiunto " + e);
-        }
-
-    }
 
     /**
      * Rimuove un libro dalla biblioteca in base all'indice specificato.
@@ -106,22 +89,6 @@ public class Biblioteca {
         return true;
     }
 
-    /**
-     * Visualizza l'elenco dei libri presenti nella biblioteca.
-     * Se la biblioteca è vuota, stampa un messaggio di errore.
-     */
-    public void elencoLibri() {
-
-        try {
-            List<Libro> listaLibri = bibliotecaRepository.findAllLibri();
-
-            for (Libro l : listaLibri) {
-                System.out.println(l);
-            }
-        } catch (SQLException e) {
-            System.err.println("Elenco non trovato " + e);
-        }
-    }
 
     public void elencoUtenti() {
 
@@ -196,52 +163,6 @@ public class Biblioteca {
                 for (Prestito p : list) {
                     System.out.println(p);
                 }
-            }
-
-            /**
-             * Restituisce la lista dei prestiti associati a un utente specifico.
-             *
-             * @param utenteVerifica L'utente di cui recuperare i prestiti.
-             * @return La lista dei prestiti dell'utente specificato.
-             */
-            public List<Prestito> listaPrestitiPerUtente (Utente utenteVerifica){
-                List<Prestito> prestitiUtente = new ArrayList<>();
-
-                for (Prestito prestito : listaPrestiti) {
-                    if (prestito.getUtente().equals(utenteVerifica)) {
-                        prestitiUtente.add(prestito);
-                    }
-                }
-                return prestitiUtente;
-            }
-
-            /**
-             * Cerca un libro nella biblioteca in base al titolo, ignorando maiuscole e minuscole.
-             *
-             * @param titolo Il titolo del libro da cercare.
-             * @return Il libro trovato, o null se nessun libro corrisponde al titolo.
-             */
-            public Libro cercaLibroPerTitolo (String titolo){
-
-                Libro libroRisultato = null;
-
-                try {
-                    libroRisultato = bibliotecaRepository.cercaTitolo(titolo);
-                } catch (SQLException e) {
-                    System.err.println("Errore nella ricerca del libro " + e);
-                }
-                return libroRisultato;
-            }
-
-            public Utente cercaUtentePerId(int id){
-
-                try {
-                    return utenteRepository.findById(id);
-                } catch (SQLException e) {
-                    System.err.println("Errore nella ricerca dell' utente " + e);
-                    return null;
-                }
-
             }
 
         }
