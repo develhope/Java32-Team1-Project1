@@ -33,15 +33,15 @@ public class LibroRepository extends AbstractRepository {
         return libri;
     }
 
-    public void addNewLibro(String titolo, String autore, int annoPubblicazione, String isbn) throws SQLException {
+    public void addNewLibro(Libro l) throws SQLException {
         String queryAddNewLibro = "INSERT INTO biblioteca.libri (titolo , autore , anno_pubblicazione , isbn)" +
                 " VALUES (?, ?, ?, ?)"; //specificare valori
         PreparedStatement statement = connection.prepareStatement(queryAddNewLibro);
 
-        statement.setString(1, titolo);
-        statement.setString(2, autore);
-        statement.setInt(3, annoPubblicazione);
-        statement.setString(4, isbn);
+        statement.setString(1,l.getTitolo() );
+        statement.setString(2, l.getAutore());
+        statement.setInt(3, l.getAnnoPubblicazione());
+        statement.setString(4, l.getISBN());
 
         statement.executeUpdate();
 
