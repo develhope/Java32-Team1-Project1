@@ -14,3 +14,16 @@ VALUES ('Mario', 'Rossi'),
 ('Leonard', 'Hoffsteader'),
 ('Bianca', 'Piazzolla'),
 ('Mario', 'Draghi');
+
+INSERT INTO prestiti (data_prestito, isbn, id_utente)
+VALUES (NOW(), '9788845240000', 5),
+(NOW(), '9788807895678', 3),
+(NOW(), '9788880085096',4),
+(NOW(), '9788823521234', 4),
+(NOW(), '9788845240000', 1),
+(NOW(), '9788880085096', 5),
+(NOW(), '9788807895678', 2),
+(NOW(), '9788845240000', 3),
+(NOW(), '9788823521234', 1),
+(NOW(), '9788880085096', 2)
+;
