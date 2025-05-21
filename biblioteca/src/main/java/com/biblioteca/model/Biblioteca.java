@@ -2,7 +2,7 @@ package com.biblioteca.model;
 
 import com.biblioteca.main.Configuration;
 import com.biblioteca.repository.BibliotecaRepository;
-
+import com.biblioteca.repository.UtenteRepository;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -19,7 +19,8 @@ import java.sql.*;
  */
 public class Biblioteca {
 
-    BibliotecaRepository repository = new BibliotecaRepository();
+    UtenteRepository utenteRepository = new UtenteRepository();
+    BibliotecaRepository bibliotecaRepository = new BibliotecaRepository();
 
     /**
      * Lista degli utenti registrati nella biblioteca.
@@ -50,7 +51,7 @@ public class Biblioteca {
     public void aggiungi(Libro l) {
 
         try {
-            repository.addNewLibro(l.getTitolo(), l.getAutore(), l.getAnnoPubblicazione(), l.getISBN());
+            bibliotecaRepository.addNewLibro(l.getTitolo(), l.getAutore(), l.getAnnoPubblicazione(), l.getISBN());
         } catch (SQLException e) {
             System.err.println("Libro non aggiunto " + e);
         }
@@ -112,7 +113,7 @@ public class Biblioteca {
     public void elencoLibri() {
 
         try {
-            List<Libro> listaLibri = repository.findAllLibri();
+            List<Libro> listaLibri = bibliotecaRepository.findAllLibri();
 
             for (Libro l : listaLibri) {
                 System.out.println(l);
@@ -122,6 +123,18 @@ public class Biblioteca {
         }
     }
 
+    public void elencoUtenti() {
+
+        try {
+            List<Utente> listaUtenti = utenteRepository.findUtente();
+
+            for (Utente u : listaUtenti) {
+                System.out.println(u);
+            }
+        } catch (SQLException e) {
+            System.err.println("Elenco non trovato " + e);
+        }
+    }
             /**
              * Aggiunge un prestito alla lista dei prestiti, verificando la disponibilità del libro.
              *
@@ -213,10 +226,22 @@ public class Biblioteca {
                 Libro libroRisultato = null;
 
                 try {
-                    libroRisultato = repository.cercaTitolo(titolo);
+                    libroRisultato = bibliotecaRepository.cercaTitolo(titolo);
                 } catch (SQLException e) {
                     System.err.println("Errore nella ricerca del libro " + e);
                 }
                 return libroRisultato;
             }
+
+            public Utente cercaUtentePerId(int id){
+
+                try {
+                    return utenteRepository.findById(id);
+                } catch (SQLException e) {
+                    System.err.println("Errore nella ricerca dell' utente " + e);
+                    return null;
+                }
+
+            }
+
         }
