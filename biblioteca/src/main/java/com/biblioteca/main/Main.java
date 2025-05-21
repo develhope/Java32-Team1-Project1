@@ -74,9 +74,13 @@ public class Main {
         boolean uscita = false;
 
         /** Utente corrente, inizializzato come amministratore. */
-        System.out.println("Benvenuto, inserisca il suo id !");
-        int idUtente = sc.nextInt();
-        Utente utenteCorrente = utenteRepository.findById(idUtente);
+        Utente utenteCorrente = null;
+        while (utenteCorrente == null) {
+            System.out.println("Benvenuto, inserisca il suo id !");
+            int idUtente = sc.nextInt();
+            utenteCorrente = utenteRepository.findById(idUtente);
+        }
+        System.out.println("Ciao, " + utenteCorrente.getNome() + " " + utenteCorrente.getCognome());
 
         /**
          * Ciclo principale dell'applicazione che mostra un menu e processa l'input dell'utente.

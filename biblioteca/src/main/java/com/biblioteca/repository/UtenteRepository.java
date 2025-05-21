@@ -38,10 +38,12 @@ public class UtenteRepository extends AbstractRepository {
         String queryFindById = "SELECT * FROM biblioteca.utenti WHERE " + id + "= id_utente "; //specificare valori
         PreparedStatement statement = connection.prepareStatement(queryFindById);
         ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            return new Utente(resultSet.getString("nome"), resultSet.getString("cognome"),id );
+        }
         System.out.println(resultSet.next());
 
-        return new Utente(resultSet.getString("nome"), resultSet.getString("cognome"),id );
-
+        return null;
     }
 
     public Libro cercaTitolo (String titolo) throws SQLException {
