@@ -2,19 +2,19 @@ package com.biblioteca.service;
 
 import com.biblioteca.model.Biblioteca;
 import com.biblioteca.model.Libro;
-import com.biblioteca.repository.BibliotecaRepository;
+import com.biblioteca.repository.LibroRepository;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class BibliotecaService {
 
-    private static BibliotecaRepository bibliotecaRepository = new BibliotecaRepository();
+    private static LibroRepository libroRepository = new LibroRepository();
 
     public void elencoLibri() {
 
         try {
-            List<Libro> listaLibri = bibliotecaRepository.findAllLibri();
+            List<Libro> listaLibri = libroRepository.findAllLibri();
 
             for (Libro l : listaLibri) {
                 System.out.println(l);

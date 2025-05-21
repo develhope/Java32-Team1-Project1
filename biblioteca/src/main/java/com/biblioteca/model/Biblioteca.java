@@ -1,7 +1,7 @@
 package com.biblioteca.model;
 
 import com.biblioteca.main.Configuration;
-import com.biblioteca.repository.BibliotecaRepository;
+import com.biblioteca.repository.LibroRepository;
 import com.biblioteca.repository.UtenteRepository;
 import java.sql.Connection;
 import java.sql.DriverManager;

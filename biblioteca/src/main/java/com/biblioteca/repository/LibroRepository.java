@@ -1,17 +1,13 @@
 package com.biblioteca.repository;
 
-import com.biblioteca.main.Configuration;
-import com.biblioteca.model.Biblioteca;
 import com.biblioteca.model.Libro;
-import com.biblioteca.model.Prestito;
 
-import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class BibliotecaRepository extends AbstractRepository {
+public class LibroRepository extends AbstractRepository {
 
 
     public List<Libro> findAllLibri() throws SQLException {
@@ -51,7 +47,7 @@ public class BibliotecaRepository extends AbstractRepository {
 
     }
 
-    public Libro cercaTitolo (String titolo) throws SQLException {
+    public Libro cercaTitolo(String titolo) throws SQLException {
 
         String queryCercaTitolo = "SELECT * FROM libri WHERE titolo LIKE CONCAT('%', ?, '%')";
         PreparedStatement statement = connection.prepareStatement(queryCercaTitolo);
