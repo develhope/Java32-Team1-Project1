@@ -96,7 +96,7 @@ public class Main {
 
             // Dichiarazione variabili utilizzate nello switch
             Libro libro = null;
-            Prestito prestito = new Prestito(libro, utenteCorrente);
+//            Prestito prestito = new Prestito(libro, utenteCorrente,);
 
             switch (scelta) {
                 case 1:
