@@ -8,22 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UtenteRepository {
-
-    private static final Configuration c = new Configuration();
-    private Connection connection;
-
-    public UtenteRepository() {
-        try {
-            connection = DriverManager.getConnection(
-                    c.getProperties().getProperty("jdbcurl"),
-                    c.getProperties().getProperty("username"),
-                    c.getProperties().getProperty("password")
-            );
-        } catch (SQLException e) {
-            throw new IllegalStateException("Errore di connessione ", e);
-        }
-    }
+public class UtenteRepository extends AbstractRepository {
 
 
     public List<Utente> findUtente() throws SQLException {
@@ -53,10 +38,12 @@ public class UtenteRepository {
         String queryFindById = "SELECT * FROM biblioteca.utenti WHERE " + id + "= id_utente "; //specificare valori
         PreparedStatement statement = connection.prepareStatement(queryFindById);
         ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            return new Utente(resultSet.getString("nome"), resultSet.getString("cognome"),id );
+        }
         System.out.println(resultSet.next());
 
-        return new Utente(resultSet.getString("nome"), resultSet.getString("cognome"),id );
-
+        return null;
     }
 
     public Libro cercaTitolo (String titolo) throws SQLException {
