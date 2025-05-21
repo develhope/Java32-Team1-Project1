@@ -34,7 +34,7 @@ public class Main {
      *
      * @param args Argomenti della riga di comando (non utilizzati in questa applicazione).
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
         Biblioteca biblioteca = new Biblioteca();
 
