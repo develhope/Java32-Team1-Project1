@@ -10,6 +10,9 @@ import java.util.Objects;
  * Classe che rappresenta un prestito tra un utente e un libro.
  */
 public class Prestito {
+    /** ID del prestito (chiave primaria nel DB). */
+    private int idPrestito;
+
     /** Utente associato al prestito. */
     private final Utente utente;
 
@@ -17,9 +20,9 @@ public class Prestito {
     private final Libro libro;
 
     //prima era LocalDateTime ma dava problemi con il tipo nel db
-    private Date dataPrestito;
+    private LocalDateTime dataPrestito;
 
-    private Date dataRestituzione;
+    private LocalDateTime dataRestituzione;
     /**
      * Costruttore che crea un prestito, verificando la disponibilità del libro.
      *
@@ -27,11 +30,12 @@ public class Prestito {
      * @param utente L'utente che prende in prestito il libro.
      * @throws IllegalArgumentException se il libro non è disponibile.
      */
-    public Prestito(Libro libro, Utente utente, Date dataPrestito, Date dataRestituzione ) {
+    public Prestito(Libro libro, Utente utente, LocalDateTime dataPrestito, LocalDateTime dataRestituzione,int idPrestito ) {
         this.utente = utente;
         this.libro = libro;
         this.dataPrestito = dataPrestito;
         this.dataRestituzione = dataRestituzione;
+        this.idPrestito=idPrestito;
     }
 
     /**
@@ -48,26 +52,35 @@ public class Prestito {
      *
      * @return Il libro preso in prestito.
      */
-    public Libro getLibro() {
+    public Libro getLibro()  {
         return libro;
     }
 
     // Override di equals e hashCode per confrontare prestiti
 
-    public Date getDataPrestito() {
+    public LocalDateTime getDataPrestito() {
         return dataPrestito;
     }
 
-    public Date getDataRestituzione() {
+    public LocalDateTime getDataRestituzione() {
         return dataRestituzione;
     }
 
-    public void setDataPrestito(Date dataPrestito) {
+    public void setDataPrestito(LocalDateTime dataPrestito) {
         this.dataPrestito = dataPrestito;
     }
 
-    public void setDataRestituzione(Date dataRestituzione) {
+    public int getIdPrestito() {
+        return idPrestito;
+    }
+
+    public void setIdPrestito(int idPrestito) {
+        this.idPrestito = idPrestito;
+    }
+
+    public void setDataRestituzione(LocalDateTime dataRestituzione) {
         this.dataRestituzione = dataRestituzione;
+
     }
     /**
      * Restituisce una rappresentazione testuale del prestito.

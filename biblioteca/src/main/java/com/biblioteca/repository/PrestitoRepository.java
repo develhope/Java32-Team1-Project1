@@ -4,10 +4,7 @@ import com.biblioteca.model.Libro;
 import com.biblioteca.model.Prestito;
 import com.biblioteca.model.Utente;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 
 public class PrestitoRepository  extends AbstractRepository{
@@ -19,7 +16,12 @@ public class PrestitoRepository  extends AbstractRepository{
                 " SET data_restituzione = ?" +
                 " where id_prestito= ?";
         PreparedStatement statement = connection.prepareStatement(querryUpDate);
-//        statement.setTimestamp(1, prestito.getDataRestituzione());
+
+
+        statement.setTimestamp(1, Timestamp.valueOf(prestito.getDataRestituzione())); // LocalDateTime -> Timestamp
+        statement.setInt(2, prestito.getIdPrestito());
+
+        ResultSet resultSet = statement.executeUpdate();
     }
 
     public Prestito findById(int id) throws SQLException {
@@ -43,12 +45,15 @@ public class PrestitoRepository  extends AbstractRepository{
                                 resultSet.getInt("anno_pubblicazione"),
                                 resultSet.getString("isbn"));
 
-            Date data_prestito = resultSet.getDate("data_prestito");
-            Date data_restituzione = resultSet.getDate("data_restituzione");
-            return new Prestito(l,u,data_prestito,data_restituzione);
+            Timestamp data_prestito = resultSet.getTimestamp("data_prestito");
+            Timestamp data_restituzione = resultSet.getTimestamp("data_restituzione");
+            return new Prestito(l,u,data_prestito.toLocalDateTime(),
+                    data_restituzione == null ? null : data_restituzione.toLocalDateTime());
         }
 
 
         return null;
     }
+
+
 }
