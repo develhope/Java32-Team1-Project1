@@ -20,8 +20,7 @@ public class PrestitoRepository  extends AbstractRepository{
 
         statement.setTimestamp(1, Timestamp.valueOf(prestito.getDataRestituzione())); // LocalDateTime -> Timestamp
         statement.setInt(2, prestito.getIdPrestito());
-
-        ResultSet resultSet = statement.executeUpdate();
+        int rowsAffected = statement.executeUpdate();
     }
 
     public Prestito findById(int id) throws SQLException {
@@ -54,6 +53,7 @@ public class PrestitoRepository  extends AbstractRepository{
 
         return null;
     }
+
 
 
 }
