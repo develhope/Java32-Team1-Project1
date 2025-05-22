@@ -11,6 +11,16 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 public class PrestitoRepository  extends AbstractRepository{
+ //inserire aggiungi prestito    ed        findBYUtente
+
+
+    public void update(Prestito prestito) throws  SQLException {
+        String querryUpDate ="UPDATE prestiti " +
+                " SET data_restituzione = ?" +
+                " where id_prestito= ?";
+        PreparedStatement statement = connection.prepareStatement(querryUpDate);
+//        statement.setTimestamp(1, prestito.getDataRestituzione());
+    }
 
     public Prestito findById(int id) throws SQLException {
 
