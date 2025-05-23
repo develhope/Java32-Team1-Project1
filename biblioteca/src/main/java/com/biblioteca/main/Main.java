@@ -3,9 +3,7 @@ package com.biblioteca.main;
 //import com.biblioteca.model.Biblioteca;
 import com.biblioteca.model.Libro;
 import com.biblioteca.model.Utente;
-import com.biblioteca.model.Prestito;
 import com.biblioteca.repository.LibroRepository;
-import com.biblioteca.repository.PrestitoRepository;
 import com.biblioteca.repository.UtenteRepository;
 import com.biblioteca.service.BibliotecaService;
 
@@ -35,6 +33,12 @@ public class Main {
      * @param args Argomenti della riga di comando (non utilizzati in questa applicazione).
      */
     public static void main(String[] args) throws SQLException {
+        //PrestitoRepository r = new PrestitoRepository();
+
+        //Prestito p = r.findById(1);
+
+        //System.out.println(p.getLibro().getAnnoPubblicazione());
+
 //
 //        Biblioteca biblioteca = new Biblioteca();
 
@@ -139,7 +143,7 @@ public class Main {
                         bibliotecaService.elencoLibri();
                         String titoloLibro = sc.nextLine();
                         try {
-                            libro = libroRepository.cercaTitolo(titoloLibro);
+                            libro = libroRepository.findByTitle(titoloLibro);
                         } catch (NullPointerException e) {
                             // Gestisce eventuali eccezioni di puntatore nullo (anche se non tipicamente sollevate qui)
                         }
@@ -207,7 +211,7 @@ public class Main {
                     while (libro == null) {
                         String titoloLibro = sc.nextLine();
                         try {
-                            libro = libroRepository.cercaTitolo(titoloLibro);
+                            libro = libroRepository.findByTitle(titoloLibro);
                         } catch (NullPointerException e) {
                             // Gestisce eventuali eccezioni di puntatore nullo
                             if (libro == null) {
@@ -297,7 +301,7 @@ public class Main {
 
                     String t = sc.nextLine();
 
-                    System.out.println(libroRepository.cercaTitolo(t));
+                    System.out.println(libroRepository.findByTitle(t));
 
                     break;
 

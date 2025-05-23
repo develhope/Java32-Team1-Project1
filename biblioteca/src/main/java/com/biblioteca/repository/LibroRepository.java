@@ -47,7 +47,7 @@ public class LibroRepository extends AbstractRepository {
 
     }
 
-    public Libro cercaTitolo(String titolo) throws SQLException {
+    public Libro findByTitle(String titolo) throws SQLException {
 
         String queryCercaTitolo = "SELECT * FROM libri WHERE titolo LIKE CONCAT('%', ?, '%')";
         PreparedStatement statement = connection.prepareStatement(queryCercaTitolo);
