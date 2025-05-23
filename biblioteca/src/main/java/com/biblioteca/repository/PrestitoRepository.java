@@ -8,6 +8,20 @@ import java.sql.*;
 import java.time.LocalDateTime;
 
 public class PrestitoRepository  extends AbstractRepository{
+ //inserire aggiungi prestito    ed        findBYUtente
+
+
+    public void update(Prestito prestito) throws  SQLException {
+        String querryUpDate ="UPDATE prestiti " +
+                " SET data_restituzione = ?" +
+                " where id_prestito= ?";
+        PreparedStatement statement = connection.prepareStatement(querryUpDate);
+
+        Timestamp dataRestituzione= prestito.getDataRestituzione()== null ? null :Timestamp.valueOf(prestito.getDataRestituzione());
+        statement.setTimestamp(1, dataRestituzione); // LocalDateTime -> Timestamp
+        statement.setInt(2, prestito.getIdPrestito());
+        int rowsAffected = statement.executeUpdate();
+    }
 
     public Prestito findById(int id) throws SQLException {
 
@@ -39,6 +53,7 @@ public class PrestitoRepository  extends AbstractRepository{
 
         return null;
     }
+
 
 
 }
