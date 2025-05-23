@@ -11,7 +11,7 @@ public class PrestitoRepository  extends AbstractRepository{
  //inserire aggiungi prestito    ed        findBYUtente
 
 
-    public void update(Prestito prestito) throws  SQLException {
+    private void update(Prestito prestito) throws  SQLException {
         String querryUpDate ="UPDATE prestiti " +
                 " SET data_restituzione = ?" +
                 " where id_prestito= ?";
@@ -21,6 +21,25 @@ public class PrestitoRepository  extends AbstractRepository{
         statement.setTimestamp(1, dataRestituzione); // LocalDateTime -> Timestamp
         statement.setInt(2, prestito.getIdPrestito());
         int rowsAffected = statement.executeUpdate();
+    }
+
+    private void create(Prestito prestito) throws  SQLException {
+        String queryCreate ="INSERT INTO prestiti (id_utente, isbn, data_prestito)" +
+                " VALUES(?,?,?)" ;
+        PreparedStatement statement = connection.prepareStatement(queryCreate);
+
+        statement.setInt(1, prestito.getUtente().getIdUtente());
+        statement.setString(2, prestito.getLibro().getISBN());
+        statement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+
+        int rowsAffected = statement.executeUpdate();
+    }
+    public void save(Prestito prestito) throws SQLException{
+        if (prestito.getIdPrestito() == null){
+            create(prestito);
+        } else {
+            update(prestito);
+        }
     }
 
     public Prestito findById(int id) throws SQLException {
