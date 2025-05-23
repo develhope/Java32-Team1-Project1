@@ -8,7 +8,7 @@ import java.util.Objects;
  */
 public class Prestito {
     /** ID del prestito (chiave primaria nel DB). */
-    private int idPrestito;
+    private Integer idPrestito;
 
     /** Utente associato al prestito. */
     private final Utente utente;
@@ -22,7 +22,7 @@ public class Prestito {
     /**
      * Costruttore con ID (utile per caricare da DB).
      */
-    public Prestito(int idPrestito, Libro libro, Utente utente, LocalDateTime dataPrestito, LocalDateTime dataRestituzione) {
+    public Prestito(Integer idPrestito, Libro libro, Utente utente, LocalDateTime dataPrestito, LocalDateTime dataRestituzione) {
         this.idPrestito = idPrestito;
         this.utente = utente;
         this.libro = libro;
@@ -34,7 +34,7 @@ public class Prestito {
      * Costruttore senza ID (utile per creare nuovo prestito prima di salvarlo nel DB).
      */
     public Prestito(Libro libro, Utente utente, LocalDateTime dataPrestito, LocalDateTime dataRestituzione) {
-        this(0, libro, utente, dataPrestito, dataRestituzione); // idPrestito = 0 come placeholder
+        this(null, libro, utente, dataPrestito, dataRestituzione); // idPrestito = 0 come placeholder
     }
 
     public int getIdPrestito() {

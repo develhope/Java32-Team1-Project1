@@ -17,8 +17,8 @@ public class PrestitoRepository  extends AbstractRepository{
                 " where id_prestito= ?";
         PreparedStatement statement = connection.prepareStatement(querryUpDate);
 
-
-        statement.setTimestamp(1, Timestamp.valueOf(prestito.getDataRestituzione())); // LocalDateTime -> Timestamp
+        Timestamp dataRestituzione= prestito.getDataRestituzione()== null ? null :Timestamp.valueOf(prestito.getDataRestituzione());
+        statement.setTimestamp(1, dataRestituzione); // LocalDateTime -> Timestamp
         statement.setInt(2, prestito.getIdPrestito());
         int rowsAffected = statement.executeUpdate();
     }
