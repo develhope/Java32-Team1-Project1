@@ -6,6 +6,7 @@ import com.biblioteca.model.Utente;
 import com.biblioteca.repository.LibroRepository;
 import com.biblioteca.repository.UtenteRepository;
 import com.biblioteca.service.BibliotecaService;
+import com.biblioteca.service.UtenteService;
 
 import java.sql.*;
 import java.util.InputMismatchException;
@@ -21,7 +22,6 @@ public class Main {
 
     static UtenteRepository utenteRepository = new UtenteRepository();
     static LibroRepository libroRepository = new LibroRepository();
-
     static BibliotecaService bibliotecaService = new BibliotecaService();
 
     /**
@@ -33,14 +33,6 @@ public class Main {
      * @param args Argomenti della riga di comando (non utilizzati in questa applicazione).
      */
     public static void main(String[] args) throws SQLException {
-        //PrestitoRepository r = new PrestitoRepository();
-
-        //Prestito p = r.findById(1);
-
-        //System.out.println(p.getLibro().getAnnoPubblicazione());
-
-//
-//        Biblioteca biblioteca = new Biblioteca();
 
         /* Scanner per la lettura dell'input dell'utente dalla console. */
         Scanner sc = new Scanner(System.in);
@@ -58,35 +50,19 @@ public class Main {
         /* Flag per controllare il ciclo principale per l'uscita dall'applicazione. */
         boolean uscita = false;
 
-        /* Utente corrente, inizializzato come amministratore. */
-        Utente utenteCorrente = null;
-        while (utenteCorrente == null) {
-            System.out.println("Benvenuto, inserisca il suo ID:");
-
-            try {
-                int idUtente = sc.nextInt();
-                utenteCorrente = utenteRepository.findById(idUtente);
-
-                if (utenteCorrente == null) {
-                    System.out.println("Utente non trovato. Riprova.");
-                }
-
-            } catch (InputMismatchException e) {
-                System.err.println("Errore: inserire un numero intero.");
-                sc.nextLine(); // consuma l'input errato
-            } catch (Exception e) {
-                System.err.println("Errore durante la ricerca dell'utente: " + e.getMessage());
-                break; // esce dal ciclo in caso di errore grave
-            }
-        }
+        //controllo dell'id spostato nel metodo autenticazioneUtente()
+        Utente utenteCorrente = UtenteService.autenticazioneUtente();
 
         if (utenteCorrente != null) {
             System.out.println("Accesso effettuato con successo: " + utenteCorrente);
+            System.out.println("Ciao, " + utenteCorrente.getNome() + " " + utenteCorrente.getCognome());
+        } else {
+            System.out.println("Accesso non riuscito.");
         }
 
         // sc.close(); // facoltativo se lo scanner viene riutilizzato
 
-        System.out.println("Ciao, " + utenteCorrente.getNome() + " " + utenteCorrente.getCognome());
+
 
         /*
          * Ciclo principale dell'applicazione che mostra un menu e processa l'input dell'utente.
