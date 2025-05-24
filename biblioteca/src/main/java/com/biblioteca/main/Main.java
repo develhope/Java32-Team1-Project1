@@ -2,13 +2,16 @@ package com.biblioteca.main;
 
 //import com.biblioteca.model.Biblioteca;
 import com.biblioteca.model.Libro;
+import com.biblioteca.model.Prestito;
 import com.biblioteca.model.Utente;
 import com.biblioteca.repository.LibroRepository;
+import com.biblioteca.repository.PrestitoRepository;
 import com.biblioteca.repository.UtenteRepository;
 import com.biblioteca.service.BibliotecaService;
 import com.biblioteca.service.UtenteService;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -20,7 +23,8 @@ import java.util.Scanner;
  */
 public class Main {
 
-    static UtenteRepository utenteRepository = new UtenteRepository();
+    static PrestitoRepository prestitoRepository = new PrestitoRepository();
+    //static UtenteRepository utenteRepository = new UtenteRepository();
     static LibroRepository libroRepository = new LibroRepository();
     static BibliotecaService bibliotecaService = new BibliotecaService();
 
@@ -129,13 +133,14 @@ public class Main {
                         }
                     }
 
-//                    try {
-//                        biblioteca.aggiungiPrestito(prestito);
-//                        System.out.println("Prestito effettuato: " + prestito.getUtente().getNome() +
-//                                " ha preso \"" + prestito.getLibro().getTitolo() + "\".");
-//                    } catch (IllegalArgumentException e) {
-//                        System.err.println("Errore: " + e.getMessage());
-//                    }
+                    try {
+                        Prestito prestito = new Prestito(libro,utenteCorrente, LocalDateTime.now(),null);
+                        prestitoRepository.save(prestito);
+                        System.out.println("Prestito effettuato: "  +
+                                " hai preso \"" + prestito.getLibro().getTitolo() + "\".");
+                    } catch (IllegalArgumentException e) {
+                        System.err.println("Errore: " + e.getMessage());
+                    }
                     break;
 
                 case 3:
