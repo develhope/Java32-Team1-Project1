@@ -26,4 +26,4 @@ foreign key (isbn) references libri (isbn) ,
 foreign key (id_utente) references utenti (id_utente)
 );
 
-) ;
+
