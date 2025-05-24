@@ -26,8 +26,9 @@ public class LibroRepository extends AbstractRepository {
             String autore = resultSet.getString("autore");
             int annoPubblicazione = resultSet.getInt("anno_pubblicazione");
             String isbn = resultSet.getString("isbn");
+            int numeroCopie = resultSet.getInt("numero_copie");
 
-            Libro libro1 = new Libro(titolo, autore, annoPubblicazione, isbn);
+            Libro libro1 = new Libro(titolo, autore, annoPubblicazione, isbn, numeroCopie);
             libri.add(libro1);
         }
         return libri;
@@ -59,7 +60,8 @@ public class LibroRepository extends AbstractRepository {
             String a = resultSet.getString("autore");
             int annoP = resultSet.getInt("anno_pubblicazione");
             String i = resultSet.getString("isbn");
-            return new Libro(t, a, annoP, i);
+            int nC = resultSet.getInt("numero_copie");
+            return new Libro(t, a, annoP, i, nC);
         } else {
             System.out.println("Nessun libro trovato.");
         }
@@ -80,7 +82,8 @@ public class LibroRepository extends AbstractRepository {
                 return new Libro(resultSet.getString("titolo"),
                                  resultSet.getString("autore"),
                                  resultSet.getInt("anno_pubblicazione"),
-                                 isbn);
+                                 isbn,
+                                 resultSet.getInt("numero_copie"));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

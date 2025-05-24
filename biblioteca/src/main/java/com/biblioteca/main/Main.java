@@ -4,6 +4,7 @@ package com.biblioteca.main;
 import com.biblioteca.model.Libro;
 import com.biblioteca.model.Utente;
 import com.biblioteca.repository.LibroRepository;
+import com.biblioteca.repository.PrestitoRepository;
 import com.biblioteca.repository.UtenteRepository;
 import com.biblioteca.service.BibliotecaService;
 import com.biblioteca.service.UtenteService;
@@ -23,6 +24,7 @@ public class Main {
     static UtenteRepository utenteRepository = new UtenteRepository();
     static LibroRepository libroRepository = new LibroRepository();
     static BibliotecaService bibliotecaService = new BibliotecaService();
+    static PrestitoRepository prestitoRepository = new PrestitoRepository();
 
     /**
      * Punto di ingresso dell'applicazione Biblioteca.
@@ -111,6 +113,8 @@ public class Main {
                     /* Gestisce il processo di prestito di un libro. */
                     System.out.println("Benvenuto");
                     utenteCorrente.stampaDettagliUtente();
+
+                    System.out.println(prestitoRepository.disponibilitaLibri());
 
 
                     // Richiede il titolo del libro finché non viene trovato un libro valido
@@ -260,9 +264,11 @@ public class Main {
                         sc.nextLine();
                         System.out.println("Inserisci l'ISBN del libro: ");
                         String isbnLibroNuovo = sc.nextLine();
+                        System.out.println("Inserisci il numero di copie: ");
+                        int numeroDiCopie = sc.nextInt();
 
                         try {
-                            libroNuovo = new Libro(titoloLibroNuovo, autoreLibroNuovo, annoLibroNuovo, isbnLibroNuovo);
+                            libroNuovo = new Libro(titoloLibroNuovo, autoreLibroNuovo, annoLibroNuovo, isbnLibroNuovo, numeroDiCopie);
 //                            libroRepository.addNewLibro(libroNuovo); //modificare i parametri
                             System.out.println("Libro aggiunto con successo!");
                         } catch (IllegalArgumentException e) {

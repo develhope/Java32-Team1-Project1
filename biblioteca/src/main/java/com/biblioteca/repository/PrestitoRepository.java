@@ -6,6 +6,8 @@ import com.biblioteca.model.Utente;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PrestitoRepository  extends AbstractRepository{
  //inserire aggiungi prestito ed findBYUtente
@@ -61,7 +63,8 @@ public class PrestitoRepository  extends AbstractRepository{
             Libro l = new Libro(resultSet.getString("titolo"),
                                 resultSet.getString("autore"),
                                 resultSet.getInt("anno_pubblicazione"),
-                                resultSet.getString("isbn"));
+                                resultSet.getString("isbn"),
+                                resultSet.getInt("copie_disponibili"));
 
             Timestamp data_prestito = resultSet.getTimestamp("data_prestito");
             Timestamp data_restituzione = resultSet.getTimestamp("data_restituzione");
@@ -73,11 +76,26 @@ public class PrestitoRepository  extends AbstractRepository{
         return null;
     }
 
-    public void disponibilitaPrestito(Prestito prestito) throws SQLException {
+    public List<Libro> disponibilitaLibri() throws SQLException {
 
-        String queryDisponibilita = "";
+        String queryDisponibilita = "SELECT p.isbn, titolo, autore, anno_pubblicazione, numero_copie - COUNT(*) AS copie_disponibili FROM prestiti p, libri l " +
+                "WHERE data_restituzione IS NULL AND l.isbn = p.isbn " +
+                "GROUP BY p.isbn " +
+                "HAVING copie_disponibili > 0";
         PreparedStatement statement = connection.prepareStatement(queryDisponibilita);
+        ResultSet resultSet = statement.executeQuery();
 
+        List<Libro> libri = new ArrayList<>();
+
+        while (resultSet.next()) {
+            Libro libro = new Libro(resultSet.getString("isbn"),
+                    resultSet.getString("titolo"),
+                    resultSet.getInt("anno_pubblicazione"),
+                    resultSet.getString("autore"),
+                    resultSet.getInt("copie_disponibili"));
+            libri.add(libro);
+        }
+        return libri;
 
     }
 

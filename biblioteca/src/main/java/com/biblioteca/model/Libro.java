@@ -20,6 +20,8 @@ public class Libro {
     /** Numero ISBN del libro. */
     private String ISBN;
 
+    private int numeroCopie;
+
     /**
      * Costruttore di default.
      * Inizializza un libro con valori predefiniti: titolo "titolo", autore "sconoscuto",
@@ -41,11 +43,12 @@ public class Libro {
      * @param annoPubblicazione L'anno di pubblicazione del libro.
      * @param ISBN              Il numero ISBN del libro.
      */
-    public Libro(String titolo, String autore, int annoPubblicazione, String ISBN) {
+    public Libro(String titolo, String autore, int annoPubblicazione, String ISBN, int numeroCopie) {
         this.titolo = titolo;
         this.autore = autore;
         this.annoPubblicazione = annoPubblicazione;
         this.ISBN = ISBN;
+        this.numeroCopie = numeroCopie;
         //aggiungere controlli
     }
 
@@ -134,6 +137,7 @@ public class Libro {
                 ", autore='" + autore + '\'' +
                 ", annoPubblicazione=" + annoPubblicazione +
                 ", ISBN=" + ISBN + '\'' +
+                ", numero copie=" + numeroCopie + '\'' +
                 '}';
     }
 
