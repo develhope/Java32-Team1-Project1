@@ -37,7 +37,7 @@ public class Prestito {
         this(null, libro, utente, dataPrestito, dataRestituzione); // idPrestito = 0 come placeholder
     }
 
-    public int getIdPrestito() {
+    public Integer getIdPrestito() {
         return idPrestito;
     }
 
