@@ -150,22 +150,18 @@ public class Main {
 //                    }
 
                     // Richiede i dettagli dell'utente per verificare l'identità
-                    System.out.print("Prima di effettuare l'operazione, inserisci i dati richiesti " +
-                            "\nConferma nome: ");
-                    String nome = sc.nextLine();
-                    System.out.print("Per proseguire inserisca " + "\ncognome: ");
-                    String cognome = sc.nextLine();
-                    System.out.print("Per proseguire inserisca " + "\nid: ");
-                    int id = -1;
+                    System.out.println("Inserisci l'ID del prestito che deve essere restituito: ");
+
                     try {
-                        id = sc.nextInt();
+                        int id = sc.nextInt();
+                        prestitoRepository.restituisciPrestito(id);
                     } catch (InputMismatchException e) {
-                        System.out.println(); // Gestisce silenziosamente l'input non valido
+                        System.err.println("Errore: ID non valido");
                     }
                     sc.nextLine(); // Pulizia del buffer di input
 
                     /* Utente da verificare per l'operazione di restituzione. */
-                    Utente utenteDaVerificare = new Utente(nome, cognome, id);
+//                    Utente utenteDaVerificare = new Utente(nome, cognome, id);
 
                     // Verifica se l'utente esiste
 //                    if (!utenteRepository.findById(idUtente)) {
@@ -187,18 +183,18 @@ public class Main {
 //                    }
 
                     /* Libro da restituire, inizialmente nullo. */
-                    System.out.println("Dei seguenti libri, inserire il titolo del quale vuoi restituire:");
-                    while (libro == null) {
-                        String titoloLibro = sc.nextLine();
-                        try {
-                            libro = libroRepository.findByTitle(titoloLibro);
-                        } catch (NullPointerException e) {
-                            // Gestisce eventuali eccezioni di puntatore nullo
-                            if (libro == null) {
-                                System.err.println("Titolo non trovato. Riprova.");
-                            }
-                        }
-                    }
+//                    System.out.println("Dei seguenti libri, inserire il titolo del quale vuoi restituire:");
+//                    while (libro == null) {
+//                        String titoloLibro = sc.nextLine();
+//                        try {
+//                            libro = libroRepository.findByTitle(titoloLibro);
+//                        } catch (NullPointerException e) {
+//                            // Gestisce eventuali eccezioni di puntatore nullo
+//                            if (libro == null) {
+//                                System.err.println("Titolo non trovato. Riprova.");
+//                            }
+//                        }
+//                    }
 
                     // Crea e rimuove il prestito
 //                    prestito = new Prestito(libro, utenteDaVerificare);
@@ -208,46 +204,64 @@ public class Main {
 //                    } catch (IllegalArgumentException e) {
 //                        System.out.println("Errore: " + e.getMessage());
 //                    }
-//                    break;
+                    break;
 
                 case 4:
-                    /* Visualizza i prestiti effettuati da un utente specifico. */
-                    System.out.print("Prima di effettuare l'operazione, inserisci i dati richiesti " +
-                            "\nConferma nome: ");
-                    nome = sc.nextLine();
-                    System.out.print("Per proseguire inserisca " + "\ncognome: ");
-                    cognome = sc.nextLine();
-                    System.out.print("Per proseguire inserisca " + "\nid: ");
-                    id = -1;
-                    try {
-                        id = sc.nextInt();
-                    } catch (InputMismatchException e) {
-                        System.out.println(); // Gestisce silenziosamente l'input non valido
+                    boolean tornaIndietro = true;
+                    while (tornaIndietro) {
+                        System.out.println("Menù prestito" +
+                                "\n1. Visualizza tutti i prestiti" +
+                                "\n2. Visualizza i prestiti di un utente specifico" +
+                                "\n0. Torna al menù principale");
+
+                        int sceltaPrestito = sc.nextInt();
+                        sc.nextLine();
+
+                        switch (sceltaPrestito) {
+                            case 1:
+                                System.out.println("Ecco la lista intera dei prestiti:");
+                                prestitoRepository.findAllPrestiti();
+                                break;
+
+                            case 2:
+                                System.out.println("Inserisci l'ID dell'utente:");
+                                try {
+                                    int id = sc.nextInt();
+                                    sc.nextLine();
+                                    prestitoRepository.findById(id);
+                                } catch (InputMismatchException e) {
+                                    System.err.println("Errore: ID non valido");
+                                    sc.nextLine();
+                                }
+                                break;
+
+                            case 0:
+                                tornaIndietro = false;
+                                break;
+
+                            default:
+                                System.err.println("Scelta non valida.");
+                        }
                     }
-                    sc.nextLine(); // Pulizia del buffer di input
+                    break;
+
 
 //                    /* Utente da verificare per la visualizzazione dei prestiti. */
 //                    utenteDaVerificare = new Utente(nome, cognome, id);
 
-                    // Verifica se l'utente esiste
+                // Verifica se l'utente esiste
 //                    if (!biblioteca.esisteUtente(utenteDaVerificare)) {
 //                        System.err.println("L'utente non esiste.");
 //                        break;
 //                    }
 
-                    // Visualizza i prestiti dell'utente
-//                    try {
-//                        biblioteca.stampaListaPrestiti(biblioteca.listaPrestitiPerUtente(utenteDaVerificare));
-//                    } catch (IllegalArgumentException e) {
-//                        System.err.println("Errore: " + e.getMessage());
-//                    }
+                // Visualizza i prestiti dell'utente
 
-                    // Verifica se l'utente ha prestiti attivi
+                // Verifica se l'utente ha prestiti attivi
 //                    if (id != -1 && biblioteca.listaPrestitiPerUtente(utenteDaVerificare).isEmpty()) {
 //                        System.err.println("L'utente non ha eseguito nessun prestito.");
 //                        break;
 //                    }
-                    break;
 
                 case 5:
                     Libro libroNuovo = null;
