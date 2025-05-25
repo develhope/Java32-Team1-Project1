@@ -137,7 +137,7 @@ public class Libro {
                 ", autore='" + autore + '\'' +
                 ", annoPubblicazione=" + annoPubblicazione +
                 ", ISBN=" + ISBN + '\'' +
-                ", numero copie=" + numeroCopie + '\'' +
+                ", numero copie totali=" + numeroCopie + '\'' +
                 '}';
     }
 

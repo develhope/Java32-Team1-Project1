@@ -24,10 +24,10 @@ import java.util.Scanner;
 public class Main {
 
     static PrestitoRepository prestitoRepository = new PrestitoRepository();
-    //static UtenteRepository utenteRepository = new UtenteRepository();
+    static UtenteRepository utenteRepository = new UtenteRepository();
     static LibroRepository libroRepository = new LibroRepository();
     static BibliotecaService bibliotecaService = new BibliotecaService();
-    static PrestitoRepository prestitoRepository = new PrestitoRepository();
+
 
     /**
      * Punto di ingresso dell'applicazione Biblioteca.
@@ -41,16 +41,6 @@ public class Main {
 
         /* Scanner per la lettura dell'input dell'utente dalla console. */
         Scanner sc = new Scanner(System.in);
-
-////        /* Utente di esempio per testare la funzionalità di prestito. */
-//        Utente ut1 = new Utente("fra", "carp", 897);
-
-        /* Prestito di esempio che associa l'utente e il libro. */
-//        Prestito p1 = new Prestito(libro1, ut1);
-//        biblioteca.aggiungiPrestito(p1);
-
-//        // Aggiunta dell'utente di esempio alla lista degli utenti della biblioteca
-//        biblioteca.listaUtenti.add(ut1);
 
         /* Flag per controllare il ciclo principale per l'uscita dall'applicazione. */
         boolean uscita = false;
@@ -74,27 +64,29 @@ public class Main {
          * Il ciclo continua finché l'utente non sceglie di uscire (opzione 0).
          */
         while (!uscita) {
-            // Mostra le opzioni del menu
-            System.out.println("\n" + "Scegli un'operazione:" + "\n" +
-                    "1 - Vedi elenco libri" + "\n" +
-                    "2 - Fai un prestito" + "\n" +
-                    "3 - Restituisci un libro" + "\n" +
-                    "4 - Visualizza i prestiti effettuati" + "\n" +
-                    "5 - Aggiungi un libro" + "\n" +
-                    "6 - Cerca libro" + "\n" +
-                    "0 - Esci");
 
             /* Scelta dell'utente dal menu, inizializzata a un valore non valido. */
-            int scelta = 9;
+            Integer scelta = null;//prima scelta era int = 9 ???
 
-            // Legge la scelta dell'utente, gestendo input non validi
-            try {
-                scelta = sc.nextInt();
-            } catch (InputMismatchException e) {
-                System.err.println("Errore: Inserire un numero.");
+
+            while (scelta == null) {
+                // Mostra le opzioni del menu
+                System.out.println("\n" + "Scegli un'operazione:" + "\n" +
+                        "1 - Vedi elenco libri" + "\n" +
+                        "2 - Fai un prestito" + "\n" +
+                        "3 - Restituisci un libro" + "\n" +
+                        "4 - Visualizza i prestiti effettuati" + "\n" +
+                        "5 - Aggiungi un libro" + "\n" +
+                        "6 - Cerca libro" + "\n" +
+                        "0 - Esci");
+                // Legge la scelta dell'utente, gestendo input non validi
+                try {
+                    scelta = sc.nextInt();
+                } catch (InputMismatchException e) {
+                    System.err.println("Errore: Inserire un numero.");
+                }
+                sc.nextLine(); // Pulizia del buffer di input
             }
-            sc.nextLine(); // Pulizia del buffer di input
-
             /*
              * Processa la scelta dell'utente dal menu.
              * Ogni caso corrisponde a un'operazione diversa della biblioteca.
@@ -103,7 +95,6 @@ public class Main {
 
             // Dichiarazione variabili utilizzate nello switch
             Libro libro = null;
-//            Prestito prestito = new Prestito(libro, utenteCorrente,);
 
             switch (scelta) {
                 case 1:
@@ -117,13 +108,14 @@ public class Main {
                     System.out.println("Benvenuto");
                     utenteCorrente.stampaDettagliUtente();
 
-                    System.out.println(prestitoRepository.disponibilitaLibri());
+
 
 
                     // Richiede il titolo del libro finché non viene trovato un libro valido
                     while (libro == null) { // try catch
                         System.out.println("Inserisci il titolo del libro che vuoi prendere in prestito:");
-                        bibliotecaService.elencoLibri();
+                        //bibliotecaService.elencoLibri();
+                        System.out.println(prestitoRepository.disponibilitaLibri());
                         String titoloLibro = sc.nextLine();
                         try {
                             libro = libroRepository.findByTitle(titoloLibro);
