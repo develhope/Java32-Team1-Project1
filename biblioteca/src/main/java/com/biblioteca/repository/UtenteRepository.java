@@ -58,7 +58,8 @@ public class UtenteRepository extends AbstractRepository {
             String a = resultSet.getString("autore");
             int annoP = resultSet.getInt("anno_pubblicazione");
             String i = resultSet.getString("isbn");
-            return new Libro(t, a, annoP, i);
+            int nC = resultSet.getInt("numero_copie");
+            return new Libro(t, a, annoP, i, nC);
         } else {
             System.out.println("Nessun libro trovato.");
         }
