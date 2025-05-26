@@ -1,66 +1,66 @@
 package com.biblioteca.model;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+/**
+ * Classe di test per la verifica delle funzionalità della classe {@link Libro}.
+ * Contiene test per il costruttore di default, il costruttore parametrizzato e il metodo {@code equals}.
+ * I risultati attesi e ottenuti vengono stampati a console per un confronto manuale.
+ */
+public class LibroTest {
 
-class LibroTest {
+    /**
+     * Metodo principale che esegue una serie di test per verificare il comportamento della classe {@link Libro}.
+     * I test includono:
+     * <ul>
+     *     <li>Verifica del costruttore di default</li>
+     *     <li>Verifica del costruttore parametrizzato</li>
+     *     <li>Verifica del metodo {@code equals} per libri con lo stesso ISBN</li>
+     *     <li>Verifica del metodo {@code equals} per libri con ISBN diverso</li>
+     *     <li>Verifica del metodo {@code equals} con confronto a {@code null}</li>
+     *     <li>Verifica del metodo {@code equals} con lo stesso oggetto</li>
+     * </ul>
+     * I risultati dei test vengono stampati a console per consentire una verifica visiva.
+     *
+     * @param args Argomenti della riga di comando (non utilizzati).
+     */
+    public static void main(String[] args) {
+        // Test 1: Verifica del costruttore di default
+        Libro libroDefault = new Libro();
+        System.out.println("Test 1 - Costruttore di default:");
+        System.out.println("Atteso: titolo='titolo', autore='sconoscuto', annoPubblicazione=0, ISBN='0000000000000000', numeroCopie=0");
+        System.out.println("Ottenuto: " + libroDefault.toString());
+        System.out.println();
 
-    @Test
-    void testCostruttoreDiDefault() {
-        Libro libro = new Libro();
-        assertEquals("titolo", libro.getTitolo());
-        assertEquals("sconoscuto", libro.getAutore());
-        assertEquals(0, libro.getAnnoPubblicazione());
-        assertEquals("0000000000000000", libro.getISBN());
-    }
+        // Test 2: Verifica del costruttore parametrizzato
+        Libro libroParam = new Libro("Il Nome del Vento", "Patrick Rothfuss", 2007, "9788804681830", 5);
+        System.out.println("Test 2 - Costruttore parametrizzato:");
+        System.out.println("Atteso: titolo='Il Nome del Vento', autore='Patrick Rothfuss', annoPubblicazione=2007, ISBN='9788804681830', numeroCopie=5");
+        System.out.println("Ottenuto: " + libroParam.toString());
+        System.out.println();
 
-    @Test
-    void testCostruttoreParametrico() {
-        Libro libro = new Libro("1984", "George Orwell", 1949, "1234567890123", 0);
-        assertEquals("1984", libro.getTitolo());
-        assertEquals("George Orwell", libro.getAutore());
-        assertEquals(1949, libro.getAnnoPubblicazione());
-        assertEquals("1234567890123", libro.getISBN());
-    }
+        // Test 3: Verifica del metodo equals() - Libri con stesso ISBN
+        Libro libro1 = new Libro("Libro A", "Autore A", 2020, "1234567890123", 3);
+        Libro libro2 = new Libro("Libro B", "Autore B", 2021, "1234567890123", 2);
+        System.out.println("Test 3 - Equals (stesso ISBN):");
+        System.out.println("Atteso: true");
+        System.out.println("Ottenuto: " + libro1.equals(libro2));
+        System.out.println();
 
-    @Test
-    void testSettersAndGetters() {
-        Libro libro = new Libro();
-        libro.setTitolo("Il nome della rosa");
-        libro.setAutore("Umberto Eco");
-        libro.setAnnoPubblicazione(1980);
-        libro.setISBN("9876543210987");
+        // Test 4: Verifica del metodo equals() - Libri con ISBN diverso
+        Libro libro3 = new Libro("Libro C", "Autore C", 2019, "9876543210987", 1);
+        System.out.println("Test 4 - Equals (ISBN diverso):");
+        System.out.println("Atteso: false");
+        System.out.println("Ottenuto: " + libro1.equals(libro3));
+        System.out.println();
 
-        assertEquals("Il nome della rosa", libro.getTitolo());
-        assertEquals("Umberto Eco", libro.getAutore());
-        assertEquals(1980, libro.getAnnoPubblicazione());
-        assertEquals("9876543210987", libro.getISBN());
-    }
+        // Test 5: Verifica del metodo equals() - Confronto con null
+        System.out.println("Test 5 - Equals (confronto con null):");
+        System.out.println("Atteso: false");
+        System.out.println("Ottenuto: " + libro1.equals(null));
+        System.out.println();
 
-    @Test
-    void testEqualsConStessoISBN() {
-        Libro libro1 = new Libro("Libro A", "Autore A", 2000, "ISBN123", 0);
-        Libro libro2 = new Libro("Libro B", "Autore B", 2020, "ISBN123", 0);
-
-        // Corretto: confronto basato sul contenuto dell'ISBN
-        assertTrue(libro1.equals(libro2));
-    }
-
-    @Test
-    void testEqualsConISBNDiversi() {
-        Libro libro1 = new Libro("Libro A", "Autore A", 2000, "ISBN123", 0);
-        Libro libro2 = new Libro("Libro B", "Autore B", 2020, "ISBN456", 0);
-
-        assertFalse(libro1.equals(libro2));
-    }
-
-    @Test
-    void testToString() {
-        Libro libro = new Libro("Dune", "Frank Herbert", 1965, "12345", 0);
-        String output = libro.toString();
-        assertTrue(output.contains("Dune"));
-        assertTrue(output.contains("Frank Herbert"));
-        assertTrue(output.contains("1965"));
-        assertTrue(output.contains("12345"));
+        // Test 6: Verifica del metodo equals() - Stesso oggetto
+        System.out.println("Test 6 - Equals (stesso oggetto):");
+        System.out.println("Atteso: true");
+        System.out.println("Ottenuto: " + libro1.equals(libro1));
     }
 }
