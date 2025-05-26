@@ -16,7 +16,7 @@ class LibroTest {
 
     @Test
     void testCostruttoreParametrico() {
-        Libro libro = new Libro("1984", "George Orwell", 1949, "1234567890123");
+        Libro libro = new Libro("1984", "George Orwell", 1949, "1234567890123", 0);
         assertEquals("1984", libro.getTitolo());
         assertEquals("George Orwell", libro.getAutore());
         assertEquals(1949, libro.getAnnoPubblicazione());
@@ -39,8 +39,8 @@ class LibroTest {
 
     @Test
     void testEqualsConStessoISBN() {
-        Libro libro1 = new Libro("Libro A", "Autore A", 2000, "ISBN123");
-        Libro libro2 = new Libro("Libro B", "Autore B", 2020, "ISBN123");
+        Libro libro1 = new Libro("Libro A", "Autore A", 2000, "ISBN123", 0);
+        Libro libro2 = new Libro("Libro B", "Autore B", 2020, "ISBN123", 0);
 
         // Corretto: confronto basato sul contenuto dell'ISBN
         assertTrue(libro1.equals(libro2));
@@ -48,15 +48,15 @@ class LibroTest {
 
     @Test
     void testEqualsConISBNDiversi() {
-        Libro libro1 = new Libro("Libro A", "Autore A", 2000, "ISBN123");
-        Libro libro2 = new Libro("Libro B", "Autore B", 2020, "ISBN456");
+        Libro libro1 = new Libro("Libro A", "Autore A", 2000, "ISBN123", 0);
+        Libro libro2 = new Libro("Libro B", "Autore B", 2020, "ISBN456", 0);
 
         assertFalse(libro1.equals(libro2));
     }
 
     @Test
     void testToString() {
-        Libro libro = new Libro("Dune", "Frank Herbert", 1965, "12345");
+        Libro libro = new Libro("Dune", "Frank Herbert", 1965, "12345", 0);
         String output = libro.toString();
         assertTrue(output.contains("Dune"));
         assertTrue(output.contains("Frank Herbert"));
