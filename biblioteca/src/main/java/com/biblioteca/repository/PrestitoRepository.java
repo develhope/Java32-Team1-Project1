@@ -9,25 +9,25 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrestitoRepository  extends AbstractRepository{
- //inserire aggiungi prestito ed findBYUtente
+public class PrestitoRepository extends AbstractRepository {
+    //inserire aggiungi prestito ed findBYUtente
 
 
-    private void update(Prestito prestito) throws  SQLException {
+    private void update(Prestito prestito) throws SQLException {
         String querryUpDate = "UPDATE prestiti " +
                 " SET data_restituzione = ?" +
                 " where id_prestito= ?";
         PreparedStatement statement = connection.prepareStatement(querryUpDate);
 
-        Timestamp dataRestituzione= prestito.getDataRestituzione()== null ? null :Timestamp.valueOf(prestito.getDataRestituzione());
+        Timestamp dataRestituzione = prestito.getDataRestituzione() == null ? null : Timestamp.valueOf(prestito.getDataRestituzione());
         statement.setTimestamp(1, dataRestituzione); // LocalDateTime -> Timestamp
         statement.setInt(2, prestito.getIdPrestito());
         int rowsAffected = statement.executeUpdate();
     }
 
-    private void create(Prestito prestito) throws  SQLException {
-        String queryCreate ="INSERT INTO prestiti (id_utente, isbn, data_prestito)" +
-                " VALUES(?,?,?)" ;
+    private void create(Prestito prestito) throws SQLException {
+        String queryCreate = "INSERT INTO prestiti (id_utente, isbn, data_prestito)" +
+                " VALUES(?,?,?)";
         PreparedStatement statement = connection.prepareStatement(queryCreate);
 
         statement.setInt(1, prestito.getUtente().getIdUtente());
@@ -36,8 +36,9 @@ public class PrestitoRepository  extends AbstractRepository{
 
         int rowsAffected = statement.executeUpdate();
     }
-    public void save(Prestito prestito) throws SQLException{
-        if (prestito.getIdPrestito() == null){
+
+    public void save(Prestito prestito) throws SQLException {
+        if (prestito.getIdPrestito() == null) {
             create(prestito);
         } else {
             update(prestito);
@@ -48,31 +49,31 @@ public class PrestitoRepository  extends AbstractRepository{
 
         String queryFindById =
                 "SELECT * " +
-                "FROM prestiti AS p JOIN  utenti AS u ON p.id_utente = u.id_utente " +
-                "JOIN libri AS l ON l.isbn = p.isbn WHERE p.id_utente = ?";
+                        "FROM prestiti AS p JOIN  utenti AS u ON p.id_utente = u.id_utente " +
+                        "JOIN libri AS l ON l.isbn = p.isbn WHERE p.id_utente = ?";
 
         PreparedStatement statement = connection.prepareStatement(queryFindById);
-        statement.setInt(1,id);
+        statement.setInt(1, id);
         ResultSet resultSet = statement.executeQuery();
 
         List<Prestito> tuttiPrestiti = new ArrayList<>();
 
         while (resultSet.next()) {
             Utente u = new Utente(resultSet.getString("nome"),
-                                  resultSet.getString("cognome"),
-                                    resultSet.getInt("id_utente"));
+                    resultSet.getString("cognome"),
+                    resultSet.getInt("id_utente"));
 
             Libro l = new Libro(resultSet.getString("titolo"),
-                                resultSet.getString("autore"),
-                                resultSet.getInt("anno_pubblicazione"),
-                                resultSet.getString("isbn"),
-                                resultSet.getInt("numero_copie"));
+                    resultSet.getString("autore"),
+                    resultSet.getInt("anno_pubblicazione"),
+                    resultSet.getString("isbn"),
+                    resultSet.getInt("numero_copie"));
 
             int idPrestito = resultSet.getInt("id_prestito");
 
             Timestamp data_prestito = resultSet.getTimestamp("data_prestito");
             Timestamp data_restituzione = resultSet.getTimestamp("data_restituzione");
-            Prestito prestito = new Prestito(idPrestito, l, u,data_prestito.toLocalDateTime(),
+            Prestito prestito = new Prestito(idPrestito, l, u, data_prestito.toLocalDateTime(),
                     data_restituzione == null ? null : data_restituzione.toLocalDateTime());
 
             tuttiPrestiti.add(prestito);
@@ -104,6 +105,25 @@ public class PrestitoRepository  extends AbstractRepository{
             libri.add(libro);
         }
         return libri;
+
+    }
+
+    public int getNumeroCopieDisponibili(Libro libro) throws SQLException {
+
+        String queryDisponibilita = "SELECT p.isbn, titolo, autore, anno_pubblicazione, numero_copie - COUNT(*) AS copie_disponibili \n" +
+                "FROM prestiti p, libri l\n" +
+                "WHERE data_restituzione IS NULL AND l.isbn = p.isbn AND p.isbn = ?\n" +
+                "GROUP BY p.isbn";
+        PreparedStatement statement = connection.prepareStatement(queryDisponibilita);
+
+        statement.setString(1, libro.getISBN());
+        ResultSet resultSet = statement.executeQuery();
+
+
+        if (resultSet.next()) {
+            return resultSet.getInt("copie_disponibili");
+        }
+        return 0;
 
     }
 
