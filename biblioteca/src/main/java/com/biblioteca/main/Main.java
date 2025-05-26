@@ -123,6 +123,13 @@ public class Main {
                             // Gestisce eventuali eccezioni di puntatore nullo (anche se non tipicamente sollevate qui)
                         }
 
+                        // Nuovo controllo: il libro deve essere tra quelli disponibili
+                        if (libro != null && !prestitoRepository.getLibriDisponibili().contains(libro)) {
+                            System.err.println("Il libro selezionato non è disponibile per il prestito non essendoci copie.");
+                            libro = null;
+                        }
+
+
                         if (libro == null) {
                             System.err.println("Titolo non trovato. Riprova.");
                         }
