@@ -115,7 +115,7 @@ public class Main {
                     while (libro == null) { // try catch
                         System.out.println("Inserisci il titolo del libro che vuoi prendere in prestito:");
                         //bibliotecaService.elencoLibri();
-                        System.out.println(prestitoRepository.disponibilitaLibri());
+                        System.out.println(prestitoRepository.getLibriDisponibili());
                         String titoloLibro = sc.nextLine();
                         try {
                             libro = libroRepository.findByTitle(titoloLibro);

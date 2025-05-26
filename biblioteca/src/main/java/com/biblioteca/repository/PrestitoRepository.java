@@ -82,9 +82,10 @@ public class PrestitoRepository  extends AbstractRepository{
         }
     }
 
-    public List<Libro> disponibilitaLibri() throws SQLException {
+    public List<Libro> getLibriDisponibili() throws SQLException {
 
-        String queryDisponibilita = "SELECT p.isbn, titolo, autore, anno_pubblicazione, numero_copie - COUNT(*) AS copie_disponibili FROM prestiti p, libri l " +
+        String queryDisponibilita = "SELECT p.isbn, titolo, autore, anno_pubblicazione," +
+                " numero_copie - COUNT(*) AS copie_disponibili FROM prestiti p, libri l " +
                 "WHERE data_restituzione IS NULL AND l.isbn = p.isbn " +
                 "GROUP BY p.isbn " +
                 "HAVING copie_disponibili > 0";
@@ -94,10 +95,11 @@ public class PrestitoRepository  extends AbstractRepository{
         List<Libro> libri = new ArrayList<>();
 
         while (resultSet.next()) {
-            Libro libro = new Libro(resultSet.getString("isbn"),
+            Libro libro = new Libro(
                     resultSet.getString("titolo"),
-                    resultSet.getInt("anno_pubblicazione"),
                     resultSet.getString("autore"),
+                    resultSet.getInt("anno_pubblicazione"),
+                    resultSet.getString("isbn"),
                     resultSet.getInt("copie_disponibili"));
             libri.add(libro);
         }
