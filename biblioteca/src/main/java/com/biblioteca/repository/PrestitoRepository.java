@@ -107,6 +107,26 @@ public class PrestitoRepository  extends AbstractRepository{
 
     }
 
+    public int getNumeroCopieDisponibili(Libro l) throws SQLException {
+
+        String queryDisponibilita = "SELECT p.isbn, titolo, autore, anno_pubblicazione," +
+                " numero_copie - COUNT(*) AS copie_disponibili FROM prestiti p, libri l " +
+                "WHERE data_restituzione IS NULL AND l.isbn = p.isbn AND p.isbn = ?" +
+                "GROUP BY p.isbn ";
+
+        PreparedStatement statement = connection.prepareStatement(queryDisponibilita);
+        statement.setString(1,l.getISBN());
+        ResultSet resultSet = statement.executeQuery();
+
+        //se l'isbn non esiste?
+
+        if (resultSet.next()) {
+            return resultSet.getInt("copie_disponibili");
+        }
+        return 0;
+
+    }
+
     public void findAllPrestiti() throws SQLException {
 
         String queryFindAllPrestiti =
