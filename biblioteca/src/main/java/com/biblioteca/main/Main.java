@@ -8,6 +8,7 @@ import com.biblioteca.repository.LibroRepository;
 import com.biblioteca.repository.PrestitoRepository;
 import com.biblioteca.repository.UtenteRepository;
 import com.biblioteca.service.BibliotecaService;
+import com.biblioteca.service.PrestitoService;
 import com.biblioteca.service.UtenteService;
 
 import java.sql.*;
@@ -28,6 +29,7 @@ public class Main {
     static LibroRepository libroRepository = new LibroRepository();
     static BibliotecaService bibliotecaService = new BibliotecaService();
 
+    static PrestitoService prestitoService = new PrestitoService();
 
     /**
      * Punto di ingresso dell'applicazione Biblioteca.
@@ -124,7 +126,7 @@ public class Main {
                         }
 
                         // Nuovo controllo: il libro deve essere tra quelli disponibili
-                        if (libro != null && !prestitoRepository.getLibriDisponibili().contains(libro)) {
+                        if (libro != null && prestitoRepository.getNumeroCopieDisponibili(libro) > 0) {
                             System.err.println("Il libro selezionato non è disponibile per il prestito non essendoci copie.");
                             libro = null;
                         }
