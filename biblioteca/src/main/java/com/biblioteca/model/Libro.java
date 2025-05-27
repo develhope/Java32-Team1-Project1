@@ -124,6 +124,14 @@ public class Libro {
         this.ISBN = ISBN;
     }
 
+    public int getNumeroCopie() {
+        return numeroCopie;
+    }
+
+    public void setNumeroCopie(int numeroCopie) {
+        this.numeroCopie = numeroCopie;
+    }
+
     /**
      * Restituisce una rappresentazione testuale del libro.
      * Include titolo, autore, anno di pubblicazione e ISBN.
@@ -137,7 +145,7 @@ public class Libro {
                 ", autore='" + autore + '\'' +
                 ", annoPubblicazione=" + annoPubblicazione +
                 ", ISBN=" + ISBN + '\'' +
-                ", numero copie=" + numeroCopie + '\'' +
+                ", numero copie totali=" + numeroCopie + '\'' +
                 '}';
     }
 
