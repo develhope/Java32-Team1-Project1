@@ -35,18 +35,40 @@ public class LibroRepository extends AbstractRepository {
     }
 
     public void addNewLibro(Libro l) throws SQLException {
-        String queryAddNewLibro = "INSERT INTO biblioteca.libri (titolo , autore , anno_pubblicazione , isbn)" +
-                " VALUES (?, ?, ?, ?)"; //specificare valori
+        String queryAddNewLibro = "INSERT INTO biblioteca.libri (titolo , autore , anno_pubblicazione , isbn , numero_copie)" +
+                " VALUES (?, ?, ?, ?, ?)"; //specificare valori
         PreparedStatement statement = connection.prepareStatement(queryAddNewLibro);
 
         statement.setString(1,l.getTitolo() );
         statement.setString(2, l.getAutore());
         statement.setInt(3, l.getAnnoPubblicazione());
         statement.setString(4, l.getISBN());
+        statement.setInt(5,l.getNumeroCopie());
 
         statement.executeUpdate();
 
     }
+
+    /**
+     * Elimina un libro dal database in base al suo ISBN.
+     *
+     * @param
+    isbn l'ISBN del libro da eliminare
+     * @throws
+    SQLException se si verifica un errore del database
+     */
+
+
+
+    public void deleteLibro(String isbn) throws SQLException {
+        String queryDeleteLibro = "DELETE FROM biblioteca.libri WHERE isbn = ?";
+        PreparedStatement statement = connection.prepareStatement(queryDeleteLibro);
+
+        statement.setString(1, isbn);
+
+        statement.executeUpdate();
+    }
+
 
     public Libro findByTitle(String titolo) throws SQLException {
 

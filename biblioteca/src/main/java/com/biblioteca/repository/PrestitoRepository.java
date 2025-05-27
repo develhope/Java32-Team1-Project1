@@ -13,21 +13,21 @@ public class PrestitoRepository  extends AbstractRepository{
  //inserire aggiungi prestito ed findBYUtente
 
 
-    private void update(Prestito prestito) throws  SQLException {
+    private void update(Prestito prestito) throws SQLException {
         String querryUpDate = "UPDATE prestiti " +
                 " SET data_restituzione = ?" +
                 " where id_prestito= ?";
         PreparedStatement statement = connection.prepareStatement(querryUpDate);
 
-        Timestamp dataRestituzione= prestito.getDataRestituzione()== null ? null :Timestamp.valueOf(prestito.getDataRestituzione());
+        Timestamp dataRestituzione = prestito.getDataRestituzione() == null ? null : Timestamp.valueOf(prestito.getDataRestituzione());
         statement.setTimestamp(1, dataRestituzione); // LocalDateTime -> Timestamp
         statement.setInt(2, prestito.getIdPrestito());
         int rowsAffected = statement.executeUpdate();
     }
 
-    private void create(Prestito prestito) throws  SQLException {
-        String queryCreate ="INSERT INTO prestiti (id_utente, isbn, data_prestito)" +
-                " VALUES(?,?,?)" ;
+    private void create(Prestito prestito) throws SQLException {
+        String queryCreate = "INSERT INTO prestiti (id_utente, isbn, data_prestito)" +
+                " VALUES(?,?,?)";
         PreparedStatement statement = connection.prepareStatement(queryCreate);
 
         statement.setInt(1, prestito.getUtente().getIdUtente());
@@ -106,26 +106,6 @@ public class PrestitoRepository  extends AbstractRepository{
         return libri;
 
     }
-
-//    public int getNumeroCopieDisponibili(Libro l) throws SQLException {
-//
-//        String queryDisponibilita = "SELECT p.isbn, titolo, autore, anno_pubblicazione," +
-//                " numero_copie - COUNT(*) AS copie_disponibili FROM prestiti p, libri l " +
-//                "WHERE data_restituzione IS NULL AND l.isbn = p.isbn AND p.isbn = ?" +
-//                "GROUP BY p.isbn ";
-//
-//        PreparedStatement statement = connection.prepareStatement(queryDisponibilita);
-//        statement.setString(1,l.getISBN());
-//        ResultSet resultSet = statement.executeQuery();
-//
-//        //se l'isbn non esiste?
-//
-//        if (resultSet.next()) {
-//            return resultSet.getInt("copie_disponibili");
-//        }
-//        return 0;
-//
-//    }
 
     public void findAllPrestiti() throws SQLException {
 
