@@ -126,10 +126,10 @@ public class Main {
                         }
 
                         // Nuovo controllo: il libro deve essere tra quelli disponibili
-                        if (libro != null && prestitoRepository.getNumeroCopieDisponibili(libro) > 0) {
-                            System.err.println("Il libro selezionato non è disponibile per il prestito non essendoci copie.");
-                            libro = null;
-                        }
+//                        if (libro != null && prestitoRepository.getNumeroCopieDisponibili(libro) > 0) {
+//                            System.err.println("Il libro selezionato non è disponibile per il prestito non essendoci copie.");
+//                            libro = null;
+//                        }
 
 
                         if (libro == null) {
@@ -139,9 +139,15 @@ public class Main {
 
                     try {
                         Prestito prestito = new Prestito(libro,utenteCorrente, LocalDateTime.now(),null);
-                        prestitoRepository.save(prestito);
-                        System.out.println("Prestito effettuato: "  +
-                                " hai preso \"" + prestito.getLibro().getTitolo() + "\".");
+                        boolean creato =  prestitoService.create(prestito);
+
+                        if (creato){
+                            System.out.println("Prestito effettuato: "  +
+                                    " hai preso \"" + prestito.getLibro().getTitolo() + "\".");
+                        }else {
+                            System.out.println("Prestito non effettuato");
+                        }
+
                     } catch (IllegalArgumentException e) {
                         System.err.println("Errore: " + e.getMessage());
                     }
