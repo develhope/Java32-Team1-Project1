@@ -9,7 +9,105 @@ import java.util.Random;
 
 public class LibroGenerator {
 
-    static Random random = new Random(1);
+    static Random random = new Random(2);
+    static List<String> nomi = List.of("Luigi","Sabrina","Anna");
+    static List<String> cognomi = List.of("Bianchi","Gialli","Verdi");
+    static List<String> words = List.of(
+            "defensive",
+            "inspire",
+            "debate",
+            "replace",
+            "crop",
+            "circumstance",
+            "your",
+            "music",
+            "gas",
+            "free",
+            "photograph",
+            "snap",
+            "poll",
+            "which",
+            "designer",
+            "shot",
+            "Mr",
+            "learning",
+            "beach",
+            "sex",
+            "widely",
+            "chemical",
+            "or",
+            "decide",
+            "no",
+            "concern",
+            "heat",
+            "final",
+            "boat",
+            "province",
+            "active",
+            "originally",
+            "four",
+            "wet",
+            "radical",
+            "small",
+            "organize",
+            "shopping",
+            "championship",
+            "finish",
+            "creation",
+            "craft",
+            "veteran",
+            "participate",
+            "tree",
+            "frequently",
+            "figure",
+            "reveal",
+            "PC",
+            "blow",
+            "letter",
+            "description",
+            "affair",
+            "peer",
+            "industrial",
+            "add",
+            "fantasy",
+            "frustration",
+            "bury",
+            "cooking",
+            "tobacco",
+            "incentive",
+            "good",
+            "test",
+            "concentration",
+            "contract",
+            "with",
+            "perception",
+            "rough",
+            "member",
+            "rule",
+            "find",
+            "mainly",
+            "recognize",
+            "job",
+            "per",
+            "gray",
+            "generate",
+            "sanction",
+            "clinical",
+            "knee",
+            "raw",
+            "difficult",
+            "approach",
+            "read",
+            "cheap",
+            "trail",
+            "limited",
+            "tomato",
+            "resistance",
+            "destroy",
+            "voice",
+            "founder",
+            "spending",
+            "mm-hmm");
 
     public static void main(String[] args) {
         LibroGenerator lg = new LibroGenerator();
@@ -30,13 +128,16 @@ public class LibroGenerator {
     }
 
     public Libro generaLibro() {
-        return new Libro(null,
-                null,generaAnno(),
+        return new Libro(generaTitolo(),
+                generaAutore(),generaAnno(),
                 generaIsbn(), generaNumeroCopie());
     }
 
     public String generaAutore() {
-        return null;
+        String nome = nomi.get(random.nextInt(nomi.size()));
+        String cognome = cognomi.get(random.nextInt(cognomi.size()));
+
+        return nome + " " + cognome;
     }
 
     public String generaIsbn() {
@@ -48,7 +149,14 @@ public class LibroGenerator {
     }
 
     public String generaTitolo() {
-        return null;
+
+        int numeroParole = random.nextInt(2,5);
+        StringBuilder titolo = new StringBuilder();
+        for(int i = 0; i<numeroParole; i++){
+           String parola = words.get(random.nextInt(words.size()));
+           titolo.append(" " + parola);
+        }
+        return titolo.toString().trim();
     }
 
     public int generaNumeroCopie() {
