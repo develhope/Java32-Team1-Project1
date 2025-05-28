@@ -1,5 +1,7 @@
 package com.biblioteca.model;
 
+import java.util.Objects;
+
 /**
  * Classe che rappresenta un libro nella biblioteca.
  * Contiene informazioni come il titolo, l'autore, l'anno di pubblicazione e l'ISBN.
@@ -157,13 +159,10 @@ public class Libro {
      * @return true se i libri hanno lo stesso ISBN, false altrimenti.
      */
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-
-        Libro libro = (Libro) obj;  // CORRETTO: cast dell'oggetto
-
-        return this.ISBN == libro.ISBN;  // CORRETTO: confronto con ==
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Libro libro = (Libro) o;
+        return Objects.equals(ISBN, libro.ISBN);
     }
 
     /**
@@ -171,8 +170,8 @@ public class Libro {
      *
      * @return Il codice hash del libro.
      */
-//    @Override
-//    public String hashCode() {
-//        return String.hashCode(ISBN);
-//    }
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(ISBN);
+    }
 }
