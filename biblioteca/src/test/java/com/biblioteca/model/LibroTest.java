@@ -1,5 +1,7 @@
 package com.biblioteca.model;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * Classe di test per la verifica delle funzionalità della classe {@link Libro}.
  * Contiene test per il costruttore di default, il costruttore parametrizzato e il metodo {@code equals}.
@@ -20,45 +22,62 @@ public class LibroTest {
      * </ul>
      * I risultati dei test vengono stampati a console per consentire una verifica visiva.
      *
-     * @param args Argomenti della riga di comando (non utilizzati).
      */
-    public static void main(String[] args) {
+
+        // Creazione di oggetti di supporto per i test
+    Libro libroParam = new Libro("Il Nome del Vento", "Patrick Rothfuss", 2007, "9788804681830", 5);
+    Libro libro1 = new Libro("Libro A", "Autore A", 2020, "1234567890123", 3);
+    Libro libro2 = new Libro("Libro B", "Autore B", 2021, "1234567890123", 2);
+    Libro libro3 = new Libro("Libro C", "Autore C", 2019, "9876543210987", 1);
+
         // Test 1: Verifica del costruttore di default
-        Libro libroDefault = new Libro();
-        System.out.println("Test 1 - Costruttore di default:");
-        System.out.println("Atteso: titolo='titolo', autore='sconoscuto', annoPubblicazione=0, ISBN='0000000000000000', numeroCopie=0");
-        System.out.println("Ottenuto: " + libroDefault.toString());
-        System.out.println();
+        @Test
+        void testCostruttoreDefault() {
+            Libro libroDefault = new Libro();
+            System.out.println("Test 1 - Costruttore di default:");
+            System.out.println("Atteso: titolo='titolo', autore='sconoscuto', annoPubblicazione=0, ISBN='0000000000000000', numeroCopie=0");
+            System.out.println("Ottenuto: " + libroDefault);
+            System.out.println();
+        }
 
         // Test 2: Verifica del costruttore parametrizzato
-        Libro libroParam = new Libro("Il Nome del Vento", "Patrick Rothfuss", 2007, "9788804681830", 5);
-        System.out.println("Test 2 - Costruttore parametrizzato:");
-        System.out.println("Atteso: titolo='Il Nome del Vento', autore='Patrick Rothfuss', annoPubblicazione=2007, ISBN='9788804681830', numeroCopie=5");
-        System.out.println("Ottenuto: " + libroParam.toString());
-        System.out.println();
+        @Test
+        void testCostruttoreParam() {
+            System.out.println("Test 2 - Costruttore parametrizzato:");
+            System.out.println("Atteso: titolo='Il Nome del Vento', autore='Patrick Rothfuss', annoPubblicazione=2007, ISBN='9788804681830', numeroCopie=5");
+            System.out.println("Ottenuto: " + libroParam.toString());
+            System.out.println();
+        }
 
         // Test 3: Verifica del metodo equals() - Libri con stesso ISBN
-        Libro libro1 = new Libro("Libro A", "Autore A", 2020, "1234567890123", 3);
-        Libro libro2 = new Libro("Libro B", "Autore B", 2021, "1234567890123", 2);
+    @Test
+    void testEqualsLibriConStessoIsbn() {
         System.out.println("Test 3 - Equals (stesso ISBN):");
         System.out.println("Atteso: true");
         System.out.println("Ottenuto: " + libro1.equals(libro2));
         System.out.println();
-
+    }
         // Test 4: Verifica del metodo equals() - Libri con ISBN diverso
-        Libro libro3 = new Libro("Libro C", "Autore C", 2019, "9876543210987", 1);
+    @Test
+    void testEqualsLibriConIsbnDiverso() {
         System.out.println("Test 4 - Equals (ISBN diverso):");
         System.out.println("Atteso: false");
         System.out.println("Ottenuto: " + libro1.equals(libro3));
         System.out.println();
+    }
 
         // Test 5: Verifica del metodo equals() - Confronto con null
+    @Test
+    void testEqualsNull() {
         System.out.println("Test 5 - Equals (confronto con null):");
         System.out.println("Atteso: false");
         System.out.println("Ottenuto: " + libro1.equals(null));
         System.out.println();
+    }
 
         // Test 6: Verifica del metodo equals() - Stesso oggetto
+    @Test
+    void testEqualsStessoOggetto() {
         System.out.println("Test 6 - Equals (stesso oggetto):");
         System.out.println("Atteso: true");
         System.out.println("Ottenuto: " + libro1.equals(libro1));
