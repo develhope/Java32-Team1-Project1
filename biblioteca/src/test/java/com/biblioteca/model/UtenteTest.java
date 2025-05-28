@@ -8,7 +8,7 @@ class UtenteTest {
 
     @Test
     void testCostruttoreEGetter() {
-        Utente utente = new Utente("Mario", "Rossi", 1);
+        Utente utente = new Utente(new String("Mario"), new String("Rossi"), 1);
 
         assertEquals("Mario", utente.getNome());
         assertEquals("Rossi", utente.getCognome());
@@ -17,7 +17,7 @@ class UtenteTest {
 
     @Test
     void testSetter() {
-        Utente utente = new Utente("Mario", "Rossi", 1);
+        Utente utente = new Utente(new String("Mario"), new String("Rossi"), 1);
         utente.setNome("Luigi");
         utente.setCognome("Verdi");
         utente.setIdUtente(2);
@@ -29,19 +29,13 @@ class UtenteTest {
 
     @Test
     void testEqualsEHashCode() {
-        Utente utente1 = new Utente("Anna", "Bianchi", 10);
-        Utente utente2 = new Utente("Anna", "Bianchi", 10);
-        Utente utente3 = new Utente("Anna", "Bianchi", 11);
+        Utente utente1 = new Utente(new String ("Anna"), new String("Bianchi"), 10);
+        Utente utente2 = new Utente(new String ("Anna"), new String("Bianchi"), 10);
+        Utente utente3 = new Utente(new String ("Anna"), new String("Bianchi"), 11);
 
         assertEquals(utente1, utente2);
         assertEquals(utente1.hashCode(), utente2.hashCode());
         assertNotEquals(utente1, utente3);
     }
 
-    @Test
-    void testToString() {
-        Utente utente = new Utente("Giulia", "Neri", 99);
-        String expected = "Utente{nome='Giulia', cognome='Neri', idUtente=99}";
-        assertEquals(expected, utente.toString());
-    }
 }

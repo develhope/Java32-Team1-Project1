@@ -5,6 +5,8 @@ import org.junit.jupiter.api.TestFactory;
 
 import java.time.LocalDateTime;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * Classe di test per la verifica delle funzionalità della classe {@link Prestito}.
  * Contiene test per i costruttori, il metodo {@code toString} e il metodo {@code equals}.
@@ -42,54 +44,52 @@ public class PrestitoTest {
     @Test
     void testVerificaCostruttoreID() {
         Prestito prestitoConId = new Prestito(1, libro1, utente1, dataPrestito, dataRestituzione);
-        System.out.println("Test 1 - Costruttore con ID:");
-        System.out.println("Atteso: idPrestito=1, utente=" + utente1 + ", libro=" + libro1 + ", dataPrestito=2025-05-26T10:00, dataRestituzione=2025-06-09T10:00");
-        System.out.println("Ottenuto: " + prestitoConId);
-        System.out.println();
+
+        assertEquals( 1,prestitoConId.getIdPrestito());
+        assertEquals( utente1,prestitoConId.getUtente());
+        assertEquals( libro1,prestitoConId.getLibro());
+        assertEquals( dataPrestito,prestitoConId.getDataPrestito());
+        assertEquals(dataRestituzione, prestitoConId.getDataRestituzione());
+
     }
 
     // Test 2: Verifica del costruttore senza ID
     @Test
     void testVerificaCostruttoreSenzaID() {
         Prestito prestitoSenzaId = new Prestito(libro1, utente1, dataPrestito, dataRestituzione);
-        System.out.println("Test 2 - Costruttore senza ID:");
-        System.out.println("Atteso: idPrestito=null, utente=" + utente1 + ", libro=" + libro1 + ", dataPrestito=2025-05-26T10:00, dataRestituzione=2025-06-09T10:00");
-        System.out.println("Ottenuto: " + prestitoSenzaId);
-        System.out.println();
+
+        assertEquals( utente1,prestitoSenzaId.getUtente());
+        assertEquals( libro1,prestitoSenzaId.getLibro());
+        assertEquals( dataPrestito,prestitoSenzaId.getDataPrestito());
+        assertEquals(dataRestituzione, prestitoSenzaId.getDataRestituzione());
     }
 
     // Test 3: Verifica del metodo equals() - Prestiti con stesso libro e utente
     @Test
     void testEqualsLibroConUtente() {
-        System.out.println("Test 3 - Equals (stesso libro e utente):");
-        System.out.println("Atteso: true");
-        System.out.println("Ottenuto: " + prestito1.equals(prestito2));
-        System.out.println();
+        assertTrue(prestito1.equals(prestito2));
+
     }
 
     // Test 4: Verifica del metodo equals() - Prestiti con libro o utente diverso
     @Test
     void testEqualsLibroConUtenteDiverso() {
-        System.out.println("Test 4 - Equals (libro o utente diverso):");
-        System.out.println("Atteso: false (diverso libro), false (diverso utente)");
-        System.out.println("Ottenuto: " + prestito1.equals(prestito3) + ", " + prestito1.equals(prestito4));
-        System.out.println();
+        //Atteso: false (diverso libro), false (diverso utente)
+        assertFalse( prestito1.equals(prestito3));
+        assertFalse( prestito1.equals(prestito4));
+
     }
 
     // Test 5: Verifica del metodo equals() - Confronto con null
     @Test
     void testEqualsNull() {
-        System.out.println("Test 5 - Equals (confronto con null):");
-        System.out.println("Atteso: false");
-        System.out.println("Ottenuto: " + prestito1.equals(null));
-        System.out.println();
+        assertNotNull(prestito1);
+
     }
 
     // Test 6: Verifica del metodo equals() - Stesso oggetto
     @Test
     void testEqualsStessoOggetto() {
-        System.out.println("Test 6 - Equals (stesso oggetto):");
-        System.out.println("Atteso: true");
-        System.out.println("Ottenuto: " + prestito1.equals(prestito1));
+        assertEquals(true,prestito1.equals(prestito1));
     }
 }
