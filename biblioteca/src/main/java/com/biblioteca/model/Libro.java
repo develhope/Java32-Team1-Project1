@@ -26,12 +26,12 @@ public class Libro {
 
     /**
      * Costruttore di default.
-     * Inizializza un libro con valori predefiniti: titolo "titolo", autore "sconoscuto",
+     * Inizializza un libro con valori predefiniti: titolo "titolo", autore "sconosciuto",
      * anno di pubblicazione 0000 e ISBN 0000000000000000.
      */
     public Libro() {
         titolo = "titolo";
-        autore = "sconoscuto";
+        autore = "sconosciuto";
         annoPubblicazione = 0000;
         ISBN = "0000000000000000";
     }
