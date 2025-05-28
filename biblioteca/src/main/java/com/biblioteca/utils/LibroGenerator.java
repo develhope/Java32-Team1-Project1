@@ -3,9 +3,7 @@ package com.biblioteca.utils;
 import com.biblioteca.model.Libro;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class LibroGenerator {
 
@@ -112,15 +110,23 @@ public class LibroGenerator {
     public static void main(String[] args) {
         LibroGenerator lg = new LibroGenerator();
 
-        List<Libro> lista = lg.generaLibri(10);
+        Set<Libro> lista = lg.generaLibri(100);
         for(Libro l : lista){
             System.out.println(lg.generaInsert(l));
+            if(random.nextDouble()< 0.5){
+                System.out.println(lg.generaPrestito(l, random.nextInt(1,7)));
+            }
+
         }
-        //System.out.println(lg.generaLibri(10));
+
+    }
+    public String generaPrestito(Libro l, int idUtente){
+        return "INSERT INTO prestiti (isbn, id_utente) VALUES (" +
+                "'" + l.getISBN() + "' " + idUtente + ");";
     }
 
-    public List<Libro> generaLibri(int n) {
-        List<Libro> libri = new ArrayList<>();
+    public Set<Libro> generaLibri(int n) {
+        Set<Libro> libri = new HashSet<>();
         for (int i = 0; i < n; i++) {
             libri.add(generaLibro());
         }
