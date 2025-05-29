@@ -40,7 +40,8 @@ public class NewMain {
             gestisciScelta(scelta, utenteCorrente);
             if (scelta == 0) {
                 uscita = true;
-            };
+            }
+            ;
         }
 
         sc.close();
@@ -59,12 +60,15 @@ public class NewMain {
 
     public static int leggiScelta() {
         try {
-            return sc.nextInt();
+            int n = sc.nextInt();
+            sc.nextLine(); // Pulizia del buffer di input
+            return n;
         } catch (InputMismatchException e) {
             System.err.println("Errore: Inserire un numero.");
             return -1;
         }
     }
+
 
     public static void gestisciScelta(int scelta, Utente utenteCorrente) throws SQLException {
         switch (scelta) {
@@ -86,6 +90,8 @@ public class NewMain {
             case 6:
                 cercaLibro();
                 break;
+            case 0:
+                break;
             default:
                 System.err.println("Scelta non valida. Riprova.");
         }
@@ -103,12 +109,12 @@ public class NewMain {
 
         // Richiede il titolo del libro finché non viene trovato un libro valido
         while (libro == null) { // try catch
-            System.out.println("Inserisci il titolo del libro che vuoi prendere in prestito:");
+            System.out.println("Inserisci l'ISBN del libro che vuoi prendere in prestito:");
             //bibliotecaService.elencoLibri();
             System.out.println(prestitoRepository.getLibriDisponibili());
-            String titoloLibro = sc.nextLine();
+            String ISBN = sc.nextLine();
             try {
-                libro = libroRepository.findByTitle(titoloLibro);
+                libro = libroRepository.findById(ISBN);
             } catch (NullPointerException e) {
                 // Gestisce eventuali eccezioni di puntatore nullo (anche se non tipicamente sollevate qui)
             }
