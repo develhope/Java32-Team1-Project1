@@ -78,7 +78,4 @@ public class LibroGenerator {
 
     }
 
-//    public String generaInserts(Libro l){
-//        return null;
-//    }
 }

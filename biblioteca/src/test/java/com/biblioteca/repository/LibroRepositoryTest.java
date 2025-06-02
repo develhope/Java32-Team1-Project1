@@ -117,6 +117,7 @@ class LibroRepositoryTest {
     void findAllLibri() throws SQLException {
         List<Libro> libri = lr.findAllLibri();
         assertEquals(5, libri.size(), "List should contain five books");
+        //scriverlo con ciclo for
         boolean foundRosa = libri.stream().anyMatch(libro ->
                 "Il nome della rosa".equals(libro.getTitolo()) &&
                         "Umberto Eco".equals(libro.getAutore()) &&
