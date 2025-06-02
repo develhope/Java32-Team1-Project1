@@ -70,24 +70,23 @@ public class LibroRepository extends AbstractRepository {
     }
 
     //deve restituire una lista di libri
-    public Libro findByTitle(String titolo) throws SQLException {
+    public List<Libro> findByTitle(String titolo) throws SQLException {
 
-        String queryCercaTitolo = "SELECT * FROM libri WHERE titolo LIKE CONCAT('%', ?, '%')";
+        List<Libro> libri = new ArrayList<>();
+        String queryCercaTitolo = "SELECT * FROM libri WHERE titolo LIKE ?";
         PreparedStatement statement = connection.prepareStatement(queryCercaTitolo);
 
-        statement.setString(1, titolo);
+        statement.setString(1, "%"+ titolo +"%");
         ResultSet resultSet = statement.executeQuery();
-        if (resultSet.next()) {
+        while (resultSet.next()) {
             String t = resultSet.getString("titolo");
             String a = resultSet.getString("autore");
             int annoP = resultSet.getInt("anno_pubblicazione");
             String i = resultSet.getString("isbn");
             int nC = resultSet.getInt("numero_copie");
-            return new Libro(t, a, annoP, i, nC);
-        } else {
-            System.out.println("Nessun libro trovato.");
+            libri.add(new Libro(t, a, annoP, i, nC));
         }
-        return null;
+        return libri;
     }
 
     //metodo ricerca libro per isbn

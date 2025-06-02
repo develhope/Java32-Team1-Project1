@@ -115,12 +115,12 @@ public class Main {
 
                     // Richiede il titolo del libro finché non viene trovato un libro valido
                     while (libro == null) { // try catch
-                        System.out.println("Inserisci il titolo del libro che vuoi prendere in prestito:");
+                        System.out.println("Inserisci l'isbn del libro che vuoi prendere in prestito:");
                         //bibliotecaService.elencoLibri();
                         System.out.println(prestitoRepository.getLibriDisponibili());
-                        String titoloLibro = sc.nextLine();
+                        String isbn = sc.nextLine();
                         try {
-                            libro = libroRepository.findByTitle(titoloLibro);
+                            libro = libroRepository.findById(isbn);
                         } catch (NullPointerException e) {
                             // Gestisce eventuali eccezioni di puntatore nullo (anche se non tipicamente sollevate qui)
                         }
@@ -308,7 +308,10 @@ public class Main {
 
                     String t = sc.nextLine();
 
-                    System.out.println(libroRepository.findByTitle(t));
+
+                    for(Libro l : libroRepository.findByTitle(t)){
+                        System.out.println(l);
+                    }
 
                     break;
 

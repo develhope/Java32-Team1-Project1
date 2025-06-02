@@ -90,6 +90,8 @@ public class NewMain {
             case 6:
                 cercaLibro();
                 break;
+            case 7:
+                break;
             case 0:
                 break;
             default:
@@ -222,6 +224,10 @@ public class NewMain {
     public static void cercaLibro() throws SQLException {
         System.out.println("Inserisci il titolo del libro che vuoi cercare:");
         String t = sc.nextLine();
-        System.out.println(libroRepository.findByTitle(t));
+        for(Libro l : libroRepository.findByTitle(t)){
+            System.out.println(l);
+        }
     }
+
+
 }

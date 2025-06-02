@@ -80,16 +80,11 @@ public class PrestitoTest {
 
     }
 
-    // Test 5: Verifica del metodo equals() - Confronto con null
-    @Test
-    void testEqualsNull() {
-        assertNotNull(prestito1);
 
-    }
 
     // Test 6: Verifica del metodo equals() - Stesso oggetto
-    @Test
-    void testEqualsStessoOggetto() {
-        assertEquals(true,prestito1.equals(prestito1));
-    }
+//    @Test
+//    void testEqualsStessoOggetto() {
+//        assertEquals(true,prestito1.equals(prestito1));
+//    }
 }

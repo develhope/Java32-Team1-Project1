@@ -118,20 +118,29 @@ class LibroRepositoryTest {
         List<Libro> libri = lr.findAllLibri();
         assertEquals(5, libri.size(), "List should contain five books");
         //scriverlo con ciclo for
-        boolean foundRosa = libri.stream().anyMatch(libro ->
-                "Il nome della rosa".equals(libro.getTitolo()) &&
-                        "Umberto Eco".equals(libro.getAutore()) &&
-                        1980 == libro.getAnnoPubblicazione() &&
-                        "9788845240000".equals(libro.getISBN()) &&
-                        7 == libro.getNumeroCopie());
+
+        boolean foundRosa = false;
+        boolean foundFratellino = false;
+        for(Libro libro : libri){
+           if("Il nome della rosa".equals(libro.getTitolo()) &&
+                   "Umberto Eco".equals(libro.getAutore()) &&
+                   1980 == libro.getAnnoPubblicazione() &&
+                   "9788845240000".equals(libro.getISBN()) &&
+                   7 == libro.getNumeroCopie()){
+               foundRosa = true;
+           }
+           if("Fratellino".equals(libro.getTitolo()) &&
+                   "Ibrahima Balde e Amets".equals(libro.getAutore()) &&
+                   2025 == libro.getAnnoPubblicazione() &&
+                   "9788807895678".equals(libro.getISBN()) &&
+                   24 == libro.getNumeroCopie()){
+               foundFratellino = true;
+           }
+        }
+
         assertTrue(foundRosa, "Il nome della rosa should be in the list");
-        boolean foundFratellino = libri.stream().anyMatch(libro ->
-                "Fratellino".equals(libro.getTitolo()) &&
-                        "Ibrahima Balde e Amets".equals(libro.getAutore()) &&
-                        2025 == libro.getAnnoPubblicazione() &&
-                        "9788807895678".equals(libro.getISBN()) &&
-                        24 == libro.getNumeroCopie());
         assertTrue(foundFratellino, "Fratellino should be in the list");
     }
 
 }
+

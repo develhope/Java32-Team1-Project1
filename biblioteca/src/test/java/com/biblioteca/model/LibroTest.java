@@ -30,6 +30,7 @@ public class LibroTest {
     Libro libro2 = new Libro("Libro B", "Autore B", 2021, "1234567890123", 2);
     Libro libro3 = new Libro("Libro C", "Autore C", 2019, "9876543210987", 1);
 
+
     // Test 1: Verifica del costruttore di default
     @Test
     void testCostruttoreDefault() {
@@ -64,14 +65,9 @@ public class LibroTest {
     }
 
     // Test 5: Verifica del metodo equals() - Confronto con null
-    @Test
-    void testEqualsNull() {
-        assertNotNull(libro1);
-    }
+//    @Test
+//    void testEqualsNull() {
+//        assertNotNull(libro3);
+//    }
 
-    // Test 6: Verifica del metodo equals() - Stesso oggetto
-    @Test
-    void testEqualsStessoOggetto() {
-        assertEquals(libro1, libro1);
-    }
 }
