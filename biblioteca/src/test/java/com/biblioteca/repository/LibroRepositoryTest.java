@@ -76,16 +76,18 @@ class LibroRepositoryTest {
      */
     @Test
     void findByTitle() throws SQLException {
-        Libro libro = lr.findByTitle("Fratellino");
-        assertNotNull(libro, "Book should be found");
+        List <Libro> libri = lr.findByTitle("Fratellino");
+        assertNotNull (libri, "Book should be found");
+        Libro libro = libri.getFirst() ;
         assertEquals("Fratellino", libro.getTitolo(), "Book title should match");
         assertEquals("Ibrahima Balde e Amets", libro.getAutore(), "Book author should match");
         assertEquals(2025, libro.getAnnoPubblicazione(), "Book year should match");
         assertEquals("9788807895678", libro.getISBN(), "Book ISBN should match");
         assertEquals(24, libro.getNumeroCopie(), "Book copies should match");
 
-        Libro notFound = lr.findByTitle("Non Esiste");
-        assertNull(notFound, "Non-existent title should return null");
+        List<Libro> notFound = lr.findByTitle("Non Esiste");
+//        assertNull(notFound, "Non-existent title should return null");
+        assertTrue(notFound.isEmpty());
     }
 
     /**
