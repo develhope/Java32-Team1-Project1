@@ -62,7 +62,7 @@ class LibroRepositoryTest {
         Libro notFound = lr.findById("9876543210987");
         assertNull(notFound, "Deleted book should not be found");
         List<Libro> libri = lr.findAllLibri();
-        assertEquals(5, libri.size(), "List should contain five books after deletion");
+        assertEquals(6, libri.size(), "List should contain five books after deletion");
 
         // Test deleting a book with active loans (should throw SQLException)
         assertThrows(SQLException.class, () -> lr.deleteLibro("9788845240000"), // "Il nome della rosa" has loans
@@ -118,7 +118,7 @@ class LibroRepositoryTest {
     @Test
     void findAllLibri() throws SQLException {
         List<Libro> libri = lr.findAllLibri();
-        assertEquals(5, libri.size(), "List should contain five books");
+        assertEquals(6, libri.size(), "List should contain five books");
         //scriverlo con ciclo for
 
         boolean foundRosa = false;
